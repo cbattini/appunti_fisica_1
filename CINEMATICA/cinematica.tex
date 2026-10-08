@@ -1,0 +1,3454 @@
+% =====================================================================
+%  APPUNTI DI FISICA -- CINEMATICA
+%  Compilazione: pdflatex cinematica.tex (due volte, per l'indice)
+%  Servono nella stessa cartella: appunti-base.sty e palette-fisica.tex
+%  (i disegni sono in TikZ).
+% =====================================================================
+\documentclass[11pt,a4paper,openany]{report}
+\usepackage{../appunti-base}     % stile comune a tutte le materie
+\input{../palette-fisica}        % tema della materia (solo colori)
+
+% ---------- Dati della copertina ----------
+\universita{Università di Pisa}
+\corso{Primo Anno LT in Fisica -- A.A. 2026/2027}
+\autore{Cristiano Battini}
+\professore{Prof.\ Fabrizio Cei}
+\aggiornato{\today}
+
+\begin{document}
+
+\copertina{Cinematica}
+\tableofcontents
+
+% ===== da p01.tex =====
+% =====================================================================
+%  CAPITOLO 1 -- COSA È LA FISICA   (appunti pp. 2-6)
+% =====================================================================
+\chapter{Cosa è la fisica?}
+\lezione{15/09/26}
+
+\section{La fisica e il metodo sperimentale}
+
+Fisica \implica Studia i fenomeni naturali e indotti dall'uomo
+\implica Dare una \evid{descrizione quantitativa} basata su principi fondamentali.
+
+\begin{schema}
+  \node[nodo] (dati) {Dati sperimentali};
+  \node[nodoevid, right=of dati] (teo) {Teorie};
+  \node[nodo, above right=0.1cm and 1.1cm of teo] (cost) {Costituenti fondamentali materia};
+  \node[nodo, below right=0.1cm and 1.1cm of teo] (int) {Interazioni (forze)};
+  \node[nodoevid, below=0.9cm of teo] (pr) {Principi fondamentali};
+  \draw[freccia] (dati) -- (teo);
+  \draw[freccia] (teo.east) -- (cost.west);
+  \draw[freccia] (teo.east) -- (int.west);
+  \draw[freccia] (teo) -- (pr);
+\end{schema}
+
+\subsection{Metodo sperimentale}
+\evid{Metodo sperimentale} \implica Galileo
+
+\begin{schema}
+  \node[nodo] (es) {Esperimenti};
+  \node[nodo, right=0.8cm of es] (ds) {Dati sperimentali};
+  \node[nodo, right=0.8cm of ds] (te) {Teorie};
+  \node[nodoevid, below=0.7cm of ds] (tp) {Teoria predittiva};
+  \node[nodo, below=0.7cm of tp] (ne) {Nuovi esperimenti};
+  \node[nodo, below left=0.8cm and 0.2cm of ne] (conf) {Confermano\\la teoria};
+  \node[nodo, below right=0.8cm and 0.2cm of ne] (nconf) {Non confermano\\la teoria};
+  \node[nodo, below right=0.7cm and 0.1cm of nconf] (corr) {Correzioni};
+  \node[nodo, below left=0.7cm and 0.1cm of nconf] (rif) {Rifiuto};
+  \draw[freccia] (es) -- (ds);
+  \draw[freccia] (ds) -- (te);
+  \draw[freccia] (te) |- (tp);
+  \draw[freccia] (tp) -- (ne);
+  \draw[freccia] (ne) -- (conf);
+  \draw[freccia] (ne) -- (nconf);
+  \draw[freccia] (nconf) -- (corr);
+  \draw[freccia] (nconf) -- (rif);
+  \draw[freccia] (corr.east) to[out=20, in=0] (ne.east);
+\end{schema}
+
+\begin{nota}
+Un singolo esperimento non basta a confermare una teoria.\\
+Ma\dots\ un \chiave{singolo esp.} può smentire una teoria
+(se fatto correttamente, si intende).
+\end{nota}
+
+\subsection{Quando una teoria va in crisi}
+Quando una teoria va in crisi \implica (es.) misure più precise.
+
+Mecc.\ classica \implica Eventi macroscopici in un certo intervallo di $v$ e dim.
+
+Ma\dots
+\begin{itemize}
+  \item $v \ll c$ \implica Relatività ristretta
+  \item $\Delta x \gg$ dim.\ atomiche \implica Mecc.\ quant.
+  \item Campi grav.\ molto intensi \implica Relatività gener.
+\end{itemize}
+
+Mecc.\ classica quando?
+\begin{itemize}
+  \item $\Delta x \gg$ atomo
+  \item relativistica: $v \ll c$
+\end{itemize}
+
+Matematica \implica Strumento.\\
+La fisica non è la matematica, ha i dati sperimentali.
+
+% ---------------------------------------------------------------------
+\section{Schematizzazione}
+\evid{Schematizzazione}
+\begin{itemize}
+  \item Individuare componenti di un fenomeno \implica effetti dominanti (più significativi)
+  \item Trascurare effetti secondari
+  \item Includere correzioni
+\end{itemize}
+
+\begin{esempio}{caduta gravi}
+\begin{itemize}[nosep]
+  \item Attrazione grav.\ \implica fondamentale
+  \item Resistenza aria
+  \item Effetti atmosferici
+\end{itemize}
+Resistenza aria ed effetti atmosferici: da trascurare. Come? \implica Tubo a vuoto.
+
+Ricreare le condizioni ideali il più possibile \implica Eliminare perturbazioni.
+
+% disegno: p03-tubo (appunti p. 3)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  % tubo
+  \draw[thick] (0,0) -- (0,2.6);
+  \draw[thick] (1,0) -- (1,2.6);
+  \draw[thick] (0.5,2.6) ellipse (0.5 and 0.2);
+  \draw[thick] (0.5,0.15) ellipse (0.42 and 0.3);
+  % piatto e massa
+  \draw[thick] (0,2.0) -- (1,2.0);
+  \fill (0.5,2.17) ellipse (0.22 and 0.15);
+  \draw[->] (0.62,2.25) -- (1.6,2.85) node[right,inner sep=1pt] {$m$};
+  \draw (1,2.0) -- (1.6,2.0) node[right] {piatto};
+  % pompa
+  \draw[thick] (-1.6,0.55) rectangle (-1.0,1.35);
+  \fill (-1.4,0.95) circle (1.6pt);
+  \fill (0.3,0.95) circle (1.6pt);
+  \draw (-1.4,0.95) -- (0.3,0.95);
+  \node[anchor=north] at (-1.25,0.5) {pompa};
+  % altezza
+  \draw[decorate,decoration={brace,amplitude=5pt}] (3.6,2.0) -- (3.6,0.0) node[midway,right=6pt] {$h$};
+\end{tikzpicture}
+\end{disegno}
+\begin{itemize}[nosep]
+  \item Misuro $h$ e $t$
+  \item Mollo il piatto e osservo la relazione tra $h$ e $t$ \implica $h = \frac12 g t^2$?
+\end{itemize}
+\end{esempio}
+
+\begin{itemize}
+  \item \evid{Fisica fondamentale}: leggi fondamentali della natura \implica principi base
+  \item \evid{Fisica applicata}: applicazione della fondamentale
+\end{itemize}
+
+\begin{schema}
+  \node[nodo] (sc) {Scienza};
+  \node[nodo, right=2.2cm of sc] (tec) {Tecnologia};
+  \draw[freccia] (sc) to[bend left=25] node[above] {Principi} (tec);
+  \draw[freccia] (tec) to[bend left=25] node[below] {Strumenti avanzati \implica es.\ acquisizione dati} (sc);
+\end{schema}
+
+\begin{schema}
+  \node[nodoevid] (fc) {Fisica Classica};
+  \node[below=0.05cm of fc, font=\footnotesize] {Non richiede la mecc.\ quant.\\(e relatività)};
+  \node[nodo, above right=1.2cm and 1.4cm of fc, anchor=west] (mec) {Meccanica};
+  \node[nodo, right=0.8cm of mec, anchor=west, yshift=0.35cm] (cin) {Cinematica: punto materiale};
+  \node[nodo, right=0.8cm of mec, anchor=west, yshift=-0.35cm] (din) {Dinamica: corpi reali (moti + forze)};
+  \node[nodo, above right=0.3cm and 1.4cm of fc, anchor=west] (ter) {Termodinamica: calore e lavoro meccanico};
+  \node[nodo, below right=0.1cm and 1.4cm of fc, anchor=west] (acu) {Acustica};
+  \node[nodo, below right=0.7cm and 1.4cm of fc, anchor=west] (ott) {Ottica};
+  \node[nodo, below right=1.3cm and 1.4cm of fc, anchor=west] (ele) {Elettromagnetismo (classico senza relatività)};
+  \foreach \n in {mec,ter,acu,ott,ele} \draw[freccia] (fc.east) -- (\n.west);
+  \draw[freccia] (mec.east) -- (cin.west);
+  \draw[freccia] (mec.east) -- (din.west);
+\end{schema}
+
+\begin{schema}
+  \node[nodoevid] (fm) {Fisica Moderna};
+  \node[nodo, above right=0.1cm and 1.2cm of fm] (rel) {Relatività};
+  \node[nodo, below right=0.1cm and 1.2cm of fm] (at) {Atomica e Nucleare};
+  \node[nodo, below=0.3cm of at] (mq) {Mecc.\ Quantistica};
+  \draw[freccia] (fm.east) -- (rel.west);
+  \draw[freccia] (fm.east) -- (at.west);
+  \draw[freccia] (at) -- (mq);
+\end{schema}
+
+% ---------------------------------------------------------------------
+\section{Grandezze fisiche}
+\evid{Grandezze fisiche}
+
+Grandezza misurabile:
+\begin{itemize}[nosep]
+  \item Unità di misura
+  \item Tecnica operativa di misura
+\end{itemize}
+
+Stessa un.\ di mis.\ \implica \chiave{Omogenee}.
+
+\begin{itemize}
+  \item \evid{Misura diretta} \implica Lo strumento misura l'un.\ di mis.
+  \item \evid{indiretta} \implica Operazioni matematiche
+\end{itemize}
+
+\begin{itemize}
+  \item \evid{Grandezze fondamentali} \implica propria unità di misura
+  \item \evid{derivate} \implica combinazioni delle fondamentali
+\end{itemize}
+
+\subsection{SI -- Sistema unità di misura}
+\evid{SI} Sistema unità di misura \implica Sistema internazionale
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Grand.} & \textbf{Un.\ mis.} & \textbf{Strum.} \\
+\midrule
+Lunghezza & metro (m) & Metro \\
+Tempo & secondi (s) & Orologio \\
+Massa & chilogrammo (kg) & Bilancia e Spettrometro massa \\
+Temperatura & Kelvin (K) & Termometro \\
+Corrente & Ampere (A) & Amperometro \\
+Intens.\ Lum. & candela (cd) & Fotometro \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Grandezze fondamentali \implica Costanti fisiche da fenomeni naturali.
+
+\begin{esempio}{metro}
+$l$ da un rag.\ di luce nel vuoto in $\dfrac{1}{299792458}\,\mathrm{s}$
+\end{esempio}
+\begin{esempio}{secondo}
+Tempo impiegato da $9192631770$ transizioni di una riga atomica del cesio.
+\end{esempio}
+
+Rivoluzione della metrologia 2019 \implica Misurazioni più accurate.
+
+Tutte le grandezze fisiche sono ``ancorate'' a costanti fondamentali
+\implica Dalla Natura \implica carica elem.; $c$; trans.\ iperfine del cesio, ecc.
+
+\subsection{Multipli e sottomultipli}
+\evid{Multipli e Sottomultipli}: si va di mille in mille \implica formalmente.
+
+\begin{center}
+\begin{tabular}{rll@{\hspace{2.5em}}rll}
+\toprule
+$10^{21}$ & zetta & Z & $10^{-3}$ & milli & m \\
+$10^{18}$ & exa & E & $10^{-6}$ & micro & $\mu$ \\
+$10^{15}$ & peta & P & $10^{-9}$ & nano & n \\
+$10^{12}$ & tera & T & $10^{-12}$ & pico & p \\
+$10^{9}$ & giga & G & $10^{-15}$ & femto & f \\
+$10^{6}$ & mega & M & $10^{-18}$ & atto & a \\
+$10^{3}$ & kilo & k & $10^{-21}$ & zepto & z \\
+$1$ & & & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ---------------------------------------------------------------------
+\section{Analisi dimensionale}
+\evid{Analisi dimensionale}
+
+\begin{formula}
+x = y \iff [x] = [y]
+\end{formula}
+
+\lezione{18/9/26}
+\subsection{Applicazione analisi dimensionale nel pendolo semplice}
+
+% disegno: p06-pendolo (appunti p. 6)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  % soffitto
+  \draw[thick] (-0.9,0) -- (1.1,0);
+  \foreach \x in {-0.6,-0.2,0.2,0.6} \draw (\x,0.05) -- (\x+0.3,0.35);
+  % verticale tratteggiata
+  \draw[tratt] (0,0) -- (0,-1.75);
+  % filo e massa
+  \draw[thick] (0,0) -- (0.55,-1.55) coordinate (B);
+  \fill (B) circle (2.2pt);
+  \node[right] at (0.22,-0.45) {$\ell$};
+  \node at (-0.05,-1.0) [right=0pt] {$\theta$};
+  \node[right=2pt] at (B) {$m$};
+  % gravita
+  \draw[->,thick] (2.0,-0.35) -- (2.0,-1.0) node[midway,right=1pt] {$\vec g$};
+\end{tikzpicture}
+\end{disegno}
+
+\[
+  \tau = \underbrace{l^{\alpha} m^{\beta} g^{\gamma}}_{\text{fattori dimensionali}}
+  \ \overbrace{f(\theta)}^{\text{fattore adimensionale}}
+\]
+\[
+  [\tau] = [L]^{\alpha}[m]^{\beta}[g]^{\gamma}, \qquad [g] = [L][T]^{-2}
+\]
+\[
+  [L]^{\alpha+\gamma}[m]^{\beta}[T]^{-2\gamma} = [T] \quad (= [\tau])
+\]
+\[
+  \Rightarrow
+  \begin{cases}
+    \alpha + \gamma = 0 \\
+    \beta = 0 \\
+    \gamma = -\frac12
+  \end{cases}
+  \Rightarrow \alpha = -\gamma \Rightarrow \alpha = \frac12
+\]
+\begin{formula}
+\tau = l \cdot g \cdot f(\theta) = f(\theta)\sqrt{\frac{l}{g}}
+\end{formula}
+\begin{significato}
+Il periodo del pendolo dipende solo dalla lunghezza del filo e da $g$, non dalla massa
+($\beta = 0$): un filo più lungo dà oscillazioni più lente, una gravità più forte le rende più rapide.
+\end{significato}
+
+\begin{delucidazione}
+$f(\theta) = 2\pi$ per piccole osc.\\
+Ma questo l'an.\ dim.\ non ce lo dice.
+\end{delucidazione}
+
+% ===== da p02.tex =====
+% =====================================================================
+%  CAPITOLO 2 -- CINEMATICA   (appunti pp. 7-10)
+% =====================================================================
+\chapter{Cinematica}
+
+Descrivere il moto dei corpi:
+\begin{itemize}
+  \item Indipendentemente dalle cause che lo producono o modificano
+  \item Studio geometrico
+\end{itemize}
+
+\begin{delucidazione}
+(sul primo punto) quella è la Dinamica
+\end{delucidazione}
+
+% ---------------------------------------------------------------------
+\section{Punto materiale}
+\begin{definizione}{I -- Punto Materiale}
+\begin{enumerate}
+  \item Oggetto \evid{realmente puntiforme}
+        \implica dunque \implica \evid{Dimensioni $\ll$ Spostamento}
+  \item Oggetto con \evid{dim $\sim$ spostamento}. Ma:
+        \begin{itemize}[nosep]
+          \item \evid{non deforma}
+          \item \evid{non ruota}
+        \end{itemize}
+\end{enumerate}
+\end{definizione}
+
+\begin{esempio}{}
+Terra intorno al sole; treno che va avanti e indietro; auto in frenata.\\
+Mentre \implica auto che si ribalta non va bene,
+perché le dim sono importanti per la rotazione (ribaltamento).
+\end{esempio}
+
+% ---------------------------------------------------------------------
+\section{Sistema di riferimento}
+\begin{definizione}{II -- Sistema di riferimento}
+\evid{Insieme dei corpi rispetto a cui si studia il moto}
+\begin{itemize}[nosep]
+  \item[\implica] Terna di assi (cartesiani e non)
+  \item[\implica] Orologio
+  \item[\implica] Unità di misura della lunghezza (metro)
+\end{itemize}
+\end{definizione}
+
+% disegno: p07-assi (appunti p. 7)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  % assi
+  \draw[asse] (0,0) -- (0,2.4) node[right] {$z$};
+  \draw[asse] (0,0) -- (1.9,0) node[below right] {$y$};
+  \draw[asse] (0,0) -- (-0.95,-1.2) node[below right] {$x$};
+  % vettore P -> Q (freccia a meta)
+  \fill (-0.75,0.25) coordinate (P) circle (1.3pt);
+  \fill (1.25,1.05) coordinate (Q) circle (1.3pt);
+  \node[above left=-1pt] at (P) {$P$};
+  \node[above right=1pt] at (Q) {$Q$};
+  \draw[decoration={markings,mark=at position 0.78 with {\arrow{Stealth[length=2.2mm]}}},postaction={decorate}] (P) -- (Q);
+  % scritte
+  \node[anchor=base] at (4.4,1.3) {$P(x,y,z)$};
+  \node[anchor=base] at (4.3,0.45) {$t$};
+  \node[anchor=base] at (6.9,1.3) {$Q(x',y',z')$};
+  \node[anchor=base] at (7.0,0.45) {$t'$};
+  \node[anchor=base] at (5.8,-0.75) {lunghezza fisica};
+\end{tikzpicture}
+\end{disegno}
+
+% ---------------------------------------------------------------------
+\section{Legge oraria e traiettoria}
+\begin{definizione}{III -- Legge oraria}
+È una \evid{funzione matematica}
+\implica Esprime la \evid{dipendenza delle coordinate in funzione del tempo}.
+\[
+  \underbrace{x(t) \quad y(t) \quad z(t)}_{\text{legge oraria per ogni asse}}
+  \ \longrightarrow\ \text{componenti del moto}
+\]
+\end{definizione}
+
+\begin{definizione}{IV -- Traiettoria}
+\evid{Insieme delle posizioni assunte dal corpo durante il suo moto}
+\implica Relazione tra coordinate.
+\end{definizione}
+
+\begin{nota}
+\begin{itemize}[nosep]
+  \item Il tempo non compare.
+  \item Non è necessariamente una funzione \implica es.\ circ.\ (non è una $f(x)$, Analisi).
+\end{itemize}
+\end{nota}
+
+% ---------------------------------------------------------------------
+\section{Spostamento}
+\begin{definizione}{V -- Spostamento}
+\[
+  t_0 \quad P(x_0, y_0, z_0) \ \longrightarrow\ t_1 \quad Q(x_1, y_1, z_1)
+\]
+\evid{Differenza (con il suo segno) tra la posizione finale e quella iniziale}
+\[
+  \text{Spost.} = (\Delta x, \Delta y, \Delta z)
+\]
+\end{definizione}
+
+\evid{In vettori:}
+\begin{align*}
+  \vec{r}_0 &: \text{vettore pos.\ a } t_0 \quad (x_0, y_0, z_0)\\
+  \vec{r}_1 &: \text{vettore pos.\ a } t_1 \quad (x_1, y_1, z_1)
+\end{align*}
+\begin{formula}
+\Delta\vec{r}\,(t_0 \to t_1) = \vec{r}_1(t_1) - \vec{r}_0(t_0) = (\Delta x, \Delta y, \Delta z)
+\end{formula}
+\begin{significato}
+Lo spostamento è la ``freccia'' che va dal punto di partenza a quello di arrivo:
+conta solo dove inizi e dove finisci, non il percorso fatto in mezzo; il segno di ogni
+componente dice in che verso ti sei mosso lungo quell'asse.
+\end{significato}
+\[
+  \underset{\vec{r}_i}{\begin{pmatrix} x_i \\ y_i \\ z_i \end{pmatrix}}
+  - \underset{\vec{r}_0}{\begin{pmatrix} x_0 \\ y_0 \\ z_0 \end{pmatrix}}
+  = \underset{\vec{r}_i - \vec{r}_0}{\begin{pmatrix} x_i - x_0 \\ y_i - y_0 \\ z_i - z_0 \end{pmatrix}}
+  = \underset{\Delta\vec{r}}{\begin{pmatrix} \Delta x \\ \Delta y \\ \Delta z \end{pmatrix}}
+\]
+
+\begin{esempio}{}
+% disegno: p08-esempi (appunti p. 8)
+\begin{disegno}
+\begin{tikzpicture}[disegno,materia]
+  % --- grafico P -> Q ---
+  \begin{scope}
+    \draw[->,thick] (0,0) -- (3.0,0) node[right] {$x$};
+    \draw[->,thick] (0,0) -- (0,1.85) node[above right=-2pt] {$y$};
+    \coordinate (P) at (0.85,1.3);
+    \coordinate (Q) at (2.6,0.65);
+    \draw[dashed] (0,1.3) -- (P) -- (0.85,0);
+    \draw[dashed] (0,0.65) -- (Q) -- (2.6,0);
+    \draw[thick,fill=white] (P) circle (1.6pt);
+    \draw[thick,fill=white] (Q) circle (1.6pt);
+    \node[above right=0pt] at (P) {$P$};
+    \node[right=2pt] at (Q) {$Q$};
+    \draw[decoration={markings,mark=at position 0.6 with {\arrow{Stealth[length=2.2mm]}}},postaction={decorate}]
+      ($(P)+(0.25,0.08)$) to[bend left=12] ($(Q)+(-0.1,0.18)$);
+    \node[left] at (0,1.3) {$y_0$};
+    \node[left] at (0,0.65) {$y_1$};
+    \node[below] at (0.85,0) {$x_0$};
+    \node[below] at (2.6,0) {$x_1$};
+  \end{scope}
+  % --- scritte ---
+  \node[anchor=base west] at (4.0,1.45) {$P\to Q$};
+  \node[anchor=base west] at (4.0,0.85) {$\Delta y<0$};
+  \node[anchor=base west] at (4.0,0.25) {$\Delta x>0$};
+  \node[anchor=base west] at (6.4,1.45) {es.};
+  % --- moto circolare ---
+  \begin{scope}[shift={(8.0,-0.4)}]
+    \draw[->,thick] (0,0) -- (2.6,-0.05) node[right] {$x$};
+    \draw[->,thick] (0,0) -- (0,2.4) node[above right=-2pt] {$y$};
+    \draw[thick] (1.6,1.0) ellipse (0.8 and 0.72);
+    \draw[thick,-{Stealth[length=2.4mm]}] (1.95,1.67) -- (1.62,1.72);
+    \fill[accento] (1.45,1.71) circle (2.2pt);
+  \end{scope}
+\end{tikzpicture}
+\end{disegno}
+$P \to Q$: \ $\Delta y < 0$, \ $\Delta x > 0$.\\
+Es.\ (moto su una circonferenza): distanza $= 2\pi r$, \ spostamento $= 0$.
+\end{esempio}
+
+% ---------------------------------------------------------------------
+\newpage
+\section{Ascissa curvilinea}
+\begin{definizione}{VI -- Ascissa curvilinea $s(t)$}
+Equivalente di una coord.\ cartes., ma considerata lungo la traiettoria.
+\end{definizione}
+
+% disegno: p09-ascissa (appunti p. 9)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  \draw[asse] (-0.5,0) -- (5.0,0) node[right] {$x$};
+  \draw[asse] (0,-0.4) -- (0,2.5) node[right] {$y$};
+  \node[below left] at (0,0) {$O$};
+  \coordinate (O) at (0,0);
+  \coordinate (P) at (1.6,1.15);
+  \coordinate (Q) at (4.1,2.0);
+  \draw[thick,decoration={markings,
+      mark=at position 0.15 with {\arrow{Stealth[length=2mm]}},
+      mark=at position 0.62 with {\arrow{Stealth[length=2mm]}},
+      mark=at position 0.9 with {\arrow{Stealth[length=2mm]}}},postaction={decorate}]
+    (O) .. controls (0.3,0.8) and (1.1,0.7) .. (P)
+        .. controls (2.1,1.6) and (2.8,1.0) .. (3.4,1.25)
+        .. controls (3.8,1.4) and (3.9,1.7) .. (Q);
+  \fill (P) circle (1.5pt) node[above=2pt] {$P$};
+  \fill (Q) circle (1.5pt) node[above right=0pt] {$Q$};
+  % graffe blu
+  \draw[materia,thick,decorate,decoration={brace,mirror,amplitude=5pt}]
+    (0.05,-0.08) -- (1.55,0.85) node[midway,below right=3pt and 0pt] {$s_0$};
+  \draw[materia,thick,decorate,decoration={brace,mirror,amplitude=5pt}]
+    (1.85,0.95) -- (4.15,1.55) node[midway,below=6pt] {$s_1$};
+\end{tikzpicture}
+\end{disegno}
+
+$s_0: O \to P$, \quad $s_1: P \to Q$.
+
+Quindi\dots\ spostamento percorrendo la traiettoria (fisso l'origine $O$): \ $s_0 < 0$, \ $s_1 > 0$.\\
+Es.: semicirconferenza da $A$ a $B$ (diametro $2R$): ascissa curvilinea $\pi R$.
+
+\begin{osservazione}
+\evid{Spostamento $\neq$ Distanza percorsa}.\\
+Andata e ritorno di $r$: \ distanza $= 2r$, \ spostamento $= 0$.
+\end{osservazione}
+
+\begin{delucidazione}
+Qual è la differenza tra $\vec{x}(t) \to$ spostamento e $\vec{s}(t) \to$ ascissa curvilinea?
+
+% disegno: p09-margine (appunti p. 9)
+\begin{disegno}
+\begin{tikzpicture}[disegno,
+  declare function={f(\x)=1.15+0.32*sin(2.2*(\x-0.9) r)+1.4*(\x>3)*(\x-3)^2;}]
+  % ===== Spostamento =====
+  \node[accento,anchor=west,font=\normalsize] at (-0.4,2.6) {Spostamento};
+  \draw[materia,->,thick] (0,0) -- (4.1,0) node[right] {$t$};
+  \draw[materia,->,thick] (0,0) -- (0,2.1) node[right] {$x(t)$};
+  \draw[materia,thick,domain=0.65:3.55,smooth,samples=60] plot (\x,{f(\x)});
+  \coordinate (A) at (1.0,{f(1.0)});
+  \coordinate (B) at (2.95,{f(2.95)});
+  \draw[accento,thick] (A) -- (B);
+  \fill[accento] (A) circle (2pt) (B) circle (2pt);
+  \draw[accento,dashed] (A) -- (1.0,0) node[below] {$t_0$};
+  \draw[accento,dashed] (B) -- (2.95,0) node[below] {$t$};
+  \node[accento] at (2.4,1.85) {$x(t_0,t)$};
+  % ===== Ascissa curvilinea =====
+  \begin{scope}[yshift=-3.5cm]
+  \node[esempio,anchor=west,font=\normalsize] at (-0.8,2.6) {Ascissa curvilinea};
+  \draw[materia,->,thick] (0,0) -- (4.1,0) node[right] {$t$};
+  \draw[materia,->,thick] (0,0) -- (0,2.1) node[right] {$s(t)$};
+  \draw[materia,thick,domain=0.65:3.55,smooth,samples=60] plot (\x,{f(\x)});
+  \foreach \a/\b in {0.75/1.05,1.05/1.55,1.55/2.0,2.0/2.45,2.45/2.85,2.85/3.3}
+    \draw[esempio,very thick,-{Stealth[length=1.8mm]}] (\a,{f(\a)}) -- (\b,{f(\b)});
+  \draw[esempio,dashed] (0.75,{f(0.75)}) -- (0.75,0) node[below] {$t_0$};
+  \draw[esempio,dashed] (3.3,{f(3.3)}) -- (3.3,0) node[below] {$t$};
+  \node[esempio] at (0.55,1.55) {$s_0$};
+  \node[esempio] at (1.2,1.75) {$s_1$};
+  \node[esempio] at (1.95,1.65) {$s_2$};
+  \node[esempio] at (2.4,1.55) {$s_3$};
+  \node[esempio] at (2.8,1.55) {$s_4$};
+  \node[esempio] at (3.2,1.65) {$s_5$};
+  \node[esempio] at (2.7,2.15) {$s(t,t_0)$};
+  \end{scope}
+\end{tikzpicture}
+\end{disegno}
+
+\textbf{Spostamento}: lunghezza descritta dalla retta che collega i due punti.\\
+\textbf{Ascissa curvilinea}: lunghezza descritta dalla curva che collega due punti.
+\end{delucidazione}
+
+% ---------------------------------------------------------------------
+\section{Relazione legge oraria \texorpdfstring{$\to$}{->} traiettoria}
+\evid{Relazione legge oraria $\to$ traiettoria} (l'inverso non è possibile).
+
+\evid{Tecnica standard}: ricavare il tempo da una legge oraria e sostituirla nelle altre.
+
+\begin{esempio}{moto di gravi lanciati}
+Legge oraria:
+\[
+  \begin{cases}
+    x(t) = v_x t \\
+    y(t) = v_y t - \frac12 g t^2
+  \end{cases}
+  \qquad
+  t = \frac{x}{v_x} \ \longmapsto\
+  \underbrace{y(x) = \frac{v_y}{v_x}\,x - \frac{g}{2}\left(\frac{x}{v_x}\right)^2}_{\text{traiettoria}}
+\]
+\implica parabola (termine quadratico).
+
+$\bar{x}$: $x$ a cui $y$ è $0$:
+\[
+  y(\bar{x}) = 0 \ \longmapsto\ \bar{x}\,\frac{v_y}{v_x} - \frac{g}{2}\left(\frac{\bar{x}}{v_x}\right)^2 = 0
+\]
+\[
+  \bar{x}\left(\frac{v_y}{v_x} - \frac{g}{2v_x^2}\,\bar{x}\right) = 0
+  \qquad \bar{x} = 0
+  \qquad \bar{x} = -\frac{v_y}{v_x}\left(-\frac{2v_x^2}{g}\right) = \frac{2v_xv_y}{g}
+\]
+% disegno: p09-parabola (appunti p. 9)
+\begin{disegno}
+\begin{tikzpicture}[disegno,materia]
+  \draw[->,thick] (0,0) -- (4.3,0) node[right] {$x$};
+  \draw[->,thick] (0,0) -- (0,3.0) node[right=2pt] {$y$};
+  \coordinate (V) at (1.95,2.05);
+  \draw[thick] (0,0) .. controls (0.5,1.6) and (1.3,2.05) .. (V)
+                 .. controls (2.6,2.05) and (3.7,1.2) .. (3.75,0);
+  \draw[dashed] (0,2.05) -- (V) -- (1.95,0);
+  \fill (V) circle (2pt) node[above=2pt] {$V$};
+  \fill (0,0) circle (1.3pt);
+  \node[below] at (0,-0.05) {$O$};
+  \node[below] at (3.75,0) {$\bar x$};
+\end{tikzpicture}
+\end{disegno}
+\end{esempio}
+
+\begin{esempio}{in cui non funziona}
+\[
+  \begin{cases}
+    x = R\cos(\omega t) \ \to\ \dfrac{x}{R} = \cos(\omega t) \ \to\ t = \dfrac{1}{\omega}\arccos\!\left(\dfrac{x}{R}\right)\\[1ex]
+    y = R\sin(\omega t)
+  \end{cases}
+\]
+\[
+  y(x) = R\sin\!\left(\omega\,\frac{1}{\omega}\arccos\!\left(\frac{x}{R}\right)\right)
+\]
+Concettualmente errata \implica non rispetta l'arcocoseno.
+
+\begin{delucidazione}
+\aggiunto\ L'arcocoseno restituisce solo angoli tra $0$ e $\pi$, quindi
+$t = \frac{1}{\omega}\arccos\!\left(\frac{x}{R}\right)$ vale solo per mezzo giro.
+Sostituendo si ottiene $y = R\sin\!\left(\arccos\frac{x}{R}\right) = R\sqrt{1 - \frac{x^2}{R^2}} \geq 0$:
+solo la metà superiore della circonferenza.
+Il moto circolare è periodico: a ogni $x$ corrispondono due punti ($y > 0$ e $y < 0$) e infiniti istanti,
+quindi $t$ non si ricava in modo unico da $x$. Per questo il tempo si elimina con
+$\cos^2 + \sin^2 = 1$, come subito dopo.
+\end{delucidazione}
+
+Invece:
+\[
+  \begin{cases}
+    \cos(\omega t) = \dfrac{x}{R} \\[1ex]
+    \sin(\omega t) = \dfrac{y}{R}
+  \end{cases}
+  \ \to\ \cos^2(\omega t) + \sin^2(\omega t) = \frac{x^2}{R^2} + \frac{y^2}{R^2} = 1
+\]
+\[
+  x^2 + y^2 = R^2 \ \to\ \text{circonf.}
+\]
+Se i coef.\ di $x$ e $y$ non sono uguali, $a \neq b$:
+\[
+  \begin{cases}
+    x = a\cos(\omega t) \\
+    y = b\sin(\omega t)
+  \end{cases}
+  \quad
+  \underbrace{\cos^2(\omega t) + \sin^2(\omega t)}_{1} = \frac{x^2}{a^2} + \frac{y^2}{b^2}
+\]
+\[
+  x^2 + y^2 = a^2 + b^2 \ : \ \text{ellisse}
+\]
+\end{esempio}
+
+\begin{delucidazione}
+\textbf{Esercizio}:
+$\begin{cases} x = a\cosh(\omega t) \\ y = b\sinh(\omega t) \end{cases}$
+\qquad
+$\cosh x = \dfrac{e^x + e^{-x}}{2}$, \quad $\sinh x = \dfrac{e^x - e^{-x}}{2}$
+\end{delucidazione}
+
+% ===== da p03.tex =====
+% =====================================================================
+%  CAPITOLO 3 -- MOTO UNIDIMENSIONALE   (appunti pp. 10-13)
+% =====================================================================
+\chapter{Moto unidimensionale}
+
+(o rettilineo)
+
+Vuol dire \implica suffic.\ \chiave{1 sola coordinata} (non sempre cartesiana)
+\implica 1 sola legge oraria.
+
+\begin{esempio}{}
+Il moto circolare è unidimensionale \implica mi serve solo l'angolo $\theta(t)$.
+\end{esempio}
+
+\nonewpage
+\section{Moto rettilineo}
+\evid{Moto rettilineo} \implica Moto unidim., con \evid{traiettoria $=$ segmento}.
+
+% disegno: p10-retta (appunti p. 10)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  \draw[asse,black] (0,0) -- (5.6,0) node[right] {$x$};
+  \foreach \x/\i in {1.3/0,2.9/1,4.4/2} {
+    \draw[fill=white] (\x,0) circle (1.6pt);
+    \node[above=2pt] at (\x,0) {$t_\i$};
+    \node[below=2pt] at (\x,0) {$x_\i$};
+  }
+\end{tikzpicture}
+\end{disegno}
+
+\subsection{Rappresentazione grafica di \texorpdfstring{$x(t)$}{x(t)}}
+\evid{Rappresentazione graf.~$x(t)$ legge oraria}
+
+% disegno: p10-grafico (appunti p. 10)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=1.15cm,y=1.15cm]
+  \draw[asse] (0,0) -- (4.6,0) node[right] {$t$};
+  \draw[asse] (0,0) -- (0,2.0) node[above right=-3pt and -2pt] {$x(t)$};
+  \fill (0,0) circle (1.4pt);
+  \draw[thick] (0,0) .. controls (0.35,0.5) and (0.5,1.2) .. (0.85,1.2)
+     .. controls (1.15,1.2) and (1.3,0.95) .. (1.7,0.95)
+     .. controls (2.1,0.95) and (2.25,1.3) .. (2.35,1.6)
+     .. controls (2.45,1.9) and (2.7,1.9) .. (2.95,1.85)
+     .. controls (3.05,1.82) and (3.1,1.75) .. (3.2,1.8)
+     .. controls (3.4,1.85) and (3.4,1.4) .. (3.55,1.1)
+     .. controls (3.65,0.9) and (3.75,0.85) .. (3.9,0.75);
+  \draw[tratt,black] (0.8,1.2) -- (0.8,0);
+  \draw[tratt,black] (1.65,0.95) -- (1.65,0);
+  \draw[tratt,black] (2.6,1.88) -- (2.6,0);
+  \node[below] at (0,0) {$t_0$};
+  \node[below] at (0.8,0) {$t_1$};
+  \node[below] at (1.65,0) {$t_2$};
+  \node[below] at (2.6,0) {$t_3$};
+  % commento grigio
+  \draw[black!55,thick,decorate,decoration={brace,mirror,amplitude=5pt}] (-0.4,-0.55) -- (2.95,-0.55);
+  \node[black!55,anchor=west] at (-0.5,-1.15) {Come varia $x(t)$};
+\end{tikzpicture}
+\end{disegno}
+
+\begin{nota}
+Non è la traiettoria! Quella è un segmento: il grafico mostra come varia $x(t)$.\\
+Può essere negativa!
+\end{nota}
+
+\begin{esempio}{1}
+\[
+  x(t) = x_0 + \overbrace{v(t - t_0)}^{[L]} \qquad v > 0
+\]
+% disegno: p11-es1 (appunti p. 11)
+\begin{disegno}
+\begin{tikzpicture}[disegno,materia]
+  \draw[->,thick] (-0.35,0) -- (4.0,0) node[below right=-1pt] {$t$};
+  \draw[->,thick] (0,-0.5) -- (0,2.5) node[above] {$x$};
+  \coordinate (A) at (0.95,0.8);
+  \coordinate (B) at (3.6,2.2);
+  \draw[dashed] (0,0.8) -- (A) -- (0.95,0);
+  \draw[thick] (A) to[bend left=8] (B);
+  \fill (B) circle (1.8pt);
+  \node[left] at (0,0.85) {$x_0$};
+  \node[below] at (0.95,0) {$t_0$};
+\end{tikzpicture}
+\end{disegno}
+Il punto materiale percorre spazi uguali in\dots\ tempi uguali.
+\[
+  t_1, t_2 \to x(t_1), x(t_2) \qquad t_2 > t_1
+\]
+\[
+  \frac{x(t_1) + x(t_2)}{t_1 - t_2}
+  = \frac{\overbrace{v(t_2 - t_1)}^{\text{spazio}}}{\underbrace{t_2 - t_1}_{\text{tempo}}}
+  = v \ \to\ \text{cost.}
+\]
+\end{esempio}
+
+\sinewpage
+
+\begin{esempio}{2}
+\[
+  y(t) = y_0 - a(t - t_0)^2 \qquad t \geq t_0
+\]
+% disegno: p11-es2 (appunti p. 11)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  \draw[asse,materia] (0,0) -- (4.2,0) node[below right] {$t$};
+  \draw[asse,materia] (0,0) -- (0,2.6) node[above right] {$y$};
+  \draw[tratt,materia] (0,1.9) node[left,text=materia] {$y_0$} -- (0.85,1.9);
+  \draw[tratt,materia] (0.85,1.9) -- (0.85,0) node[below,text=materia] {$t_0$};
+  \draw[curva] (0.85,1.9) parabola (2.5,1.05);
+  \draw[materia,thick,fill=white] (2.5,1.05) circle (1.6pt);
+\end{tikzpicture}
+\end{disegno}
+\begin{itemize}[nosep]
+  \item parabola
+  \item la traiettoria è comunque un segmento
+\end{itemize}
+\end{esempio}
+
+\begin{esempio}{3: incrocio tra leggi orarie}
+% disegno: p11-es3 (appunti p. 11)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  \draw[asse,materia] (0,0) -- (4.4,0) node[below right] {$t$};
+  \draw[asse,materia] (0,0) -- (0,3.6) node[above] {$x$};
+  % curva crescente (concava, flesso orizzontale all'intersezione, poi risale)
+  \draw[curva] (0.55,0.35) .. controls (0.9,1.3) and (1.7,1.65) .. (2.6,1.65)
+               .. controls (3.1,1.65) and (3.35,1.7) .. (3.8,2.3);
+  % curva decrescente (inizio in alto, flesso, minimo vicino all'asse)
+  \draw[curva] (1.45,2.6) .. controls (2.0,2.5) and (2.3,2.1) .. (2.6,1.65)
+               .. controls (2.95,1.0) and (3.2,0.4) .. (3.7,0.35)
+               .. controls (3.9,0.33) and (4.05,0.38) .. (4.1,0.45);
+  \node[punto,materia] at (2.6,1.65) {};
+  \draw[tratt,materia] (0,1.65) node[left,text=materia] {$\bar{x}$} -- (2.6,1.65);
+  \draw[tratt,materia] (2.6,1.65) -- (2.6,0) node[below,text=materia] {$\bar{t}$};
+\end{tikzpicture}
+\end{disegno}
+$\bar{x}, \bar{t}$: radici eq.:
+\[
+  x_1(t) = x_2(t) \ \Longrightarrow\ t = \bar{t}
+\]
+\end{esempio}
+
+% ---------------------------------------------------------------------
+\section{Velocità}
+\begin{definizione}{7 -- Velocità media}
+\evid{Velocità media}: rapporto tra la differenza delle posizioni assunte
+nell'istante $t_1$ e $t_0$ e la differenza $(t_1 - t_0)$ \quad $(t_1 > t_0)$.
+\end{definizione}
+\begin{formula}
+v_m(t_0, t_1) = \frac{x_1 - x_0}{t_1 - t_0} = \frac{x(t_1) - x(t_0)}{t_1 - t_0}
+\end{formula}
+\begin{significato}
+Dice di quanto è cambiata in media la posizione per ogni unità di tempo
+nell'intervallo considerato: non dice nulla su cosa è successo in mezzo
+(il corpo può aver accelerato, frenato o essere tornato indietro).
+\end{significato}
+
+\begin{definizione}{8 -- Velocità istantanea $v(t_0)$}
+$\Delta t \to 0$, \quad $t_1 = t_0 + \Delta t$
+\[
+  v_m = \frac{x(t_0 + \Delta t) - x(t_0)}{\Delta t}
+\]
+La velocità all'ist.\ $t_0$ è:
+\[
+  v(t_0) = \lim_{\Delta t \to 0} v_m(t_0, t_0 + \Delta t)
+  = \lim_{\Delta t \to 0} \underbrace{\frac{x(t_0 + \Delta t) - x(t_0)}{\Delta t}}_{\text{rapporto incrementale } \to \text{ derivata}}
+\]
+\end{definizione}
+\begin{formula}
+v(t_0) = \frac{d}{dt}\,x(t) = \underbrace{\dot{x}(t)}_{\text{notazione derivata}}
+\end{formula}
+\begin{significato}
+È la velocità ``in quell'istante preciso'': si prende la velocità media su intervalli
+di tempo sempre più piccoli attorno a $t_0$. Misura quanto rapidamente sta cambiando
+la posizione proprio in quel momento.
+\end{significato}
+\[
+  [v_m] = [v] = \frac{[L]}{[T]} = \frac{\mathrm{m}}{\mathrm{s}}
+\]
+
+\subsection{Interpretazione geometrica della velocità}
+\evid{Interpretazione geometrica della velocità}
+
+\needspace{10\baselineskip}
+\evid{Vel.~media}:
+% disegno: p12-media (appunti p. 12)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  \draw[asse] (0,-0.05) -- (7.0,-0.05) node[below right] {$t$};
+  \draw[asse] (0,-0.15) -- (0,2.6) node[above right] {$x(t)$};
+  % tratteggi
+  \draw[tratt,black] (0,1.75) node[left] {$x_1$} -- (1.8,1.75);
+  \draw[tratt,black] (0,1.3) node[left] {$x_0$} -- (3.25,1.3);
+  \draw[tratt,black] (1.56,0.75) -- (1.56,-0.05) node[below] {$t_0$};
+  \draw[tratt,black] (2.12,1.3) -- (2.12,-0.05) node[below] {$t_1$};
+  % curva (nera)
+  \draw[thick,black] (0.69,0.31) .. controls (0.7,0.8) and (0.95,1.08) .. (1.31,1.1);
+  \draw[thick,black] (1.8,1.75) .. controls (2.6,2.0) and (3.2,2.45) .. (3.56,2.31)
+        .. controls (3.85,2.2) and (3.95,1.8) .. (4.25,1.75);
+  % secante
+  \draw[thick,materia] (0.98,0.55) -- (2.5,2.75) node[right,yshift=2pt] {secante};
+  % angolo
+  \draw[thick,nota] (1.8,1.75) ++(-45:0.38) arc[start angle=-45,end angle=15,radius=0.38];
+  \node[text=nota] at (2.42,1.62) {$\alpha$};
+\end{tikzpicture}
+\end{disegno}
+\[
+  v_m = \frac{x_1 - x_0}{t_1 - t_0} = \tan\alpha
+\]
+$v_m \to$ coef.\ ang.\ secante $(t_0, x_0)\,(t_1, x_1)$ (rapporto incr.).
+
+\needspace{10\baselineskip}
+\evid{Vel.~ist.}:
+% disegno: p12-ist (appunti p. 12)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  \draw[asse] (-0.25,0) -- (5.8,0);
+  \draw[asse] (0,-0.2) -- (0,3.0);
+  % tratteggi
+  \draw[tratt,black] (0,1.3) node[left] {$x_0$} -- (1.43,1.3);
+  \draw[tratt,black] (1.57,1.15) -- (1.57,0) node[below,xshift=-2pt] {$t_0$};
+  \draw[tratt,accento] (0,1.6) node[left,yshift=3pt] {$x_1$} -- (1.77,1.6) -- (1.77,0) node[below,xshift=3pt] {$t_1$};
+  % curva
+  \draw[thick,black] (0.64,0.67) .. controls (0.66,1.25) and (1.0,1.58) .. (1.57,1.58)
+        .. controls (2.3,1.58) and (3.3,1.55) .. (3.71,2.57);
+  % tangente
+  \draw[very thick,esempio] (-0.3,2.04) -- (3.36,1.14) node[right=5pt,text=esempio] {tang};
+  \draw[thick,esempio,->] (5.75,0.8) .. controls (6.25,0.9) and (6.0,-0.2) .. (6.35,-0.85);
+\end{tikzpicture}
+\end{disegno}
+$t_1 \to t_0$, \quad $x_1 \to x_0$\\
+\implica La secante diventa la tang.\\
+$v \to$ coef.\ ang.\ tang.\ (derivata).
+
+\subsection{Quando esiste la velocità istantanea}
+Vel.\ istantanea? \implica $x(t)$ continua e derivabile.
+
+\begin{esempio}{}
+Se un pallone rimbalza sul muro ($t = 0^-$ va verso il muro, $t = 0^+$ torna indietro, urto a $t = 0$):\\
+a $t = 0$ \chiave{non posso calcolare $v$} \implica Calcolo $v(0^+)$ e $v(0^-)$.
+\end{esempio}
+
+% disegno: p13-segno (appunti p. 13)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.95cm,y=0.95cm]
+  \draw[asse] (0,-1.75) -- (0,2.7) node[above right] {$x(t)$};
+  \draw[asse] (0,0) -- (3.3,0) node[right] {$t$};
+  \draw[thick,black] (0,0) .. controls (0.4,0.7) and (0.8,0.93) .. (1.07,0.93)
+     .. controls (1.5,0.93) and (1.8,0.45) .. (2.0,0)
+     .. controls (2.25,-0.5) and (2.5,-0.85) .. (2.7,-0.88);
+\end{tikzpicture}
+\end{disegno}
+\[
+  v = \frac{d}{dt}\,x(t)
+  \begin{cases}
+    > 0 & x \text{ cresce} \\
+    < 0 & x \text{ decresce}
+  \end{cases}
+\]
+
+% ===== da p04.tex =====
+% =====================================================================
+%  CAPITOLO 4 -- MOTI RETTILINEI: MRU E MRUA   (appunti pp. 13-17)
+% =====================================================================
+\chapter{Moto rettilineo uniforme e uniformemente accelerato}
+
+\section{Moto rettilineo uniforme (MRU)}
+Moto in cui $v = \evid{v_m = \text{costante}} = v_c$.
+
+\begin{formula}
+x(t) = x_0 + v_c(t - t_0)
+\end{formula}
+\begin{significato}
+La posizione cambia della stessa quantità in tempi uguali: partendo da $x_0$
+all'istante $t_0$, ogni secondo si aggiungono $v_c$ metri. Il grafico $x(t)$ è una retta
+la cui pendenza è la velocità (salita se $v_c > 0$, discesa se $v_c < 0$).
+\end{significato}
+\[
+  \Longrightarrow
+  \begin{cases}
+    v_c = \dfrac{x(t) - x_0}{t - t_0} \\[1.5ex]
+    t = t_0 + \dfrac{x(t) - x_0}{v_c}
+  \end{cases}
+\]
+
+Grafico:
+% disegno: p13-mru (appunti p. 13)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.85cm,y=0.85cm]
+  % grafico x(t) (nero)
+  \draw[asse] (0,-1.26) -- (0,1.6) node[above right] {$x(t)$};
+  \draw[asse] (-0.83,0) -- (3.75,0) node[below right] {$t$};
+  \draw[tratt,black] (0,0.5) node[left] {$x_0$} -- (1.06,0.5);
+  \draw[black!80] (1.02,0.36) -- (1.01,0.24);
+  \node[below] at (1.1,0) {$t_0$};
+  \draw[thick,black] (1.06,0.5) -- (3.22,1.19);
+  \draw[thick,black] (1.06,0.5) -- (2.11,-0.53);
+  % annotazioni (grigio)
+  \begin{scope}[black!55]
+    \node (p) at (3.95,1.13) {$v_c>0$};
+    \draw[thick] (p) ellipse (0.68 and 0.42);
+    \node (n) at (2.95,-0.75) {$v_c<0$};
+    \draw[thick] (n) ellipse (0.68 and 0.42);
+    \draw[->,thick] (4.65,1.48) -- (5.65,1.62);
+    \draw[->,thick] (3.45,-1.0) to[bend right=15] (4.15,-1.33);
+    % v(t) positivo
+    \draw[->,thick] (7.06,0.41) -- (7.06,2.47) node[above right] {$v(t)$};
+    \draw[->,thick] (6.67,0.78) -- (9.25,0.78) node[below right] {$t$};
+    \draw[thick] (6.67,1.21) -- (9.45,1.21) node[right] {positivo};
+    % v(t) negativo
+    \draw[->,thick] (4.89,-1.76) -- (4.89,-0.26) node[above right] {$v(t)$};
+    \draw[->,thick] (4.44,-0.76) -- (7.1,-0.76) node[right] {$t$};
+    \draw[thick] (4.44,-1.33) -- (7.3,-1.33) node[right] {negativo};
+  \end{scope}
+\end{tikzpicture}
+\end{disegno}
+$v_c > 0$: $v(t)$ positivo; \quad $v_c < 0$: $v(t)$ negativo.
+
+\begin{nota}
+È \evid{fondamentale per i sistemi di riferimento inerziali}.
+\end{nota}
+
+% ---------------------------------------------------------------------
+\section{Moto rettilineo non uniforme}
+\evid{Moto rett.~non uniforme} \implica $v = v(t)$: la velocità dipende dal tempo
+\implica grafico $v(t), t$.
+
+% disegno: p13-nonunif (appunti p. 13)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.8cm,y=0.8cm]
+  % ---- grafico x(t) ----
+  \draw[asse] (-0.4,0) -- (3.2,0) node[right] {$t$};
+  \draw[asse] (0,-0.6) -- (0,2.1) node[right,xshift=2pt] {$x(t)$};
+  \draw[tratt,black] (0.53,0) -- (0.53,0.5);
+  \draw[tratt,black] (1.44,0) -- (1.44,0.91);
+  \draw[tratt,black] (1.96,0) -- (2.15,1.55);
+  \draw[tratt,black] (2.34,0) -- (2.36,0.75);
+  \draw[thick,black] (0.53,0.5) .. controls (0.9,0.52) and (1.25,0.7) .. (1.44,0.91)
+     .. controls (1.75,1.3) and (1.8,1.92) .. (2.12,1.92)
+     .. controls (2.5,1.92) and (2.38,1.3) .. (2.42,0.97)
+     .. controls (2.44,0.5) and (2.5,0.37) .. (2.72,0.37)
+     .. controls (2.92,0.37) and (3.0,0.5) .. (3.08,0.69);
+  \draw[very thick,black] (2.56,0.37) -- (2.88,0.37);
+  \foreach \p in {(0.53,0.5),(1.44,0.91),(2.2,1.8),(2.42,0.97)}
+    \node[punto,inner sep=0.9pt] at \p {};
+  \node[below] at (0.53,0) {$t_0$};
+  \node[below] at (1.38,0) {$t_1$};
+  \node[below] at (1.94,0) {$t_2$};
+  \node[below] at (2.5,0) {$t_3$};
+  % ---- annotazioni grigie ----
+  \begin{scope}[black!55]
+    \draw[thick] (2.72,0.36) ellipse (0.42 and 0.2);
+    \draw[->,thick] (3.15,0.38) -- (3.72,0.59);
+    \node[right] at (3.75,0.72) {vel${}=0$};
+    \draw[thick,decorate,decoration={brace,mirror,amplitude=5pt}] (4.05,0.25) -- (5.95,0.25);
+    \node[align=center,below] at (5.15,0.0) {punto a\\tangenza\\orizzontale};
+    \draw[thick,decorate,decoration={brace,mirror,amplitude=5pt}] (-0.05,-1.6) -- (2.45,-1.6);
+    \node at (1.4,-2.35) {$x(t)$};
+    \node at (7.06,1.11) {$\longmapsto$};
+    \draw[thick,decorate,decoration={brace,mirror,amplitude=5pt}] (9.15,-0.85) -- (12.4,-0.85);
+    \node at (10.8,-1.75) {$v(t)$};
+  \end{scope}
+  % ---- grafico v(t) ----
+  \begin{scope}[shift={(8.9,0.5)},xscale=1.25]
+    \draw[asse] (-0.3,0) -- (2.6,0) node[right] {$t$};
+    \draw[asse] (0,-0.4) -- (0,2.0) node[above right] {$v(t)$};
+    \draw[tratt,black] (0.51,0) -- (0.51,0.56);
+    \draw[tratt,black] (0.98,0) -- (0.98,0.94);
+    \draw[black!80] (1.92,-0.08) -- (1.92,0.1);
+    \draw[tratt,black] (1.95,0) -- (2.0,-0.85);
+    \draw[very thick,black] (0.49,0.56) .. controls (0.55,0.85) and (0.75,0.94) .. (0.97,0.94)
+       .. controls (1.15,0.94) and (1.3,0.6) .. (1.49,0)
+       .. controls (1.7,-0.55) and (1.85,-1.05) .. (2.21,-0.95);
+    \node[below] at (0.47,0) {$t_0$};
+    \node[below] at (0.98,0) {$t_1$};
+    \node[below right,xshift=-3pt] at (1.5,0) {$t_2$};
+    \node[below right,xshift=-1pt] at (1.95,0) {$t_3$};
+  \end{scope}
+  % ---- commento ----
+  \draw[thick] (13.95,2.4) .. controls (14.2,2.4) and (14.0,1.4) .. (14.22,1.3)
+     .. controls (14.0,1.2) and (14.2,0.2) .. (13.95,0.2);
+  \node[right,align=left] at (14.25,1.3) {non\\uniforme};
+\end{tikzpicture}
+\end{disegno}
+Nei punti a tangenza orizzontale di $x(t)$: vel.\ $= 0$. \quad Non uniforme.
+
+% ---------------------------------------------------------------------
+\section{Moto rettilineo uniformemente accelerato (MRUA)}
+\evid{Accelerazione $=$ costante}.
+
+\subsection{Accelerazione media}
+\begin{definizione}{Accelerazione media}
+\[
+  a_m(t_0, t_1) = \frac{v(t_1) - v(t_0)}{t_1 - t_0}
+\]
+\end{definizione}
+\begin{significato}
+Dice di quanto è cambiata in media la velocità per ogni unità di tempo:
+come la velocità media è la pendenza della secante del grafico $x(t)$,
+l'accelerazione media è la pendenza della secante del grafico $v(t)$.
+\end{significato}
+% disegno: p14-am (appunti p. 14)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.85cm,y=0.85cm]
+  \draw[asse] (-0.6,0) -- (3.6,0) node[right] {$t$};
+  \draw[asse] (0,-0.6) -- (0,3.0) node[above right] {$v(t)$};
+  \draw[tratt,black] (0,2.14) node[left] {$v_2$} -- (2.96,2.14) -- (2.96,0) node[below] {$t_2$};
+  \draw[tratt,black] (0,1.22) node[left] {$v_1$} -- (0.89,1.22) -- (0.89,0) node[below] {$t_1$};
+  \draw[thick,black] (0.6,0.55) .. controls (0.65,0.95) and (0.75,1.15) .. (0.89,1.22)
+      .. controls (1.2,1.42) and (1.5,1.5) .. (1.75,1.52)
+      .. controls (2.3,1.6) and (2.7,1.8) .. (3.0,2.2);
+  \draw[thick,nota] (0.14,0.82) -- (3.7,2.43);
+  \draw[thick,dashed,nota] (0.96,1.13) -- (3.8,1.17);
+  \draw[->,black] (3.85,2.33) -- (4.5,2.33);
+  \node[anchor=north west,align=left,inner sep=1pt] at (4.55,2.58) {coefficiente\\della retta\\\quad secante};
+\end{tikzpicture}
+\end{disegno}
+\implica coefficiente della retta secante.
+\[
+  [a_m] = \frac{[v]}{[T]} = \frac{[L]}{[T]}\cdot\frac{1}{[T]} = \frac{[L]}{[T^2]} \ \to\ \frac{\mathrm{m}}{\mathrm{s}^2}
+\]
+
+\subsection{Accelerazione istantanea}
+\begin{definizione}{Accelerazione istantanea}
+\[
+  a(t_0) = \lim_{\Delta t \to 0} a_m
+  = \underbrace{\left.\frac{d}{dt}\,v(t)\right|_{t_0} = \dot{v}(t_0)}_{\text{derivata della velocità}}
+  = \underbrace{\frac{d^2}{dt^2}\,x = \ddot{x}(t_0)}_{\text{derivata seconda della posizione}}
+\]
+\end{definizione}
+\begin{significato}
+Misura quanto rapidamente sta cambiando la velocità in quell'istante:
+è la pendenza della tangente al grafico $v(t)$, cioè la ``curvatura'' del grafico $x(t)$.
+\end{significato}
+$a_t$ è la tangente alla curva in $(t, v(t))$ dell'accelerazione.
+
+\subsection{Accelerazione costante}
+Acceler.\ costante ($> 0$) $= a_c$:
+\begin{formula}
+v(t) = v(t_0) + a(t - t_0)
+\end{formula}
+\begin{significato}
+Con accelerazione costante la velocità cresce (o cala) della stessa quantità in tempi uguali:
+il grafico $v(t)$ è una retta di pendenza $a_c$.
+\end{significato}
+\[
+  a_c = \frac{v(t) - v(t_0)}{t - t_0}
+  \qquad
+  t = t_0 + \left(\frac{v(t) - v(t_0)}{a_c}\right)
+\]
+\evid{La velocità è una retta.}
+
+% disegno: p14-grafici (appunti p. 14)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.0087cm,y=-0.0087cm]
+  % (coordinate in pixel dell'originale)
+  % --- v(t), a>0 ---
+  \draw[asse] (155,375) -- (155,130) node[right] {$v(t)$};
+  \draw[asse] (118,338) -- (395,338) node[below right] {$t$};
+  \draw[tratt,black] (155,268) -- (225,268) -- (225,338);
+  \draw[thick,black] (225,268) -- (360,178);
+  % --- a(t), a>0 ---
+  \draw[asse] (633,375) -- (633,135) node[right] {$a(t)$};
+  \draw[asse] (603,338) -- (880,338) node[below right] {$t$};
+  \draw[tratt,black] (633,265) -- (695,265) -- (695,338);
+  \draw[tratt,black] (830,265) -- (830,338);
+  \draw[very thick,black] (695,265) -- (830,265);
+  \node[right] at (900,180) {$a>0 \quad a$ costante};
+  % --- v(t), a<0 ---
+  \draw[asse] (158,742) -- (158,525) node[above,xshift=4pt] {$v(t)$};
+  \draw[asse] (138,742) -- (415,742) node[below right] {$t$};
+  \draw[tratt,black] (158,601) -- (230,601) -- (230,540);
+  \draw[thick,black] (230,601) -- (358,718);
+  % --- a(t), a<0 ---
+  \draw[asse] (633,742) -- (633,525) node[above right,xshift=-4pt] {$a(t)$};
+  \draw[asse] (615,601) -- (845,601) node[right] {$t$};
+  \draw[tratt,black] (633,668) -- (695,668) -- (695,601);
+  \draw[tratt,black] (828,668) -- (828,601);
+  \draw[very thick,black] (695,668) -- (828,668);
+  \node[right] at (965,635) {$a<0 \quad a$ costante};
+\end{tikzpicture}
+\end{disegno}
+$a > 0$: $a$ costante; \quad $a < 0$: $a$ costante.
+
+\subsection{Ricavare \texorpdfstring{$x(t)$}{x(t)} da \texorpdfstring{$v(t_0)$}{v(t0)} e \texorpdfstring{$x(t_0)$}{x(t0)}}
+\[
+  x(t) = \underbrace{x(t_0)}_{x_0} + \underbrace{v_m(t_0, t)}_{\frac{v(t) + v(t_0)}{2}}\overbrace{(t - t_0)}^{\Delta t}
+  = x_0 + \frac{v(t) + v(t_0)}{2}\,(t - t_0)
+\]
+\[
+  v(t) = \underbrace{v(t_0)}_{v_0} + \underbrace{a_m(t_0, t)}_{= a_c}\underbrace{(t - t_0)}_{\Delta t}
+  = v_0 + a_c(t - t_0)
+\]
+
+\begin{dimostrazione}
+(\textsuperscript{*} dalla nota adesiva:)
+\[
+  v_m(t, t_0) = \frac{v(t) + v(t_0)}{2} = \frac{v(t) + v_0}{2}
+\]
+\[
+  v(t) = v_0 + a_c(t - t_0) \ \implies\ \overset{\textcolor{black!55}{v_m(t, t_0)}}{v_m}
+  = \frac{v_0 + a_c(t - t_0) + v_0}{2}
+  = v_0 + \frac12 a_c (t - t_0)
+\]
+\[
+  x(t) = x_0 + v(t, t_0)(t - t_0) = x_0 +
+  \underbrace{v_0(t - t_0) + \frac12 a_c (t - t_0)^2}_{\substack{\textcolor{black!55}{v_m(t, t_0)\cdot(t - t_0)} \\[0.6ex]
+  \textcolor{black!55}{\left[v_0 + \frac12 a_c (t - t_0)\right](t - t_0)}}}
+\]
+\begin{formula}
+x(t) = x_0 + v_0(t - t_0) + \frac12 a_c(t - t_0)^2
+\end{formula}
+\end{dimostrazione}
+\begin{significato}
+La posizione ha tre contributi: dove si parte ($x_0$), quanto si percorrerebbe
+mantenendo la velocità iniziale ($v_0 \Delta t$) e il contributo dovuto all'accelerazione
+($\frac12 a_c \Delta t^2$), che cresce col quadrato del tempo: per questo il grafico $x(t)$ è una parabola.
+\end{significato}
+
+\subsection{Relazione senza il tempo}
+Una relazione importante si ha eliminando il tempo:
+\[
+  (t - t_0) = \frac{v(t) - v_0}{a_c}
+  \ \Rightarrow\
+  x(t) = x_0 + v_0\,\frac{v(t) - v_0}{a_c} + \frac12 a_c\left(\frac{v(t) - v_0}{a_c}\right)^2
+\]
+\begin{align*}
+  x(t) &= x_0 + \frac{v_0\,(v(t) - v_0)}{a_c} + \frac12 \cancel{a_c}\,\frac{(v(t) - v_0)^2}{a_c^{\cancel{2}}} \\
+       &= x_0 + \frac{v(t) - v_0}{a_c}\cdot\left[v_0 + \frac{v(t) - v_0}{2}\right]
+       \qquad \left(\frac{2v_0 + v(t) - v_0}{2} = \frac{v(t) + v_0}{2}\right)
+\end{align*}
+\[
+  x(t) = x_0 + \frac{v(t) - v_0}{a_c}\cdot\frac{v(t) + v_0}{2} = x_0 + \frac{v^2(t) - v_0^2}{2a_c}
+  \ \Rightarrow\ x(t) - x_0 = \frac{v^2(t) - v_0^2}{2a_c}
+\]
+\begin{formula}
+v^2(t) - v_0^2 = 2a_c\,(x(t) - x_0)
+\end{formula}
+\begin{significato}
+Lega direttamente velocità e spazio percorso senza passare dal tempo:
+utile quando si conosce quanto spazio c'è a disposizione (es.\ una frenata)
+e si vuole sapere che velocità si raggiunge, o viceversa.
+\end{significato}
+
+% ---------------------------------------------------------------------
+\section{Esempi: gravi}
+\begin{esempio}{1 -- grave in caduta libera}
+Legge moto: \ $y(t) = y_0 - \dfrac{g}{2}(t - t_0)^2$ \qquad (partenza da $y_0$ a $t_0$)
+
+Assunzione:
+\begin{itemize}[nosep]
+  \item $v_0 = 0$
+  \item Si trascura la resistenza dell'aria
+  \item Accelerazione costante ($-g$)
+\end{itemize}
+\[
+  v(t) = \frac{d}{dt}\left(y_0 - \frac{g}{2}(t - t_0)^2\right) = 0 - \frac{g}{\cancel{2}}\,\cancel{2}(t - t_0) = -g(t - t_0)
+\]
+\[
+  a(t) = \frac{d}{dt}\left[-g(t - t_0)\right] = -g \quad \text{uniform.\ accelerato}
+\]
+% disegno: p15-y (appunti p. 15)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.9cm,y=0.9cm]
+  \draw[asse] (0,0) -- (3.5,0) node[right] {$t$};
+  \draw[asse] (0,0) -- (0,3.0) node[above right] {$y(t)$};
+  \draw[tratt,black] (0,1.9) node[left] {$y_0$} -- (1.01,1.9) -- (1.01,0) node[below] {$t_0$};
+  \draw[thick,black] (1.01,1.9) .. controls (1.4,1.75) and (1.82,1.1) .. (1.86,0);
+  \node[punto,inner sep=1.1pt] at (1.01,1.9) {};
+  \node[below,xshift=2pt] at (1.86,0) {$t_f$};
+\end{tikzpicture}
+\end{disegno}
+% disegno: p15-va (appunti p. 15)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+% --- v(t)
+\node[anchor=east] at (-0.6,1.0) {$v(t)$:};
+\draw[asse] (-0.4,0) -- (3.0,0) node[below right=1pt and 4pt] {$t$};
+\draw[asse] (0,-0.9) -- (0,1.9);
+\draw[curva,black] (1.0,0) -- (2.6,-0.75);
+\draw[tratt] (2.6,-0.75) -- (2.6,0);
+\node[above] at (1.0,0) {$t_0$};
+\node[above] at (2.6,0) {$t_f$};
+% --- a(t)
+\begin{scope}[xshift=7.6cm]
+\node[anchor=east] at (-1.1,1.1) {$a(t)$:};
+\draw[asse] (-0.3,0) -- (4.2,0) node[right] {$t$};
+\draw[asse] (0,-0.4) -- (0,2.0) node[right] {$a(t)$};
+\draw[tratt] (0.9,0) -- (0.9,-0.75);
+\draw[tratt] (3.6,0) -- (3.6,-0.75);
+\draw[thick,black] (1.0,-0.95) -- (3.4,-0.95);
+\node[above] at (1.2,0.1) {$t_0$};
+\node[above] at (3.6,0.1) {$t_f$};
+\end{scope}
+\end{tikzpicture}
+\end{disegno}
+\textbf{NB!} Il grafico di $y(t)$ non è la traiettoria, ma come cambia il valore della funzione $y(t)$.
+
+\medskip
+$t_f = ?$ \qquad $y(t_f) = 0$ \implica $y_0 - \dfrac{g}{2}(t_f - t_0)^2 = 0$
+\[
+  y_0 = \frac{g}{2}(t_f - t_0)^2 \ \to\ \sqrt{\frac{2y_0}{g}} = \sqrt{(t_f - t_0)^2}
+\]
+\[
+  |t_f - t_0| = \sqrt{\frac{2y_0}{g}} \qquad \text{assumiamo } t_f > t_0 \text{ sempre}
+\]
+\[
+  t_f = t_0\,\sqrt{\frac{2y_0}{g}}
+  \ \to\ v(t_f) = \underbrace{v_0}_{0} - g(t_f - t_0) = -g\left(t_0 + \sqrt{\frac{2y_0}{g}} - t_0\right)
+  = -g\sqrt{\frac{2y_0}{g}} = -\sqrt{2y_0 g}
+\]
+\end{esempio}
+
+\begin{esempio}{2 -- grave lanciato verso l'alto}
+Grave lanciato verso l'alto con vel.\ $v_0$ e $a_c = -g$.
+\[
+  y(t) = y_0 + v_0(t - t_0) - \underbrace{\frac{g}{2}(t - t_0)^2}_{\text{termine quadr.\ } \to \text{ parabola}}
+  \qquad
+  v(t) = v_0 - g(t - t_0)
+\]
+Salendo $v(t) > 0$, scendendo $v(t) < 0$. In che tempo?
+\begin{enumerate}[label=(\roman*)]
+  \item $v(t) > 0 \to v_0 - g(t - t_0) > 0 \qquad v_0 > g(t - t_0)$
+  \[
+    v_0 > gt - gt_0 \ \to\ \frac{gt}{g} < \frac{v_0 + gt_0}{g}
+    \qquad
+    \underbrace{t < t_0 + \frac{v_0}{g}}_{\text{salita}} \ \to\ \text{apice}
+  \]
+  \item $v(t) < 0 \to \underbrace{t > t_0 + \dfrac{v_0}{g}}_{\text{discesa}}$
+\end{enumerate}
+% disegno: p16-grafici (appunti p. 16)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+% --- x(t)
+\draw[asse] (-0.6,0) -- (3.6,0);
+\draw[asse] (0,-0.5) -- (0,2.8);
+\draw[curva] (0.45,0) parabola bend (1.7,2.0) (2.95,0);
+\fill[materia] (0.45,0) circle (1.3pt) (2.95,0) circle (1.3pt);
+\draw[tratt] (0,2.0) -- (1.7,2.0);
+\draw[tratt,->] (1.7,2.0) -- (1.7,-1.0);
+\node[left] at (0,2.0) {apice};
+\node[below] at (0.45,-0.05) {$t_0$};
+\node[below] at (2.95,-0.05) {$t_f$};
+\node[below] at (1.7,-1.0) {$t_0+\dfrac{v_0}{g}$};
+\node[materia] at (1.7,3.1) {$x(t)$};
+% --- v(t)
+\begin{scope}[xshift=5.4cm]
+\draw[asse] (-0.4,0.9) -- (3.8,0.9);
+\draw[asse] (0,-0.5) -- (0,2.8);
+\draw[thick,nota] (0.5,1.9) -- (2.4,-0.1);
+\fill[nota] (0.5,1.9) circle (1.3pt) (2.4,-0.1) circle (1.3pt);
+\draw[tratt] (0,1.9) -- (0.5,1.9);
+\draw[tratt] (0,-0.1) -- (2.4,-0.1) -- (2.4,0.9);
+\node[left] at (0,1.9) {$v_0$};
+\node[left] at (0,-0.1) {$v_f$};
+\node[below] at (0.5,0.85) {$t_0$};
+\node at (2.9,1.5) {$t_f=t_0+\dfrac{2v_0}{g}$};
+\node[nota] at (1.7,3.1) {$v(t)$};
+\end{scope}
+% --- a(t)
+\begin{scope}[xshift=10.6cm]
+\draw[asse] (-0.4,0.9) -- (3.6,0.9);
+\draw[asse] (0,-0.5) -- (0,2.8);
+\draw[thick,esempio] (0.5,0.4) -- (2.9,0.4);
+\draw[tratt] (0,0.4) -- (0.5,0.4) -- (0.5,0.9);
+\draw[tratt] (2.9,0.4) -- (2.9,0.9);
+\node[left] at (0,0.4) {$-g$};
+\node[above] at (0.5,0.9) {$t_0$};
+\node[above] at (2.9,0.9) {$t_f$};
+\node[esempio] at (1.7,3.1) {$a(t)$};
+\end{scope}
+\end{tikzpicture}
+\end{disegno}
+Apice a $t_0 + \dfrac{v_0}{g}$; \quad $t_f = t_0 + \dfrac{2v_0}{g}$.
+\end{esempio}
+
+\begin{delucidazione}
+!!! \ Fine
+\end{delucidazione}
+
+% ---------------------------------------------------------------------
+\section{Considerazioni}
+\begin{enumerate}[label=(\Roman*)]
+  \item $v$ e $a$ definite da coordinate cartesiane, ma la stessa definizione si può
+        applicare a coordinate qualsiasi.\\
+        Es.\ \implica \evid{ascissa curvilinea: $s(t)$}
+  \[
+    \begin{cases}
+      v_s(t) = \displaystyle\lim_{\Delta t \to 0} \frac{s(t + \Delta t) - s(t)}{\Delta t}
+             = \left.\frac{d}{dt}\,s(t)\right|_t = \dot{s}(t) \\[2.5ex]
+      a_s(t) = \displaystyle\lim_{\Delta t \to 0} \frac{v_s(t + \Delta t) - v_s(t)}{\Delta t}
+             = \left.\frac{d}{dt}\,v_s(t)\right|_t = \dot{v}_s(t) = \frac{d^2}{dt^2}\,s(t) = \ddot{s}(t)
+    \end{cases}
+  \]
+  \item $v$ e $a$ sono chiamate \evid{velocità scalare} e \evid{accelerazione scalare}.\\
+        \evid{Stessa cosa per $v_s$ e $a_s$}, il cui segno dipende dal verso di percorrenza di $s(t)$.
+\end{enumerate}
+
+% ===== da p05.tex =====
+% =====================================================================
+%  CAPITOLO 5 -- MOTO RETTILINEO VARIO E FORMULE GENERALI  (appunti pp. 18-19)
+% =====================================================================
+\chapter{Moto rettilineo vario e formule generali}
+
+\section{Moto rettilineo vario}
+$a(t)$ è una funzione non banale \implica \evid{$a(t)$ non costante}.
+
+\begin{esempio}{moto smorzato esponenzialmente}
+\[
+  \underbrace{x(t) = x_0\left(1 - e^{-t/\tau}\right)}_{\text{spostamento}}
+  \qquad [x_0] = [L] \qquad [\tau] = [T]
+\]
+% disegno: p18-smorzato (appunti p. 18)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+\draw[asse] (0,0) -- (3.0,0) node[right] {$t$};
+\draw[asse] (0,0) -- (0,2.6) node[right] {$x(t)$};
+\node[below left] at (0,0) {$0$};
+\draw[tratt,black] (0,1.75) -- (3.3,1.75);
+\draw[curva,black] plot[domain=0:3.3,samples=60,smooth] (\x,{1.75*(1-exp(-\x/1.1))});
+\end{tikzpicture}
+\end{disegno}
+\[
+  v(t) = \dot{x}(t) = \frac{d}{dt}\,x_0\left(1 - e^{-t/\tau}\right) = \frac{d}{dt}\left(x_0 - x_0 e^{-t/\tau}\right)
+\]
+\[
+  \frac{d}{dt}\,x_0 = 0
+  \qquad
+  \frac{d}{dt}\left(x_0 e^{-t/\tau}\right) = 0 - x_0\,\frac{d}{dt}\,e^{-t/\tau}
+\]
+\[
+  D\!\left[e^{t} \circ \left(-\tfrac{1}{\tau}\,t\right)\right] = e^{-t/\tau}\left(-\frac{1}{\tau}\right) = -\frac{1}{\tau}\,e^{-t/\tau}
+\]
+\[
+  \Rightarrow\ \underbrace{v(t) = \frac{x_0}{\tau}\,e^{-t/\tau}}_{\text{velocità}}
+\]
+\[
+  a(t) = \frac{d}{dt}\left[\frac{1}{\tau}\cdot x_0 e^{-t/\tau}\right]
+       = \frac{x_0}{\tau}\,\frac{d}{dt}\,e^{-t/\tau}
+       = \frac{x_0}{\tau}\cdot\frac{1}{\tau}\,e^{-t/\tau}
+\]
+\[
+  \underbrace{a(t) = \frac{x_0}{\tau^2}\,e^{-t/\tau}}_{\text{accelerazione}}
+  \quad
+  \begin{cases}
+    < 0 \to v \text{ decrescente} \\
+    > 0 \to v \text{ crescente}
+  \end{cases}
+\]
+\end{esempio}
+
+% ---------------------------------------------------------------------
+\lezione{25/9/26}
+\section{Formule generali cinematica a una dimensione}
+\[
+  x(t), \qquad v(t) = \dot{x}(t) \qquad \text{e} \qquad a(t) = \dot{v}(t) = \ddot{x}(t)
+\]
+\evid{Integrando}:
+\[
+  v(t) = v(t_0) + \int_{t_0}^{t} a(t')\,dt'
+  \qquad \text{e} \qquad
+  x(t) = x(t_0) + \int_{t_0}^{t} v(t')\,dt'
+\]
+\begin{formula}
+x(t) = x(t_0) + \int_{t_0}^{t} \Big[\underbrace{v(t_0) + \int_{t_0}^{t'} a(t'')\,dt''}_{v(t')}\Big]\,dt'
+\end{formula}
+\begin{significato}
+Integrare è l'operazione inversa del derivare: sommando tutte le piccole variazioni di
+velocità ($a\,dt$) a partire da quella iniziale si ottiene la velocità in ogni istante;
+sommando tutti i piccoli spostamenti ($v\,dt$) a partire dalla posizione iniziale si ottiene la posizione.
+Basta quindi conoscere $a(t)$, $x(t_0)$ e $v(t_0)$ per ricostruire tutto il moto.
+\end{significato}
+
+\begin{delucidazione}
+Attenzione: nell'integrale definito: \
+$\displaystyle\int_{t_0}^{t} dt = t - t_0$
+\end{delucidazione}
+
+\begin{esempio}{moto uniform.\ acc.\ \implica $a(t) = a_c$}
+\[
+  x(t) = x(t_0) + \int_{t_0}^{t}\Big[v(t_0) + \int_{t_0}^{t'} a(t'')\,dt''\Big]\,dt'
+\]
+\[
+  v(t') + \int_{t_0}^{t'} \underbrace{a(t'')}_{a_c}\,dt'' = v(t') + a_c\int_{t_0}^{t'} dt'' = v(t') + a_c(t' - t_0)
+\]
+\begin{align*}
+  \int_{t_0}^{t} v(t_0) + a_c(t' - t_0)\,dt'
+  &= \int_{t_0}^{t} v(t_0)\,dt' + \int_{t_0}^{t} a_c(t' - t_0)\,dt' \\
+  &= v(t_0)\int_{t_0}^{t} dt' + a_c\left[\int_{t_0}^{t} t'\,dt' - t_0\int_{t_0}^{t} dt'\right] \\
+  &= v(t_0)(t - t_0) + a_c\Big[\underbrace{\tfrac12 t^2 - \tfrac12 t_0^2 - t_0(t - t_0)}_{(\ast)}\Big]
+\end{align*}
+\[
+  (\ast)\quad \tfrac12 t^2 - \tfrac12 t_0^2 - t_0 t + t_0^2 = \tfrac12 t^2 - t_0 t + \tfrac12 t_0^2 = \tfrac12(t - t_0)^2
+\]
+\[
+  = v(t_0)(t - t_0) + \tfrac12 a_c(t - t_0)^2
+\]
+\[
+  \Rightarrow\ x(t) = x(t_0) + v(t_0)(t - t_0) + \tfrac12 a_c(t - t_0)^2
+\]
+\end{esempio}
+
+% ===== da p06.tex =====
+% =====================================================================
+%  CAPITOLO 6 -- MOTO ARMONICO   (appunti pp. 20-22)
+% =====================================================================
+\chapter{Moto armonico}
+
+\begin{definizione}{Moto armonico}
+Moto descritto da una \evid{funzione armonica del tempo} (seno e coseno).
+\end{definizione}
+\begin{formula}
+x(t) = A\sin(\omega t + \varphi)
+\end{formula}
+\begin{significato}
+Il corpo oscilla avanti e indietro tra $+A$ e $-A$ ripetendo sempre lo stesso andamento:
+$A$ dice quanto si allontana dal centro, $\omega$ quanto velocemente oscilla,
+$\varphi$ da che punto dell'oscillazione parte all'istante $t = 0$.
+\end{significato}
+(Se aggiungo $+\pi$, la funzione cambia segno.)
+\[
+  [\varphi] = [\text{angolo}] = \text{numero}
+  \qquad
+  [\omega] = [T]^{-1} \ \to\ [\omega t] = \text{adimensionale}
+\]
+
+\begin{itemize}
+  \item \evid{``$\omega$'' \implica pulsazione} $\neq$ moto circolare: misura la rapidità con cui $\varphi$ varia
+  \item \evid{``$\varphi$'' \implica fase} \implica angolo iniziale
+  \item \evid{``$A$'' \implica ampiezza}
+  \item \evid{``$x(t)$'' \implica elongazione}
+\end{itemize}
+
+% disegno: p20-grafico (appunti p. 20)
+\begin{disegno}
+\begin{tikzpicture}[disegno,yscale=0.65]
+\def\A{2.0}
+\draw[asse] (-3.4,0) -- (4.6,0) node[below right] {$t$};
+\draw[asse] (0,-3.3) -- (0,3.4) node[right] {$x(t)$};
+\draw[accento,thick,dash pattern=on 6pt off 7pt] (0,\A) -- (4.3,\A);
+\draw[accento,thick,dash pattern=on 6pt off 7pt] (0,-\A) -- (5.3,-\A);
+\node[accento,left] at (-0.15,\A) {$A$};
+\node[accento,left] at (-0.15,-\A) {$-A$};
+\draw[curva] plot[domain=0.02:4.25,samples=120,smooth] (\x,{-\A*cos(deg(2*pi/2.3*(\x-0.4)))});
+\draw[curva,densely dotted] plot[domain=4.25:4.45,samples=10,smooth] (\x,{-\A*cos(deg(2*pi/2.3*(\x-0.4)))});
+\draw[nota,thick] (0.4,-\A-0.1) -- (0.4,-\A-0.6) -- (2.7,-\A-0.6) -- (2.7,-\A-0.1);
+\node[nota,below] at (1.55,-\A-0.65) {$T$};
+\end{tikzpicture}
+\end{disegno}
+
+\begin{formula}
+\omega T = 2\pi \ \to\ T = \frac{2\pi}{\omega}
+\end{formula}
+\begin{significato}
+Il periodo è il tempo di un'oscillazione completa: in quel tempo l'argomento del seno
+avanza di un giro intero ($2\pi$). Più grande è $\omega$, più breve è il periodo.
+\end{significato}
+
+\begin{itemize}
+  \item \evid{``$T$'' \implica periodo} \qquad $[T] = [T]$ \quad s
+  \item \evid{``$f$'' \implica frequenza} (``$\nu$'') \implica
+        $f = \dfrac{\omega}{2\pi} = \dfrac{1}{T}$ \qquad $[f] = [T]^{-1}$ \quad $\frac{1}{\mathrm{s}}$
+\end{itemize}
+\begin{significato}
+La frequenza conta quante oscillazioni complete avvengono in un secondo: è l'inverso del periodo.
+\end{significato}
+
+\section{Oscillazione}
+\evid{Oscillazione}: $A \to -A \to A$ \implica \evid{Oscillazione completa} nel tempo $T$.
+
+\section{Velocità}
+\evid{Velocità}
+\[
+  v(t) = \frac{d}{dt}\,x(t) = \dot{x}(t) = \frac{d}{dt}\left[A\sin(\omega t + \varphi)\right] = A\cdot\omega\cdot\cos(\omega t + \varphi)
+\]
+\begin{formula}
+v(t) = A\omega\cos(\omega t + \varphi)
+\end{formula}
+\begin{significato}
+La velocità oscilla anch'essa, ma ``sfasata'' di un quarto di periodo rispetto alla posizione:
+è massima ($A\omega$) quando il corpo passa per il centro ed è nulla agli estremi, dove inverte il moto.
+\end{significato}
+($\omega$ equilibra le dimensioni.)
+
+\section{Accelerazione}
+\evid{Accelerazione}
+\[
+  a(t) = \dot{v}(t) = \frac{d}{dt}\,A\omega\cos(\omega t + \varphi) = A\omega\left(-\omega\sin(\omega t + \varphi)\right)
+\]
+\[
+  a(t) = -\omega^2\,\underbrace{A\sin(\omega t + \varphi)}_{x(t)}
+\]
+\begin{formula}
+a(t) = -\omega^2\,x(t)
+\end{formula}
+\begin{significato}
+L'accelerazione è sempre proporzionale allo spostamento dal centro e diretta in verso opposto:
+più il corpo si allontana, più viene ``richiamato'' indietro. È questo richiamo che produce l'oscillazione.
+\end{significato}
+($\omega^2$ equilibra le dimensioni.)
+
+\begin{nota}
+$a(t) = \ddot{x}(t)$ \implica
+\[
+  \ddot{x}(t) = -\omega^2 x(t) \qquad \text{equazione differenziale in } x(t)
+\]
+\evid{Per essere un moto armonico deve soddisfare un'equazione differenziale.}
+\end{nota}
+
+\section{Osservazioni}
+\evid{Osservazioni}
+\begin{enumerate}[label=(\Roman*)]
+  \item \evid{Il moto armonico è un caso speciale di moto periodico}:
+        \[
+          x(t) : x(t + T) \qquad T: \text{periodo del moto}
+        \]
+        (periodico $\supset$ armonico)\\
+        \evid{Cosa differenzia un moto armonico da uno periodico \implica l'eq.~differenziale.}
+  \item \evid{Moto circolare $\Leftrightarrow$ moto armonico}
+  \item \evid{Come si può riscrivere!}
+        \[
+          x(t) = \alpha\sin(\omega t) + \beta\cos(\omega t) \qquad [\alpha] = [\beta] = [L]
+        \]
+\end{enumerate}
+
+\begin{dimostrazione}
+\[
+  x(t) = A\sin(\omega t + \varphi) = \underbrace{A\sin(\omega t)\cos\varphi}_{\alpha} + \underbrace{A\cos(\omega t)\sin(\varphi)}_{\beta}
+\]
+\[
+  \begin{cases}
+    \alpha = A\cos\varphi \\
+    \beta = A\sin\varphi
+  \end{cases}
+  \qquad A = \sqrt{\alpha^2 + \beta^2} \qquad \tan\varphi = \frac{\beta}{\alpha}
+\]
+\end{dimostrazione}
+\begin{formula}
+x(t) = \alpha\sin(\omega t) + \beta\cos(\omega t)
+\end{formula}
+Ci permette di ricavare lo sfasamento.
+\begin{significato}
+È lo stesso moto scritto come somma di un seno e di un coseno con coefficienti fissi:
+$\alpha$ e $\beta$ si ricavano direttamente dalle condizioni iniziali, senza dover risolvere
+equazioni con funzioni trigonometriche dell'angolo $\varphi$.
+\end{significato}
+
+\begin{delucidazione}
+NB! È molto utile quando si conosce $t_0$ e $x_0$ e $v_0$, in quanto ci risparmia
+passaggi trigonometrici non lineari.
+\end{delucidazione}
+
+% ---------------------------------------------------------------------
+\section{Commenti generali su \texorpdfstring{$v$ e $a$}{v e a}}
+\evid{Commenti generali su $v$ e $a$}
+\begin{enumerate}
+  \item ``speed'' \implica modulo della velocità;\\
+        ``velocity'' \implica vettore velocità.
+  \item Velocità fondamentale \implica $c$ ($\simeq 3\cdot 10^{8}\,\frac{\mathrm{m}}{\mathrm{s}}$) nel vuoto
+        \begin{itemize}[nosep]
+          \item $v \ll c$ \implica meccanica classica
+          \item $v \sim c$ \implica meccanica relativistica
+        \end{itemize}
+  \item Velocità del suono (a STP): in aria $= 340\,\frac{\mathrm{m}}{\mathrm{s}}$
+  \item Accelerazione: dinamica \implica legame accelerazione $\Leftrightarrow$ forze (Newton)
+  \item Accelerazione fondamentale \implica $g = 9{,}81\,\frac{\mathrm{m}}{\mathrm{s}^2}$
+        \implica non uguale ovunque
+\end{enumerate}
+
+% ===== da r1.tex =====
+% =====================================================================
+%  RIEPILOGO 1 -- MOTI IN UNA DIMENSIONE   (pagina aggiunta, non negli appunti)
+% =====================================================================
+\riepilogo{Moti in una dimensione}
+
+Tutto parte dalla legge oraria $x(t)$: derivando si ottengono velocità e accelerazione,
+integrando si torna indietro. Il tipo di moto dipende da com'è fatta l'accelerazione.
+
+\begin{mappa}
+  \node[nodoevid] (x) {$x(t)$\\ \small posizione};
+  \node[nodo, right=1.6cm of x] (v) {$v(t) = \dot{x}$\\ \small velocità};
+  \node[nodo, right=1.6cm of v] (a) {$a(t) = \dot{v} = \ddot{x}$\\ \small accelerazione};
+  \draw[freccia] (x) to[bend left=20] node[above, font=\footnotesize] {deriv.} (v);
+  \draw[freccia] (v) to[bend left=20] node[above, font=\footnotesize] {deriv.} (a);
+  \draw[freccia] (a) to[bend left=20] node[below, font=\footnotesize] {integro} (v);
+  \draw[freccia] (v) to[bend left=20] node[below, font=\footnotesize] {integro} (x);
+  \node[nodo, below=2.2cm of x, xshift=-0.6cm] (mru) {\textbf{MRU}\\ \small $a = 0$\\ \small $v$ costante};
+  \node[nodo, right=0.9cm of mru] (mrua) {\textbf{MRUA}\\ \small $a$ costante\\ \small $v$ retta};
+  \node[nodo, right=0.9cm of mrua] (vario) {\textbf{Vario}\\ \small $a(t)$ qualsiasi};
+  \node[nodo, right=0.9cm of vario] (arm) {\textbf{Armonico}\\ \small $a = -\omega^2 x$};
+  \node[nodoevid, above=0.6cm of mrua, xshift=1.6cm] (tipo) {Che accelerazione?};
+  \draw[freccia] (a.south) |- (tipo.east);
+  \foreach \n in {mru, mrua, vario, arm} \draw[freccia] (tipo) -- (\n.north);
+\end{mappa}
+
+\begin{formulario}
+v_m = \frac{x(t_1) - x(t_0)}{t_1 - t_0} & Velocità media: quanto si è spostato in media per unità di tempo (pendenza della secante di $x(t)$). \\
+v = \frac{dx}{dt} & Velocità istantanea: rapidità di cambiamento della posizione in quell'istante (pendenza della tangente). \\
+a = \frac{dv}{dt} = \frac{d^2x}{dt^2} & Accelerazione: rapidità di cambiamento della velocità. \\
+x(t) = x_0 + v_c(t - t_0) & MRU: spazi uguali in tempi uguali, grafico $x(t)$ rettilineo. \\
+v(t) = v_0 + a_c(t - t_0) & MRUA: la velocità cresce (o cala) linearmente nel tempo. \\
+x(t) = x_0 + v_0\Delta t + \tfrac12 a_c\Delta t^2 & MRUA: posizione iniziale $+$ tratto a velocità iniziale $+$ contributo dell'accelerazione (parabola). \\
+v^2 - v_0^2 = 2a_c(x - x_0) & MRUA senza il tempo: lega velocità e spazio percorso. \\
+y(t) = y_0 - \tfrac{g}{2}(t - t_0)^2 & Caduta libera da ferma: accelerazione costante $-g$. \\
+x(t) = x(t_0) + \int_{t_0}^{t} v\,dt' & Formula generale: sommando i piccoli spostamenti si ricostruisce la posizione. \\
+x(t) = A\sin(\omega t + \varphi) & Moto armonico: oscillazione tra $-A$ e $+A$. \\
+T = \frac{2\pi}{\omega},\ \ f = \frac{1}{T} & Periodo (durata di un'oscillazione) e frequenza (oscillazioni al secondo). \\
+\ddot{x} = -\omega^2 x & Equazione del moto armonico: accelerazione proporzionale e opposta allo spostamento. \\
+\end{formulario}
+
+% ===== da p07.tex =====
+% =====================================================================
+%  CAPITOLO 7 -- CINEMATICA VETTORIALE IN 3 DIMENSIONI   (appunti pp. 23-25)
+% =====================================================================
+\chapter{Velocità vettoriale -- 3 dimensioni}
+
+3-dim \implica 3 leggi orarie \implica $(x(t), y(t), z(t))$.
+
+\[
+  \vec{R}(t) = (x(t), y(t), z(t)) \ \to\ \evid{vettore posizione}
+\]
+% disegno: p23-vettori (appunti p. 23)
+\begin{disegno}
+\begin{tikzpicture}[disegno,scale=1.35]
+\coordinate (O) at (0,0);
+\coordinate (R0) at (1.08,1.55);
+\coordinate (R1) at (1.98,1.98);
+\draw[asse,black] (O) -- (0,2.1) node[right=2pt] {$z$};
+\draw[asse,black] (O) -- (1.75,0) node[below right] {$y$};
+\draw[asse,black] (O) -- (-1.15,-1.05) node[below right] {$x$};
+\node[left] at (-0.12,0.2) {$O$};
+\fill[esempio!15] (O) -- (R0) -- (R1) -- cycle;
+\draw[accento,thick] plot[smooth,tension=0.7] coordinates {(0.43,0.95) (1.08,1.55) (1.98,1.98) (2.43,2.05)};
+\draw[vett,nota] (O) -- (R1);
+\draw[vett,materia] (O) -- (R0);
+\draw[vett,esempio] (R0) -- (R1);
+\node[materia] at (0.4,1.42) {$\vec R_0$};
+\node[esempio,above] at (1.45,2.0) {$\Delta\vec R$};
+\node[nota] at (1.72,0.85) {$\vec R_1$};
+\end{tikzpicture}
+\end{disegno}
+\begin{itemize}[nosep]
+  \item[] $\vec{R}_0 \to$ vettore posizione $P_0$ a $t_0$
+  \item[] $\vec{R}_1 \to$ vettore posizione $P_1$ a $t_1$
+\end{itemize}
+
+\evid{Vettore spostamento}:
+\[
+  \Delta\vec{R} = \vec{R}_1 - \vec{R}_0
+  \qquad
+  \Delta\vec{R}(t_0, t_1) = \vec{R}(t_1) - \vec{R}(t_0)
+\]
+
+\section{Velocità media e istantanea}
+\begin{definizione}{Velocità media (vettoriale)}
+\[
+  \vec{V}_m(t, t_0) = \frac{\Delta\vec{R}(t, t_0)}{t - t_0}
+\]
+\end{definizione}
+\begin{definizione}{Velocità istantanea (vettoriale)}
+\[
+  \vec{V}(t) = \frac{d}{dt}\,\vec{R}(t) = \dot{\vec{R}}(t)
+  = \left(\frac{d}{dt}x(t), \frac{d}{dt}y(t), \frac{d}{dt}z(t)\right)
+  = (v_x, v_y, v_z) = \evid{(\dot{x}, \dot{y}, \dot{z})}
+\]
+\end{definizione}
+\begin{significato}
+In tre dimensioni la velocità è un vettore: le sue tre componenti sono le velocità con cui
+cambiano $x$, $y$ e $z$; il suo modulo dice quanto si va veloci, la sua direzione dove si sta andando.
+\end{significato}
+
+\begin{delucidazione}
+Definiamo la vel.\ media $\vec{V}_m(t, t + \Delta t) \doteq \dfrac{\Delta\vec{R}}{\Delta t}$.\\
+Non ci dà informazioni sulla velocità lungo la traiettoria.\\
+Facciamo tendere $\Delta t$ a $0$:
+\[
+  \vec{V}(t) \doteq \lim_{\Delta t \to 0} \vec{V}_m(t, t + \Delta t)
+  = \lim_{\Delta t \to 0} \underbrace{\frac{\vec{R}(t + \Delta t) - \vec{R}(t)}{\Delta t}}_{\text{rapporto increm.\ in } \vec{R}}
+  = \frac{d}{dt}\,\vec{R}(t) = \dot{\vec{R}}(t)
+\]
+NB! Il limite di una funzione vettoriale è equivalente a quello di una funzione scalare:
+i versori $\hat{x}, \hat{y}$ e $\hat{z}$ cartesiani sono costanti, e il limite è lineare sulle
+componenti del vettore.
+\end{delucidazione}
+
+\evid{Usando i versori su assi coordinati} $\hat{x}, \hat{y}, \hat{z}$:
+\[
+  \begin{cases}
+    \vec{R} = \hat{x}\,x + \hat{y}\,y + \hat{z}\,z \\
+    \vec{V} = \hat{x}\,v_x + \hat{y}\,v_y + \hat{z}\,v_z
+  \end{cases}
+\]
+
+% disegno: p23-tangente (appunti p. 23)
+\begin{disegno}
+\begin{tikzpicture}[disegno,scale=1.25]
+\coordinate (O) at (0,0);
+\path (0,0) .. controls (0.3,1.75) and (1.5,3.5) .. (4.4,3.55)
+  coordinate[pos=0.48] (P0) coordinate[pos=0.58] (P2)
+  coordinate[pos=0.77] (P3) coordinate[pos=0.92] (P1);
+\draw[asse,black] (O) -- (0,4.7);
+\draw[asse,black] (O) -- (5.4,0);
+\draw[asse,black] (O) -- (-1.7,-1.15);
+\fill[accento!12] (O) -- (P0) -- (P2) -- cycle;
+\draw[curva] (0,0) .. controls (0.3,1.75) and (1.5,3.5) .. (4.4,3.55);
+\node[materia,rotate=10,anchor=west] at (4.5,3.62) {traiettoria};
+\foreach \P in {P0,P2,P3,P1} \draw[->,thick,black] (O) -- (\P);
+\draw[->,very thick,accento] (P0) -- (P2);
+\draw[->,thick,esempio] (P0) -- (P1);
+\draw[->,thick,esempio] ($(P0)!0.55!(P1)$) -- ++(0.32,-0.62) coordinate (dR);
+\node[esempio,below right=-2pt] at (dR) {$\Delta\vec R$};
+\draw[->,thick,accento] ($(P0)!0.5!(P2)$) -- (2.63,0.92);
+\node[accento,right] at (2.63,0.92) {$\Delta R''$};
+\draw[thick,black] (3.22,1.55) -- (3.3,1.42) -- (3.4,1.58);
+\node[above left] at (P0) {$P_0$};
+\node[above=2pt] at (P2) {$P_1''$};
+\node[above=2pt] at (P3) {$P_1'$};
+\node[above=2pt] at (P1) {$P_1$};
+\end{tikzpicture}
+\end{disegno}
+Ogni volta che diminuisco $\Delta\vec{R}$ mi avvicino alla tangente alla curva
+\implica velocità istantanea: vettore $\Delta\vec{R}$ si avvicina a $\vec{V}(t)$.
+
+\begin{teorema}{Direzione della velocità}
+``\evid{La direzione della velocità istantanea coincide con la tangente alla traiettoria}''
+\end{teorema}
+
+\begin{nota}
+Non come per $v(t)$ in 1 dim.: era la tang.\ al graf.\ dello spost., non alla traiettoria. Come mai?
+\end{nota}
+
+\section{Formule generali}
+\evid{Formule generali}
+\begin{formula}
+\vec{R}(t) = \vec{R}(t_0) + \int_{t_0}^{t} \vec{V}(t')\,dt'
+\qquad \text{e} \qquad
+\vec{V}(t) = \dot{\vec{R}}(t) = \frac{d}{dt}\,\vec{R}(t)
+\end{formula}
+\begin{significato}
+Sono le stesse formule del caso unidimensionale applicate a ciascuna delle tre componenti:
+la posizione si ottiene sommando, a partire da quella iniziale, tutti i piccoli spostamenti $\vec{V}\,dt$.
+\end{significato}
+Integrale di un vettore \implica vettore con 3 componenti che sono integrali.
+
+\evid{Moto rettilineo uniforme} \implica
+$\vec{R}(t) = \vec{R}(t_0) + \underbrace{\vec{V}_0}_{\text{vettore costante}}(t - t_0)$
+
+\section{Accelerazione vettoriale}
+\evid{Accelerazione vettoriale}
+\begin{definizione}{Accelerazione vettoriale media}
+\[
+  \vec{a}_m(t, t + \Delta t) = \frac{\vec{V}(t + \Delta t) - \vec{V}(t)}{\Delta t}
+\]
+\end{definizione}
+$\Delta t$ tende a $0$:
+\[
+  \lim_{\Delta t \to 0} a_m(t, t + \Delta t) = \lim_{\Delta t \to 0} \frac{v(t + \Delta t) - v(t)}{\Delta t}
+  = \frac{d}{dt}\,\vec{V}(t) = \dot{\vec{V}}(t)
+\]
+Dunque\dots
+\begin{formula}
+\vec{a}(t) = \dot{\vec{V}}(t) = \frac{d}{dt}\,\vec{V}(t) = \ddot{\vec{R}}(t) = \frac{d^2}{dt^2}\,\vec{R}(t)
+\end{formula}
+\begin{significato}
+L'accelerazione vettoriale misura come cambia il vettore velocità: cambia sia se cambia
+il modulo (si va più o meno veloci) sia se cambia solo la direzione (si curva).
+\end{significato}
+\[
+  \vec{a}(t) = (\dot{v}_x, \dot{v}_y, \dot{v}_z) = \hat{x}\,\dot{v}_x + \hat{y}\,\dot{v}_y + \hat{z}\,\dot{v}_z
+  = (\ddot{x}, \ddot{y}, \ddot{z}) = \hat{x}\,\ddot{x} + \hat{y}\,\ddot{y} + \hat{z}\,\ddot{z}
+\]
+
+\subsection{Integrando}
+\evid{Integrando}: \evid{velocità} ist.\ \implica
+\[
+  \vec{V}(t) = \vec{V}(t_0) + \int_{t_0}^{t} \vec{a}(t')\,dt'
+\]
+(si applica a tutti i componenti di $\vec{a}(t')$).
+
+\evid{MRUA} \implica
+$\vec{R}(t) = \vec{R}(t_0) + \vec{V}_0(t - t_0) + \dfrac{\vec{a}_c}{2}(t - t_0)^2$ \quad ($\vec{a}_c$: vettore costante)
+
+\implica \evid{Eliminiamo la relazione dal tempo $(t - t_0)$}.\\
+NB! Utile quando non so il tempo impiegato.
+
+\begin{dimostrazione}
+Dimostrare: $\vec{V}^2(t) = \vec{V}^2(t_0) + 2\vec{a}_c\,(\vec{R}(t) - \vec{R}(t_0))$.
+
+Dunque partiamo da: $\vec{V}(t) = \vec{V}(t_0) + \vec{a}_c(t - t_0)$
+\begin{align*}
+  \vec{V}^2(t) &= \big[\underbrace{\vec{V}(t_0)}_{\vec{V}_0} + \vec{a}_c(t - t_0)\big]^2
+               = \vec{V}_0^2 + 2\vec{V}_0\,\vec{a}_c(t - t_0) + \vec{a}_c^{\,2}(t - t_0)^2 \\
+               &= \vec{V}_0^2 + 2\vec{a}_c\,\underbrace{\left(\vec{V}_0(t - t_0) + \tfrac12\vec{a}_c(t - t_0)^2\right)}_{\vec{R}(t) - \vec{R}(t_0)}
+\end{align*}
+\end{dimostrazione}
+\begin{formula}
+\vec{V}^2(t) = \vec{V}_0^2 + 2\vec{a}_c\,(\vec{R}(t) - \vec{R}(t_0))
+\end{formula}
+\begin{significato}
+È la versione vettoriale di $v^2 - v_0^2 = 2a\,\Delta x$: il quadrato della velocità cambia in
+base a quanto ci si sposta nella direzione dell'accelerazione, senza bisogno di conoscere il tempo.
+\end{significato}
+
+\section{Osservazioni}
+\evid{Osservazioni}
+\begin{enumerate}[label=(\roman*)]
+  \item
+  \[
+    \underbrace{\int_{t_0}^{t} \vec{V}(t')\,dt'}_{\Delta\vec{R}(t, t_0)}
+    \qquad\qquad
+    \underbrace{l_{\text{tra.}} = \int_{t}^{t_0} |\vec{V}(t')|\,dt'}_{\text{lunghezza della traiettoria}}
+  \]
+  % disegno: p25-lunghezza (appunti p. 25)
+  \begin{disegno}
+\begin{tikzpicture}[disegno,scale=0.9]
+\draw[asse,black] (0,0) -- (0,2.2);
+\draw[asse,black] (0,0) -- (2.9,-0.1);
+\draw[asse,black] (0,0) -- (-1.6,-1.15);
+\draw[name path=c,thick,black] plot[smooth,tension=0.8] coordinates {(0.8,0.78) (1.4,1.28) (2.2,1.32) (2.9,1.05) (3.5,1.2) (3.9,1.32)};
+\foreach \x/\b in {1.3/0.05,1.65/-0.05,2.0/0.0,2.4/0.1,2.75/-0.1,3.1/0.05,3.5/0.25,3.8/0.0}{
+  \path[name path=v] (\x,-1) -- (\x,3);
+  \path[name intersections={of=c and v,by=q}];
+  \draw[materia,thick,dash pattern=on 2.5pt off 2.5pt] (q) -- (\x,\b);
+  \fill[materia] (q) circle (1.4pt);
+}
+\draw[materia,thick] (1.65,1.42) to[bend left=50] (2.0,1.46);
+\draw[->,materia,thick] (2.0,1.75) -- (2.45,2.45);
+\node[materia,above] at (2.75,2.4) {$|\vec v(t)|\,dt$};
+\end{tikzpicture}
+  \end{disegno}
+  Dato che ogni velocità è la tang.\ a un punto della traiettoria \implica la sommatoria di
+  questi piccoli pezzettini ($\Sigma$) in modulo è la lung.\ della traiettoria.
+
+  Mentre $\displaystyle\int_{t}^{t_0} |\vec{a}(t)|\,dt$ non ha un significato e scopo.
+\end{enumerate}
+
+% ===== da p08.tex =====
+% =====================================================================
+%  CAPITOLO 8 -- ACCELERAZIONE TANGENZIALE E NORMALE   (appunti p. 26)
+% =====================================================================
+\chapter{Accelerazione tangenziale e normale}
+
+% disegno: p26-scomp1 (appunti p. 26)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+\draw[asse,black] (0,0) -- (0,4.2) node[right=2pt] {$z$};
+\draw[asse,black] (0,0) -- (4.2,0) node[below right] {$y$};
+\draw[asse,black] (0,0) -- (-0.9,-0.9) node[below right] {$x$};
+\draw[curva] plot[smooth,tension=0.7] coordinates {(0.81,0.56) (1.23,1.53) (1.8,2.02) (2.5,2.16) (3.38,1.98)};
+\coordinate (P0) at (1.23,1.53);
+\coordinate (P1) at (2.5,2.16);
+\coordinate (A) at (2.0,2.56);
+\coordinate (B) at (4.0,2.38);
+\draw[vett,nota,thick] (P0) -- (A);
+\draw[vett,nota,thick] (P1) -- (B);
+\fill[nota] (P0) circle (1.6pt) (P1) circle (1.6pt);
+\draw[vett,accento,thick] (A) -- (B);
+\node[below right] at (P0) {$P_0$};
+\node[nota,above left] at (A) {$\vec v(P_0)$};
+\node[accento,above] at (3.1,2.5) {$\Delta\vec v$};
+\node[nota,below right] at (3.75,2.33) {$\vec v(P_1)$};
+\end{tikzpicture}
+\end{disegno}
+% disegno: p26-scomp2 (appunti p. 26)
+\begin{disegno}
+\begin{tikzpicture}[disegno,scale=0.95]
+\coordinate (P0) at (0,0);
+\coordinate (P1) at (2.56,0.99);
+\coordinate (Q) at (2.17,2.2);
+\coordinate (T) at (5.49,1.6);
+\coordinate (Pe) at (3.39,0.99);
+\draw[curva] plot[smooth,tension=0.7] coordinates {(-0.76,-1.26) (P0) (1.2,0.75) (P1) (3.8,1.0) (5.4,0.8) (7.4,0.34)};
+\draw[vett,nota,thick] (P0) -- (Q);
+\draw[vett,nota,thick] (P1) -- (T);
+\fill[nota] (P0) circle (1.8pt) (P1) circle (1.8pt);
+\draw[vett,esempio,thick] (Q) -- (4.14,3.77);
+\draw[vett,esempio,thick] (Q) -- (Pe);
+\draw[vett,accento,thick] (Q) -- (T);
+\draw[esempio,thick,dash pattern=on 3pt off 4pt] (Pe) -- (4.6,-0.9);
+\draw[esempio,thick] (4.6,-0.9) circle (1.8pt);
+\draw[->,thick,black] (1.34,4.3) -- (1.34,3.55);
+\node[below right] at (P0) {$P_0$};
+\node[left=1pt] at (2.62,0.82) {$P_1$};
+\node[nota] at (0.95,1.75) {$\vec v_1$};
+\node[esempio,right] at (4.2,3.8) {$\overrightarrow{\Delta v}_{\parallel}$};
+\node[accento] at (4.35,2.4) {$\Delta\vec v$};
+\node[esempio] at (2.95,0.3) {$\Delta\vec v_{\perp}$};
+\node[nota] at (4.95,1.15) {$\vec v_2$};
+\end{tikzpicture}
+\end{disegno}
+Scomponiamo la vel.\ in due vettori ortogonali.
+
+\begin{nota}
+$\Delta\vec{V}_\perp$ è diretto ed è sempre verso la concavità della traiettoria.
+\end{nota}
+
+In cui $\Delta\vec{V}$ si scompone in:
+\[
+  \Delta\vec{V} \to
+  \begin{cases}
+    \Delta\vec{V}_{\parallel} \parallel \vec{V}(P_0) \\
+    \Delta\vec{V}_{\perp} \perp \vec{V}(P_0)
+  \end{cases}
+\]
+
+Come sappiamo dalla relazione:
+\[
+  a_m = \frac{\Delta v}{\Delta t} \ \to\ \vec{a}_m \propto \Delta\vec{V}
+\]
+\[
+  \begin{cases}
+    \vec{a}_{\parallel} \propto \Delta\vec{V}_{\parallel} \ \to\ \vec{a}_{\parallel} = \evid{\vec{a}_t} \ \to\ \text{``tangenziale''} \\
+    \vec{a}_{\perp} \propto \Delta\vec{V}_{\perp} \ \to\ \vec{a}_{\perp} = \vec{a}_n \ \to\ \text{``normale''}
+  \end{cases}
+\]
+($\vec{a}_t$ ha la direzione di $\vec{V}$, tang.\ alla traiettoria.)
+
+\section{Raggio e centro di curvatura}
+% disegno: p26-curvatura (appunti p. 26)
+\begin{disegno}
+\begin{tikzpicture}[disegno,scale=0.75]
+\coordinate (P0) at (1.08,{-1.83-0.122*(1.08-3.2)^2});
+\coordinate (P1) at (2.05,{-1.83-0.122*(2.05-3.2)^2});
+\coordinate (A) at (2.92,-1.38);
+\coordinate (C) at (4.33,-5.92);
+\draw[curva] plot[domain=-2.1:6.67,samples=80,smooth] (\x,{-1.83-0.122*(\x-3.2)^2});
+% raggi
+\draw[nota,thick,dash pattern=on 5pt off 5pt] (P0) -- (C);
+\draw[nota,thick,dash pattern=on 5pt off 5pt] (P1) -- (C);
+% velocita'
+\draw[->,nota,very thick] (P0) -- (A);
+\draw[nota,very thick] (P1) -- (3.78,-1.66);
+\fill[nota] (P0) circle (2pt) (P1) circle (1.6pt);
+% accelerazione e componenti
+\draw[esempio,thick,dash pattern=on 4pt off 4pt,-{Triangle[open,length=2.2mm,width=2mm]}] (A) -- (5.54,-0.6);
+\draw[esempio,thick,dash pattern=on 4pt off 4pt] (A) -- (C);
+\draw[->,esempio,thick] (A) -- ($(A)!0.13!(C)$);
+\draw[->,accento,very thick] (A) -- (3.95,-1.58);
+\fill (C) circle (2.2pt);
+% etichette
+\node[above left] at (P0) {$P_0$};
+\node at (2.15,-2.65) {$P_1$};
+\node[accento] at (4.45,-1.35) {$\vec a$};
+\node[esempio,right] at (5.6,-0.55) {$\vec a_t$};
+\node[esempio] at (4.05,-2.6) {$\vec a_N$};
+\node at (1.4,-4.6) {$\rho$};
+\node[below right] at (C) {$C$};
+\draw[->,thick,black] (5.9,-6.25) to[out=10,in=-120] (8.4,-3.9);
+\end{tikzpicture}
+\end{disegno}
+\begin{itemize}
+  \item \evid{$\rho$ $=$ raggio di curvatura} (``ro'')
+  \item \evid{$C$ $=$ centro di curvatura} \implica si trova nella regione di concavità della traiettoria
+\end{itemize}
+
+\begin{definizione}{Centro di curvatura}
+È il centro della circonferenza meglio approssimabile alla traiettoria in un intervallo
+infinitesimale tra due punti.
+\end{definizione}
+
+Se si avvicina $P_1$ a $P_0$, anche le perpend.\ si avvicinano.\\
+Dunque\dots\ $\Delta\vec{V}(P_0)$ diventa uguale all'ortogonale $\to \vec{V}_t$.\\
+Dunque $\vec{a}_n$ è diretto verso il centro di curvatura.
+
+\[
+  a_n \to \text{accelerazione centripeta}
+\]
+
+In un moto non rettilineo:
+\begin{itemize}[nosep]
+  \item $a_t$ \implica può essere zero (se costante in modulo)
+  \item $a_n \neq 0$ sempre \implica la vel.\ cambia direzione
+\end{itemize}
+
+\begin{delucidazione}
+NB! Cosa \evid{rappresentano}!
+\begin{itemize}[nosep]
+  \item[\implica] $a_t$ ``tangenziale'': come cambia il \evid{modulo} della velocità
+  \item[\implica] $a_n$ ``\evid{normale}'': come cambia la \evid{direzione} della velocità
+\end{itemize}
+\end{delucidazione}
+
+% ===== da p09.tex =====
+% =====================================================================
+%  CAPITOLO 9 -- MOTO DEI GRAVI LANCIATI (PROIETTILI)   (appunti pp. 27-29)
+% =====================================================================
+\chapter{Moto dei gravi lanciati (proiettili)}
+
+Moto bidimensionale.
+
+% disegno: p27-lancio (appunti p. 27)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  \draw[asse] (-0.4,0) -- (3,0) node[below right] {$x$};
+  \draw[asse] (0,-0.5) -- (0,2.2) node[above] {$y$};
+  \draw[vett,black] (0,0) -- (1.6,1.0) node[above right] {$\vec{v}_0$};
+  \draw[thick] (0.9,0) arc[start angle=0,end angle=32,radius=0.9];
+  \node at (1.15,0.25) {$\theta$};
+  \draw[vett,black] (3.7,2.0) -- (3.7,1.0);
+  \node at (4.0,2.0) {$\vec{g}$};
+\end{tikzpicture}
+\end{disegno}
+\[
+  \vec{g} = -g\,\hat{y}
+  \qquad
+  \text{Legge oraria} =
+  \begin{cases}
+    x = x_0 + v_0\cos\theta\cdot t \\
+    y = y_0 + v_0\sin\theta\cdot t - \frac12 g t^2
+  \end{cases}
+\]
+$x_0 = y_0 = 0$ \implica
+\begin{formula}
+\begin{cases}
+  x(t) = v_0\cos\theta\; t \\
+  y(t) = v_0\sin\theta\; t - \underbrace{\tfrac12 g t^2}_{\text{termine parabolico con concavità verso il basso}}
+\end{cases}
+\end{formula}
+\begin{significato}
+Il moto si divide in due moti indipendenti: in orizzontale il proiettile va a velocità
+costante ($v_0\cos\theta$, nessuna accelerazione), in verticale sale e ricade come un grave
+lanciato verso l'alto con velocità $v_0\sin\theta$ e accelerazione $-g$.
+\end{significato}
+
+\section{Due fasi}
+\evid{Due fasi}:
+\begin{itemize}
+  \item \evid{Salita}: $v_y(t) > 0 \to t < \dfrac{v_0\sin\theta}{g}$
+        \implica $t_s = \dfrac{v_0\sin\theta}{g}$ per $v_y = 0$ (tempo di salita)
+  \item \evid{Discesa}: $v_y(t) < 0 \to t > \dfrac{v_0\sin\theta}{g}$
+        \implica $v_y(t) = \underbrace{-g\left(t - \dfrac{v_0\sin\theta}{g}\right)}_{\text{formulazione più ``elegante''}}$
+\end{itemize}
+
+\section{Quota massima}
+\evid{Quota massima}
+\[
+  y(t = t_s) = (v_0\sin\theta)\overbrace{\left(\frac{v_0\sin\theta}{g}\right)}^{t} - \frac{g}{2}\overbrace{\left(\frac{v_0\sin\theta}{g}\right)^2}^{t^2}
+  = \frac{v_0^2\sin^2\theta}{2g}
+\]
+Dunque:
+\begin{formula}
+h = \frac{v_0^2\sin^2\theta}{2g}
+\end{formula}
+\begin{significato}
+L'altezza raggiunta dipende solo dalla componente verticale della velocità iniziale
+($v_0\sin\theta$): più si lancia in verticale e più forte, più si sale; la parte orizzontale non conta.
+\end{significato}
+con vel.\ verticale iniziale \implica $v_y(t_s) = 0$.
+
+Il moto è \evid{asimmetrico}:
+\begin{itemize}[nosep]
+  \item a $t_0$: \ $v_y \neq 0$ e $h = 0$
+  \item a $t_s$: \ $v_y = 0$ e $h \neq 0$
+\end{itemize}
+
+\section{Tempo totale di volo}
+\evid{Tempo totale di volo}
+
+$y(t_0) = 0 \to y(t_{tot}) = 0$ \implica trovo le \evid{radici della legge oraria $y(t)$}.
+\[
+  y(\bar{t}) = v_0\sin\theta\,\bar{t} - \tfrac12 g\bar{t}^2 = 0
+  \qquad
+  \bar{t}\left(v_0\sin\theta - \tfrac12 g\bar{t}\right) = 0
+\]
+Per $\bar{t} = 0$ \implica punto di partenza.
+\begin{formula}
+\bar{t} = \frac{2v_0\sin\theta}{g} = t_{tot}
+\end{formula}
+\begin{significato}
+Il proiettile resta in aria il doppio del tempo che impiega a salire: salita e discesa durano uguale.
+\end{significato}
+Doppio del tempo di salita, dunque:
+\[
+  t_s = t_d = \frac{v_0\sin\theta}{g} \qquad (t_s: \text{tempo di salita})
+\]
+\begin{delucidazione}
+La vel.\ finale su $y$ è $v_y = v_0\sin\theta$.
+\end{delucidazione}
+
+\section{Gittata}
+\evid{Gittata}
+\[
+  x(t_{tot}) = v_0\cos\theta\cdot t_{tot} = v_0\cos\theta\cdot\frac{2v_0\sin\theta}{g}
+  = \frac{v_0^2\cdot\overbrace{2\cos\theta\sin\theta}^{\sin(2\theta)}}{g}
+\]
+\begin{formula}
+x(t_{tot}) = \frac{v_0^2\sin(2\theta)}{g}
+\end{formula}
+\begin{significato}
+La distanza orizzontale percorsa dipende dall'angolo tramite $\sin(2\theta)$: è massima
+a $45^\circ$ e uguale per due angoli che sommati danno $90^\circ$.
+\end{significato}
+
+\begin{nota}
+$\sin(2\theta) = \sin\!\left(2\left(\theta + \frac{\pi}{2}\right)\right) = \sin(2\theta)$
+% disegno: p28-angoli (appunti p. 28)
+\begin{disegno}
+\begin{tikzpicture}[disegno,black!55,thick]
+  \draw (0,0) ellipse[x radius=1.75,y radius=1.45];
+  \draw (-1.95,0.05) -- (2.5,-0.08);
+  \draw (0,-1.75) -- (0,1.85);
+  \draw (0,0) -- (30:1.6);
+  \draw (0,0) -- (148:1.55);
+  \draw[dashed] (175:0.85) arc[start angle=175,end angle=32,radius=0.85];
+  \draw[dashed] (125:0.55) arc[start angle=125,end angle=45,radius=0.55];
+  \draw (0.9,0) arc[start angle=0,end angle=30,radius=0.9];
+  \node at (13:1.18) {$\theta$};
+\end{tikzpicture}
+\end{disegno}
+Lanciare un proiettile con $\theta = 30^\circ$ e $\theta = 60^\circ$: è uguale la gittata.
+\end{nota}
+
+\section{Traiettoria}
+\evid{Traiettoria}
+\[
+  \begin{cases}
+    x = v_0\cos\theta\cdot t \ \longmapsto\ t = \dfrac{x}{v_0\cos\theta} \\[1.5ex]
+    y = v_0\sin\theta\cdot t - \dfrac{g}{2}t^2 \ \longrightarrow\
+        v_0\sin\theta\cdot\dfrac{x}{v_0\cos\theta} - \dfrac{g}{2}\,\dfrac{x^2}{v_0^2\cos^2\theta}
+  \end{cases}
+\]
+\[
+  \frac{\sin\theta}{\cos\theta} = \tan\theta
+  \ \Rightarrow\
+  y = x\cdot\tan\theta - \frac{g}{2}\left(\frac{x}{v_0\cos\theta}\right)^2
+\]
+\begin{formula}
+y(x) = x\tan\theta - \frac12 g\,\frac{x^2}{v_0^2\cos^2\theta}
+\end{formula}
+\begin{significato}
+È l'equazione della traiettoria vera e propria (senza il tempo): una parabola rivolta verso il basso.
+Il primo termine è la retta lungo cui si partirebbe senza gravità, il secondo è quanto la gravità
+``piega'' il percorso verso il basso, sempre di più man mano che ci si allontana.
+\end{significato}
+Parabola (termine quadratico).
+
+% disegno: p28-traiettoria (appunti p. 28)
+\begin{disegno}
+\begin{tikzpicture}[disegno,
+    tang/.style={->,thick,nota,>={Stealth[length=1.6mm]}}]
+  % parabola: y = H(1-((x-a)/a)^2), a=2, H=3
+  \def\a{2}\def\H{3}
+  \draw[thick,black,-{Latex[open,length=2.2mm]}] (-0.6,0) -- (5.6,0) node[right] {$x$};
+  \draw[thick,black,-{Latex[open,length=2.2mm]}] (0,-0.45) -- (0,4.2) node[above right] {$y$};
+  \draw[dashed,black] (0,\H) -- (1.5,\H);
+  \node[left] at (0,\H) {$y(t_s)$};
+  \draw[curva,very thick,materia!70] plot[domain=0:4,samples=60] (\x,{\H*(1-((\x-\a)/\a)^2)});
+  % frecce tangenti (gialle)
+  \foreach \xx in {0.2,0.65,1.15,1.6,2.55,3.15,3.65}{
+    \pgfmathsetmacro{\yy}{\H*(1-((\xx-\a)/\a)^2)}
+    \pgfmathsetmacro{\m}{-2*\H*(\xx-\a)/(\a*\a)}
+    \pgfmathsetmacro{\L}{0.55/sqrt(1+\m*\m)}
+    \draw[tang] (\xx,\yy) -- ++(\L,{\m*\L});
+  }
+  \draw[tang] (\a,\H) -- (3.75,\H-0.08) node[above right,nota] {$\vec{v}_s$};
+  \fill[nota] (\a,\H) circle (1.6pt);
+  \fill[black] (4,0) circle (1.6pt);
+  \node[below] at (4.15,-0.05) {$G=x(t_{\mathrm{tot}})$};
+\end{tikzpicture}
+\end{disegno}
+
+\subsection{Calcoliamo la gittata}
+\evid{Calcoliamo la gittata}
+\[
+  y(x = G) = 0 = x\left[\tan\theta - \frac12 g\,\frac{x}{v_0^2\cos^2\theta}\right]
+  \qquad (x = 0: \text{caso iniziale a } t = 0)
+\]
+\[
+  \tan\theta - \frac{g}{2}\,\frac{x}{v_0^2\cos^2\theta} = 0
+  \ \to\
+  x = \tan\theta\cdot\frac{2}{g}\,v_0^2\cos^2\theta
+  = 2\,\frac{\sin\theta}{\cancel{\cos\theta}}\cdot\cos^{\cancel{2}}\theta\cdot\frac{v_0^2}{g}
+  = \frac{v_0^2}{g}\,\sin(2\theta) \ \checkmark
+\]
+($2\sin\theta\cos\theta = \sin(2\theta)$)
+
+\subsection{Altezza massima}
+\evid{Altezza massima}
+
+$y_{max} = y(t_s)$ oppure $y'(x) = 0$. Dove? In
+$x_v = \dfrac{G}{2} = \dfrac{v_0^2\sin(2\theta)}{2g}$.
+\begin{align*}
+  \left.\frac{d}{dx}\,y(x)\right|_{x = x_v}
+  &= \frac{d}{dx}\left[x\tan\theta - \frac{g}{2}\left(\frac{x}{v_0\cos\theta}\right)^2\right]
+   = \tan\theta\,\frac{d}{dx}x - \frac{g}{2v_0^2\cos^2\theta}\,\frac{d}{dx}x^2 \\
+  &= \tan\theta - \frac{g}{2v_0^2\cos^2\theta}\cdot 2x = \tan\theta - \frac{gx}{v_0^2\cos^2\theta} = 0
+\end{align*}
+\[
+  x_v = \tan\theta\,\frac{v_0^2\cos^2\theta}{g} = \frac{v_0^2\sin(2\theta)}{2g} = \frac{G}{2}
+  \qquad (\text{formula di duplicazione})
+\]
+\begin{align*}
+  y_{max} = y(x_v)
+  &= \frac{v_0^2\sin(2\theta)}{2g}\,\tan\theta - \frac{g}{2}\,\frac{v_0^4\sin^2(2\theta)}{4g^2v_0^2\cos^2\theta}
+   \qquad (\sin^2(2\theta) = 4\cos^2\theta\sin^2\theta) \\
+  &= \frac{v_0^2\,2\sin\theta\cos\theta}{2g}\,\frac{\sin\theta}{\cos\theta}
+     - \frac{g}{2}\,\frac{v_0^2}{4g^2}\,\frac{4\cos^2\theta\sin^2\theta}{\cos^2\theta} \\
+  &= \frac{v_0^2\sin^2\theta}{g} - \frac{v_0^2\sin^2\theta}{2g} = \frac{v_0^2\sin^2\theta}{2g} = y_{max}
+\end{align*}
+
+\begin{delucidazione}
+\textbf{Valori massimi}: al variare di $\theta$, possiamo avere $h_{max}$ con
+$\theta = \frac{\pi}{2}$ ($= 90^\circ$) \implica $h = \dfrac{v_0^2}{g}$.\\
+Invece la \evid{gittata massima} si ha a $\theta = \frac{\pi}{4} \approx 45^\circ$.
+\end{delucidazione}
+
+\section{Ellisse dei vertici}
+\evid{Ellisse dei vertici}
+
+Cerchiamo il \evid{luogo geometrico dei vertici della parabola al variare di $\theta$}.
+\[
+  \begin{cases}
+    x_v = \dfrac{G}{2} = \dfrac{v_0^2\sin\theta\cos\theta}{g} \leq \dfrac{v_0^2}{2g} & \text{(massimo)} \\[2ex]
+    2y_v = \dfrac{v_0^2\sin^2\theta}{g} \leq \dfrac{v_0^2}{2g} & \text{(massimo)}
+  \end{cases}
+\]
+Liberiamoci di $\theta$:
+\begin{align*}
+  (x_v)^2 + (2y_v)^2
+  &= \frac{v_0^4\sin^2\theta\cos^2\theta}{g^2} + \frac{v_0^4\sin^4\theta}{g^2}
+   = \frac{v_0^4\sin^2\theta\cos^2\theta + v_0^4\sin^4\theta}{g^2} \\
+  &= \frac{v_0^4\sin^2\theta}{g}\,\underbrace{(\cos^2\theta + \sin^2\theta)}_{= 1}
+   = \underbrace{\frac{v_0^2\sin^2\theta}{g}}_{= 2y_v}\,\frac{v_0^2}{g} = 2y_v\,\frac{v_0^2}{g}
+\end{align*}
+\begin{formula}
+x_v^2 + 4y_v^2 - 2y_v\,\frac{v_0^2}{g} = 0 \qquad \text{(ellisse)}
+\end{formula}
+\begin{significato}
+Cambiando l'angolo di lancio (a parità di $v_0$) i punti più alti delle traiettorie
+non stanno in posti qualsiasi, ma tutti su questa ellisse.
+\end{significato}
+
+``Viene fuori'' un'ellisse, che:
+\begin{itemize}[nosep]
+  \item[\implica] passa per l'origine
+  \item[\implica] ha centro $C\left(0;\ \dfrac{v_0^2}{4g}\right)$ (metà altezza massima); massimo $y_v = \dfrac{v_0^2}{2g}$
+\end{itemize}
+% disegno: p29-ellisse (appunti p. 29)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.12mm,y=-0.12mm]
+  % assi
+  \draw[asse,black] (100,275) -- (465,275) node[below right] {$x_v$};
+  \draw[asse,black] (262,300) -- (262,95) node[right] {$y_v$};
+  % ellisse (blu)
+  \draw[very thick,materia!75]
+     (262,135) .. controls (180,145) and (125,175) .. (125,205)
+               .. controls (125,235) and (180,260) .. (262,270)
+               .. controls (320,255) and (365,235) .. (385,210)
+               .. controls (365,185) and (320,155) .. cycle;
+  % retta tratteggiata verticale con doppio segno
+  \draw[dashed,black] (325,160) -- (325,355);
+  \draw[black] (319,225) -- (319,300);
+  \draw[black] (331,225) -- (331,300);
+  \draw[black,thick] (316,358) -- (334,358) -- (325,378) -- cycle;
+  \fill (325,160) circle (1.4pt);
+  % tratteggio dal vertice destro
+  \draw[dashed,black] (385,212) -- (385,275);
+  % freccia gialla
+  \draw[->,very thick,nota] (262,205) .. controls (310,195) and (345,200) .. (385,212)
+        .. controls (420,225) and (460,225) .. (500,215);
+  \fill[nota] (262,205) circle (2.2pt);
+  \node[nota,left] at (255,190) {$c$};
+  \fill (385,212) circle (1.7pt);
+  % freccia nera verso v0^2/2g
+  \draw[->,thick,black] (385,212) .. controls (400,190) and (415,170) .. (442,155);
+  \node at (472,130) {$\dfrac{v_0^2}{2g}$};
+  \draw[black!55,thick] (510,95) .. controls (522,98) and (518,118) .. (521,128)
+        .. controls (518,138) and (522,158) .. (510,162);
+  \node[black!55,rotate=8,anchor=west] at (528,108) {massimo};
+  % punto (0; v0^2/4g)
+  \node[nota,anchor=west] at (525,195) {\large$\left(0;\,\dfrac{v_0^2}{4g}\right)$};
+  \draw[black!55,thick] (705,160) .. controls (717,163) and (712,182) .. (715,195)
+        .. controls (712,208) and (717,235) .. (697,240);
+  \node[black!55,anchor=west] at (730,195) {metà altezza};
+  \node[black!55,anchor=west] at (790,235) {massima};
+\end{tikzpicture}
+\end{disegno}
+Se pongo $x$, incontra l'ellisse in due punti: sono i due angoli complementari (es.\ $30^\circ$ e $60^\circ$).
+
+% ===== da p10.tex =====
+% ---------------------------------------------------------------------
+%  (segue CAPITOLO 9)  Parabola di sicurezza e lancio orizzontale (appunti pp. 30-31)
+% ---------------------------------------------------------------------
+\section{Parabola di sicurezza}
+\evid{Parabola di sicurezza}
+
+Si cerca di \evid{determinare i punti dello spazio non raggiungibili con $v_0$ e $\theta$}.
+\[
+  \text{traiettoria}\quad y = x\tan\theta - \frac{g}{2}\,\frac{x^2}{v_0^2\cos^2\theta}
+  \qquad \left(\to \frac{1}{\cos^2\theta}\right)
+\]
+\[
+  \frac{1}{\cos^2\theta} = \frac{\sin^2\theta + \cos^2\theta}{\cos^2\theta}
+  = \underbrace{\frac{\cos^2\theta}{\cos^2\theta}}_{= 1} + \underbrace{\frac{\sin^2\theta}{\cos^2\theta}}_{= \tan^2\theta}
+  = 1 + \tan^2\theta
+\]
+\[
+  \Rightarrow\ y = x\tan\theta - \frac{g}{2}\,\frac{x^2}{v_0^2}\,(1 + \tan^2\theta)
+\]
+Ciò l'abbiamo fatto per avere un'equazione sol.\ in $\tan\theta$, per poi risolvere per quella.
+
+\begin{delucidazione}
+Si ottiene un'equazione quadratica in $\tan\theta$.
+\end{delucidazione}
+
+\[
+  x\tan\theta - \frac{gx^2}{2v_0^2} - \frac{gx^2}{2v_0^2}\tan^2\theta - y = 0
+\]
+\[
+  \Rightarrow\ \underbrace{\frac{gx^2}{2v_0^2}}_{a}\tan^2\theta \underbrace{- x}_{b}\tan\theta
+  + \underbrace{\left(\frac{gx^2}{2v_0^2} + y\right)}_{c} = 0
+  \qquad \text{(ho invertito i segni)}
+\]
+\begin{align*}
+  \tan\theta
+  &= \frac{x \pm \sqrt{x^2 - \cancel{4}^{\,2}\,\dfrac{gx^2}{\cancel{2}v_0^2}\left(\dfrac{gx^2}{2v_0^2} + y\right)}}{\cancel{2}\,\dfrac{gx^2}{\cancel{2}v_0^2}}
+   = \frac{v_0^2}{gx^2}\left(x \pm \sqrt{x^2 - \frac{2x^2}{v_0^2}\left(\frac{gx^2}{2v_0^2} + y\right)}\right) \\
+  &= \frac{v_0^2}{gx^2}\left(x \pm \sqrt{x^2\left[1 - \frac{2g}{v_0^2}\left(\frac{gx^2}{2v_0^2} + y\right)\right]}\right)
+   = \frac{v_0^2}{gx^2}\left(x \pm x\sqrt{1 - \frac{2g}{v_0^2}\left(\frac{gx^2}{2v_0^2} + y\right)}\right)
+   \quad (x > 0) \\
+  &= \frac{v_0^2}{gx^{\cancel{2}}}\,\cancel{x}\left(1 \pm \sqrt{1 - \frac{2g}{v_0^2}\left(\frac{gx^2}{2v_0^2} + y\right)}\right)
+   = \frac{v_0^2}{g}\Bigg(1 \pm \sqrt{\underbrace{1 - \frac{2g}{v_0^2}\left(\frac{gx^2}{2v_0^2} + y\right)}_{\Delta}}\,\Bigg)
+\end{align*}
+
+\evid{Cosa cerchiamo?} Quell'\evid{angolo per cui il grave non raggiunga mai un punto $(x, y)$
+dato un certo $\theta$ e $v_0$, dunque vogliamo che l'eq.~della traiettoria non abbia radici}
+\implica \evid{$\Delta < 0$}.
+\[
+  \begin{cases}
+    \Delta > 0 \to 2 \text{ rad.} \\
+    \Delta = 0 \to 1 \text{ rad.} \\
+    \Delta < 0 \to 0 \text{ rad.}
+  \end{cases}
+\]
+\[
+  \Rightarrow\ 1 - \frac{2g}{v_0^2}\left(\frac{gx^2}{2v_0^2} + y\right) < 0
+  \qquad \text{Risolviamo in } y
+\]
+\[
+  \to\ 1 - \frac{2g^2x^2}{2v_0^4} + \frac{2gy}{v_0^2} < 0
+  \qquad
+  -\frac{2gy}{v_0^2} > 1 - \frac{2g^2x^2}{2v_0^4}
+  \qquad
+  \frac{2gy}{v_0^2} < \frac{2g^2x^2}{2v_0^4} - 1
+\]
+\[
+  \to\ y < \frac{v_0^2}{2g}\,\frac{2g^2x^2}{2v_0^4} - \frac{v_0^2}{2g}
+  \ \to\
+  \underbrace{\evid{y > \dfrac{v_0^2}{2g} - \dfrac{gx^2}{2v_0^2}}}_{\text{zona di sicurezza}}
+\]
+\begin{formula}
+y = \frac{v_0^2}{2g} - \frac{gx^2}{2v_0^2}
+\end{formula}
+\begin{significato}
+Con una data velocità di lancio $v_0$, qualunque sia l'angolo, il proiettile non può superare
+questa parabola: i punti sopra (zona di sicurezza) non vengono mai raggiunti, quelli sotto
+possono essere colpiti con uno o due angoli diversi.
+\end{significato}
+% disegno: p30-zone (appunti p. 30)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.17mm,y=-0.17mm]
+  % parabola: piedi a 350+-115, vertice (350,220)
+  \def\parab{plot[domain=233:467,samples=50] (\x,{312-92*(1-((\x-350)/117)^2)})}
+  % zona di sicurezza (verde): fuori dalla parabola
+  \begin{scope}[even odd rule]
+    \clip (205,312) -- (205,240) .. controls (230,170) and (290,140) .. (330,140)
+          -- (500,140) -- (505,290) -- (480,312) -- cycle
+          \parab -- cycle;
+    \foreach \i in {0,...,16} \draw[esempio!80,thick] (190+\i*20,320) -- ++(45,-180);
+  \end{scope}
+  % zona colpibile (rossa): sotto la parabola
+  \begin{scope}
+    \clip \parab -- cycle;
+    \foreach \i in {0,...,11} \draw[accento!85,thick] (230+\i*20,322) -- ++(25,-100);
+  \end{scope}
+  % assi
+  \draw[thick,black,-{Latex[open,length=2.4mm]}] (178,312) -- (572,312);
+  \draw[thick,black,-{Latex[open,length=2.4mm]}] (350,412) -- (350,103);
+  % parabola
+  \draw[very thick,materia!75] \parab;
+  % quota massima
+  \draw[dashed,materia!75,thick] (183,232) -- (350,220);
+  \fill[materia!75] (183,232) circle (1.4pt);
+  \node[materia!75,left] at (175,232) {$\dfrac{v_0^2}{2g}$};
+  \node[materia!75] at (468,372) {$\dfrac{v_0^2}{g}$};
+  % equazione
+  \draw[->,thick,materia!75] (462,306) .. controls (490,290) and (510,282) .. (535,272);
+  \node[materia!75,anchor=west] at (530,262) {$y=\dfrac{v_0^2}{2g}-\dfrac{g\,x^2}{2v_0^2}$};
+  % etichette zone
+  \draw[->,thick,esempio] (455,195) -- (478,163);
+  \node[esempio,anchor=west] at (400,132) {zona di sicurezza};
+  \draw[->,thick,accento] (292,306) -- (258,360);
+  \node[accento,align=left,anchor=north west] at (148,375) {zona\\colpibile};
+\end{tikzpicture}
+\end{disegno}
+
+\begin{delucidazione}
+$\Delta < 0$: il punto non è raggiungibile \implica parabola di sicurezza.\\
+All'interno della gittata, ma dove non vieni colpito? \implica Mettiamo $\Delta < 0$.
+\end{delucidazione}
+
+% ---------------------------------------------------------------------
+\section{Grave lanciato orizzontalmente da una certa altezza \texorpdfstring{$h$}{h}}
+\evid{Grave lanciato orizzontalmente da una certa $h$}
+\[
+  x_0 = 0 \qquad y_0 > 0 \qquad \theta = 0
+\]
+Legge oraria:
+\[
+  \begin{cases}
+    x(t) = v_0 t \\
+    y(t) = \underbrace{y_0}_{h} - \frac12 g t^2
+  \end{cases}
+\]
+\begin{formula}
+y(x) = h - \frac12 g\left(\frac{x}{v_0}\right)^2
+\end{formula}
+\begin{significato}
+Il grave parte in orizzontale e cade sempre più ripido: in orizzontale avanza a velocità
+costante $v_0$, in verticale cade come in caduta libera partendo da fermo.
+\end{significato}
+% disegno: p31-orizz (appunti p. 31)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.24mm,y=0.24mm,
+    vb/.style={->,very thick,materia!75,>={Stealth[length=1.8mm]}}]
+  \def\H{108}\def\L{178}
+  \draw[asse,black] (-25,0) -- (220,0);
+  \draw[asse,black] (0,-30) -- (0,160);
+  \draw[thick,black] plot[domain=12:\L,samples=50] (\x,{\H*(1-(\x/\L)^2)});
+  % velocita' tangenti
+  \draw[vb] (12,{\H*(1-(12/\L)^2)}) -- ++(75,0) node[above,pos=0.85,yshift=10pt] {$\vec{v}_0$};
+  \foreach \xx/\l in {105/50, 155/45}{
+    \pgfmathsetmacro{\yy}{\H*(1-(\xx/\L)^2)}
+    \pgfmathsetmacro{\m}{-2*\H/\L*\xx/\L}
+    \pgfmathsetmacro{\d}{\l/sqrt(1+\m*\m)}
+    \draw[vb] (\xx,\yy) -- ++(\d,{\m*\d});
+  }
+\end{tikzpicture}
+\end{disegno}
+
+$x$ finale?
+\[
+  y(x) = h - \frac12 g\left(\frac{x}{v_0}\right)^2
+  \qquad
+  h - \frac12 g\,\frac{x^2}{v_0^2} = 0
+  \qquad
+  \sqrt{x^2} = \sqrt{h\cdot 2\cdot\frac{v_0^2}{g}}
+  \ \to\
+  \evid{x = (\pm)\,v_0\sqrt{\dfrac{2h}{g}}}
+\]
+
+Velocità?
+\[
+  \vec{V} = \frac{d}{dt}\,\vec{R} = \left(\frac{d}{dt}x, \frac{d}{dt}y\right) = (v_0, -gt)
+\]
+
+$t$ finale?
+\[
+  y(t_{finale}) = y_0 - \frac12 g t^2 = 0 \ \to\ t_{finale} = \sqrt{\frac{2h}{g}}
+\]
+
+$v$ finale?
+\[
+  \vec{V}(t_{finale}) = \left(v_0;\ -\sqrt{2hg}\right)
+\]
+
+% ===== da p11.tex =====
+% =====================================================================
+%  CAPITOLO 10 -- COORDINATE INTRINSECHE   (appunti pp. 32-33)
+% =====================================================================
+\chapter{Coordinate intrinseche}
+
+Sono delle \evid{coordinate locali} \implica seguono punto per punto la traiettoria.\\
+Seguono l'evolversi della traiettoria \implica ascissa curvilinea.
+
+\evid{Definiamo}: \implica \evid{Due versori}:
+% disegno: p32-versori (appunti p. 32)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.12mm,y=-0.12mm]
+  \draw[thick,black] (120,275) .. controls (170,195) and (240,172) .. (297,172)
+        .. controls (380,170) and (440,232) .. (590,230)
+        .. controls (660,228) and (700,210) .. (725,188);
+  \draw[vett,accento] (297,172) -- (455,133);
+  \node[accento] at (485,128) {\large$\hat{\tau}$};
+  \draw[vett,materia!75] (300,174) -- (320,268);
+  \node[materia!75] at (362,250) {\large$\vec{n}$};
+  \fill[accento] (297,172) circle (2pt);
+\end{tikzpicture}
+\end{disegno}
+\begin{itemize}
+  \item \evid{$\hat{\tau}$}: versore \evid{tangente alla traiettoria}
+  \item \evid{$\hat{n}$}: versore \evid{normale alla traiettoria}
+\end{itemize}
+
+Tali che:
+\begin{itemize}
+  \item[\implica] tra di loro: \ $\underbrace{\hat{\tau}\cdot\hat{n}}_{\text{prodotto scalare}} = 0 \iff \hat{\tau} \perp \hat{n}$ \quad sono ortogonali
+\end{itemize}
+
+\section{Velocità}
+\evid{Velocità}:
+\begin{formula}
+\underbrace{\vec{V}(t)}_{\text{vettore}} = \underbrace{v(t)}_{\text{scalare}}\,\underbrace{\hat{\tau}}_{\text{versore tangente}}
+\end{formula}
+\begin{significato}
+La velocità è sempre tangente alla traiettoria: in queste coordinate basta un numero,
+$v(t)$, per descriverla, e la direzione è data da $\hat{\tau}$ punto per punto.
+\end{significato}
+\begin{itemize}
+  \item tang.: \ $(v(t)\hat{\tau})\cdot\hat{\tau} = v(t)$ \qquad ($\hat{\tau}\cdot\hat{\tau} = 1$ perché paralleli)
+  \item norm.: \ $(v(t)\hat{\tau})\cdot\hat{n} = 0$ \qquad ($\hat{\tau}\cdot\hat{n} = 0$ perché ortogonali)
+\end{itemize}
+
+\section{Accelerazione}
+\evid{Accelerazione}
+\[
+  \vec{a} = \frac{d\vec{V}}{dt} \ \to\ \vec{V} = v\hat{\tau} \ \to\
+  \evid{\vec{a} = \underbrace{\dfrac{dv}{dt}}_{\text{diretto come } \hat{\tau}}\hat{\tau} + v\,\underbrace{\dfrac{d\hat{\tau}}{dt}}_{\text{?}}}
+\]
+Che verso e modulo ha $\dfrac{d\hat{\tau}}{dt}$?
+\[
+  \hat{\tau} \perp \frac{d\hat{\tau}}{dt} \ \Rightarrow\ \hat{\tau}\,\frac{d\hat{\tau}}{dt} = 0
+\]
+
+\begin{dimostrazione}
+$\hat{\tau}\cdot\hat{\tau} = |\hat{\tau}|^2 = 1$ \implica facciamo la derivata rispetto al tempo:
+\[
+  \frac{d\hat{\tau}}{dt}\,\hat{\tau} + \hat{\tau}\,\frac{d\hat{\tau}}{dt}
+  = \underbrace{\frac{d|\hat{\tau}|^2}{dt}}_{= 0} \qquad \left(\frac{d}{dt}\,1 = 0\right)
+\]
+\[
+  2\hat{\tau}\,\frac{d\hat{\tau}}{dt} = 0 \iff \evid{\hat{\tau} \perp \dfrac{d\hat{\tau}}{dt}}
+\]
+\end{dimostrazione}
+
+Ora \chiave{proiettiamo $\vec{a}$ su $\hat{\tau}$} (componente tangenziale):
+\[
+  \vec{a}\cdot\hat{\tau} = \frac{dv}{dt} + v(t)\underbrace{\left(\hat{\tau}\,\frac{d\hat{\tau}}{dt}\right)}_{= 0}
+\]
+Dunque \evid{la componente tang.~dell'accelerazione è rappresentata solo da $\dfrac{dv}{dt}$}: come cambia la velocità.
+
+\section{Derivata del versore tangente}
+Cioè $\hat{\tau}$ dipende dal tempo ma è legato al punto sulla traiettoria.
+
+Ma\dots\ $\hat{\tau}$ è una funzione di $t$ attraverso $s$:
+\evid{$\hat{\tau} = \hat{\tau}(s(t))$} \implica funzione composta \implica deriviamola (derivazione di una composta).
+\[
+  \frac{d\hat{\tau}}{dt} = \frac{d\hat{\tau}}{ds}\cdot\underbrace{\frac{ds}{dt}}_{= v(t)} = \frac{d\hat{\tau}}{ds}\,v
+\]
+Ora\dots
+\[
+  \vec{a} = \frac{dv}{dt}\,\hat{\tau} + v\,\frac{d\hat{\tau}}{dt}
+  \qquad
+  \evid{v\,\dfrac{d\hat{\tau}}{dt} = v^2\,\dfrac{d\hat{\tau}}{ds}}
+\]
+\begin{itemize}[nosep]
+  \item $v^2$: ci dice come percorriamo la curva (cinematica)
+  \item $\dfrac{d\hat{\tau}}{ds}$: ci dice come è fatta la curva (geometria)
+\end{itemize}
+
+Che direzione ha? Dato che \evid{$\dfrac{d\hat{\tau}}{ds}\,v = \dfrac{d\hat{\tau}}{dt}$} e $v$ = scalare
+\implica hanno la stessa direzione:
+\[
+  \frac{d\hat{\tau}}{dt} \perp \hat{\tau} \ \Rightarrow\ \frac{d\hat{\tau}}{ds} \perp \hat{\tau}
+  \ \Rightarrow\ \evid{\dfrac{d\hat{\tau}}{ds} \parallel \hat{n}}
+\]
+
+Analisi dimensionale:
+\[
+  \left[\frac{d\hat{\tau}}{ds}\right] = \frac{[d\hat{\tau}]}{\underbrace{[ds]}_{\text{lunghezza}}} = \frac{1}{[L]} = [L]^{-1}
+  \ \longmapsto\
+  \evid{\dfrac{d\hat{\tau}}{ds} = \dfrac{\hat{n}}{\rho}}
+  \qquad [\rho] = [L]
+\]
+Spiegazione: $\dfrac{d\hat{\tau}}{ds}$
+\begin{itemize}[nosep]
+  \item ha modulo di dim.\ $\left[\frac{1}{L}\right]$, per convenzione lo chiamiamo $\dfrac{1}{\rho}$
+  \item ha direzione $\hat{n}$
+\end{itemize}
+\[
+  \frac{d\hat{\tau}}{dt} = \frac{1}{\rho}\,\hat{n}
+\]
+\evid{$\rho$: raggio di curvatura della traiettoria}.
+
+Se\dots
+\begin{itemize}[nosep]
+  \item[\implica] curva $=$ circonferenza \implica $\rho$ $=$ raggio
+  \item[\implica] curva $=$ retta \implica $\rho$ $=$ infinito
+\end{itemize}
+
+\begin{delucidazione}
+Tanto più una circonferenza si allarga, tanto più il centro ``$C$'' si allontana, fino a quando
+la circonf.\ non collassa in una retta, e il centro dista $\infty$.
+\end{delucidazione}
+
+Dunque\dots
+\begin{formula}
+\vec{a} = \left(\frac{dv}{dt}\right)\hat{\tau} + \frac{v^2}{\rho}\,\hat{n}
+\end{formula}
+\begin{significato}
+L'accelerazione ha due pezzi: $\frac{dv}{dt}$ lungo la traiettoria (si va più o meno veloci)
+e $\frac{v^2}{\rho}$ verso il centro della curva (si cambia direzione). Più si va veloci o più
+la curva è stretta ($\rho$ piccolo), più grande è l'accelerazione verso l'interno.
+\end{significato}
+% disegno: p33-curva (appunti p. 33)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.15mm,y=0.15mm]
+  \coordinate (C) at (0,0);
+  \def\R{205}\def\a{38}
+  \coordinate (P) at (\a:\R);
+  \draw[thick,black] (100:\R+12) arc[start angle=100,end angle=-18,radius=\R+12];
+  \draw[very thick,nota] (C) -- ($(P)+(\a:12)$);
+  \coordinate (P) at (\a:\R+12);
+  \draw[green!60!black,thick] ($(P)+(\a+180:14)$) -- ++(\a-90:14) -- ($(P)+(\a-90:14)$);
+  \draw[vett,accento] ($(P)+(\a+90:9)$) -- ++(\a+180:110);
+  \node[accento] at ($(P)+(\a+180:85)+(\a+90:22)$) {$\hat{n}$};
+  \draw[vett,materia!75] (P) -- ++(\a-90:100);
+  \node[materia!75] at ($(P)+(\a-90:80)+(\a:24)$) {$\hat{\tau}$};
+  \fill (C) circle (1.8pt) node[left] {$C$};
+  \node[nota] at ($(C)+(\a:85)+(\a-90:22)$) {\large$\rho$};
+\end{tikzpicture}
+\end{disegno}
+\begin{itemize}
+  \item componente tangenziale: $\dfrac{dv}{dt}$
+  \item componente normale: sempre $\neq 0$, tranne nel MRU dove $\rho = \infty$
+\end{itemize}
+
+% ===== da p12.tex =====
+% =====================================================================
+%  CAPITOLO 11 -- COORDINATE POLARI   (appunti pp. 34-35)
+% =====================================================================
+\chapter{Coordinate polari (piane o cilindriche)}
+
+Coordinate polari (piane o cilindriche, dette anche):
+in due dimensioni sono polari, in 3D sono cilindriche.
+
+% disegno: p34-cilindro (appunti p. 34)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.095mm,y=-0.095mm]
+  % ---------- cilindro 3D ----------
+  \coordinate (O) at (232,295);
+  \draw[asse,black] (O) -- (237,40);
+  \draw[asse,black] (O) -- (462,287) node[below right] {$y$};
+  \draw[asse,black] (O) -- (110,432) node[right=3pt] {$x$};
+  \draw[thick,black] (243,152) ellipse[x radius=96,y radius=42];
+  \draw[thick,black,dashed] (150,178) -- (163,352);
+  \draw[thick,black,dashed] (339,170) -- (340,365);
+  \draw[thick,black,dashed] (176,345) .. controls (178,375) and (190,388) .. (240,388)
+        .. controls (295,388) and (325,380) .. (333,368);
+  \draw[very thick,materia!75] (238,147) -- (283,190);
+  \fill (238,147) circle (1.6pt);
+  \draw[accento,dashed,thick] (283,190) -- (O);
+  \draw[<->,thick,black] (402,125) -- (402,275);
+  \node at (440,205) {$z$};
+  % ---------- graffa e testo ----------
+  \draw[thick,black] (617,105) .. controls (600,115) and (600,160) .. (600,180)
+        .. controls (600,195) and (596,200) .. (590,203)
+        .. controls (596,206) and (600,215) .. (600,240)
+        .. controls (600,300) and (590,340) .. (575,355);
+  \node[anchor=west,align=left] at (640,200) {In\\proiezione};
+  % ---------- polare 2D ----------
+  \coordinate (Q) at (1172,328);
+  \draw[asse,black] (1112,328) -- (1468,326) node[below right] {$x$};
+  \draw[asse,black] (1171,372) -- (1172,115) node[above right] {$y$};
+  \draw[thick,black] (Q) circle[radius=138];
+  \coordinate (P) at ($(Q)+(-37:138)$);
+  \draw[very thick,materia!75] (Q) -- (P);
+  \fill (P) circle (1.8pt);
+  \node[above right] at (P) {$P$};
+  \node[materia!75] at (1203,262) {\large$\rho$};
+  \draw[thick,accento] ($(Q)+(0:70)$) arc[start angle=0,end angle=-37,radius=70];
+  \node[accento] at (1265,305) {$\varphi$};
+  \draw[->,black!55,thick] (1220,222) -- (1252,172);
+  \node[black!55] at (1290,150) {``rho''};
+\end{tikzpicture}
+\end{disegno}
+In proiezione: \ $P(\rho(t), \varphi(t))$ \implica coordinate locali variabili.
+
+\begin{formula}
+\begin{cases}
+  x = \rho\cos\varphi \\
+  y = \rho\sin\varphi \\
+  z = z \ \text{(altezza)}
+\end{cases}
+\quad\longleftrightarrow\quad
+\begin{cases}
+  \rho = \sqrt{x^2 + y^2} \\
+  \varphi = \arctan\!\left(\frac{y}{x}\right) \\
+  z = z
+\end{cases}
+\end{formula}
+\begin{significato}
+Invece di dire ``quanto a destra e quanto in alto'' ($x, y$), si dice ``quanto lontano dal centro''
+($\rho$) e ``in che direzione'' ($\varphi$). Le formule permettono di passare da una descrizione all'altra.
+\end{significato}
+
+A cosa servono? \implica Tutti quei \evid{sistemi dove il moto dipende da una determinata origine}
+\evid{(es.~moto gravitazionale)}.
+
+\section{Versori polari}
+Definiamo i \evid{versori $\hat{\rho}$ e $\hat{\varphi}$} locali.
+% disegno: p34-versori (appunti p. 34)
+\begin{disegno}
+\begin{tikzpicture}[disegno,x=0.1mm,y=-0.1mm]
+  \coordinate (O) at (572,308);
+  \draw[asse,black] (425,308) -- (868,300) node[below right] {$x$};
+  \draw[asse,black] (573,350) -- (573,100) node[left] {$y$};
+  % OP e angolo
+  \draw[->,thick,black] (O) -- (755,192) node[above right] {$P$};
+  \draw[thick,black] (672,306) arc[start angle=0,end angle=-31,radius=100];
+  \node at (712,262) {$\varphi$};
+  % versori
+  \draw[vett,materia!75] (O) -- (645,262);
+  \draw[vett,accento] (O) -- (538,252);
+  \node[materia!75] at (632,210) {\large$\hat{\rho}$};
+  \node[accento] at (518,208) {\large$\hat{\varphi}$};
+  \draw[black!55,thick] (632,212) ellipse[x radius=30,y radius=44];
+  \draw[black!55,thick] (520,210) ellipse[x radius=38,y radius=40];
+  % commenti
+  \draw[->,black!55,thick] (488,222) .. controls (440,250) and (405,290) .. (400,342);
+  \node at (300,400) {ortogonale a $\hat{\rho}$};
+  \draw[->,black!55,thick] (618,256) .. controls (612,300) and (620,345) .. (625,385);
+  \node[align=center,anchor=north west] at (605,400) {cambia in\\funzione del\\tempo\\$\Downarrow$\\è una funzione\\di $t$};
+  \draw[->,black!55,thick] (710,210) -- (722,152);
+  \node[anchor=west] at (690,125) {$\vec{\rho}(t)=\rho(t)\,\hat{\rho}$};
+\end{tikzpicture}
+\end{disegno}
+\[
+  \vec{\rho}(t) = \rho(t)\,\hat{\rho}
+\]
+$\hat{\varphi} \perp \hat{\rho}$ \implica anche nelle rotazioni mantengono l'ortogonalità.\\
+$\hat{\varphi}$: ortogonale a $\hat{\rho}$; \ $\hat{\rho}$ cambia in funzione del tempo \implica è una funzione di $t$.
+
+\section{Derivate temporali dei versori polari}
+\evid{Derivate temporali dei versori polari}
+% disegno: p34-derivate (appunti p. 34)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  % assi (senza etichette, come nell'originale)
+  \draw[asse] (-1.6,0) -- (1.6,0);
+  \draw[asse] (0,-0.8) -- (0,3.0);
+  % versori rho(t) e rho(t+dt)
+  \draw[vett,thick] (0,0) -- (44:2.1) coordinate (R1);
+  \draw[vett,thick] (0,0) -- (58:2.1) coordinate (R2);
+  % versori phi(t) e phi(t+dt)
+  \draw[vett,thick] (0,0) -- (135:2.1) coordinate (F1);
+  \draw[vett,thick] (0,0) -- (148:2.1) coordinate (F2);
+  % angolo phi
+  \draw (0.55,0) arc (0:44:0.55);
+  \node at (22:0.8) {$\varphi$};
+  % d rho cappello (blu)
+  \draw[->,thick,materia] (R1) -- ($(R1)!0.92!(R2)$);
+  \node[materia,anchor=south west] at ($(R1)+(0.0,0.05)$) {$d\hat{\rho}$};
+  % d phi a destra (giallo)
+  \draw[thick,nota] (40:1.25) arc (40:62:1.25);
+  \draw[->,thick,nota] (51:1.25) -- ++(1.75,-0.05) node[right] {$d\varphi$};
+  % d phi a sinistra (giallo)
+  \draw[thick,nota] (131:1.3) arc (131:152:1.3);
+  \node[nota] at (-0.95,1.95) {$d\varphi$};
+  % etichette grigie con frecce
+  \node[black!55] (Lr) at (1.05,2.8) {$\hat{\rho}(t+dt)$};
+  \draw[->,black!55,thick] ($(R2)+(-0.3,-0.25)$) to[bend left=10] ($(R2)+(-0.35,0.75)$);
+  \node[black!55] (Lf) at (-1.55,2.35) {$\hat{\varphi}(t+dt)$};
+  \draw[->,black!55,thick] ($(F2)+(0.05,0.1)$) to[bend left=15] ($(F2)+(-0.05,0.95)$);
+\end{tikzpicture}
+\end{disegno}
+\[
+  \vec{V} = \frac{d\vec{\rho}}{dt} = \frac{d}{dt}\left(\rho(t)\,\hat{\rho}\right)
+  = \underbrace{\frac{d\rho(t)}{dt}}_{= \dot{\rho}}\cdot\hat{\rho} + \frac{d\hat{\rho}}{dt}\,\rho(t)
+  = \dot{\rho}\,\hat{\rho} + \frac{d\hat{\rho}}{dt}\,\rho(t)
+\]
+($\rho(t) = \rho$ d'ora in poi)
+\[
+  |\hat{\rho}(t)| = 1 \qquad |\hat{\varphi}(t)| = 1 \qquad |\hat{\rho}(t + dt)| = 1
+\]
+\[
+  \hat{\rho}(t + dt) = \hat{\rho}(t) + d\hat{\rho} \ \Rightarrow\ d\hat{\rho} = \hat{\rho}(t + dt) - \hat{\rho}(t)
+\]
+\[
+  |d\hat{\rho}| = \underbrace{|\hat{\rho}(t)|}_{= 1}\,d\varphi = d\varphi
+\]
+Sviluppo il quadrato:
+\[
+  \underbrace{|\hat{\rho}(t + dt)|^2}_{= 1} = |\hat{\rho}(t) + d\hat{\rho}|^2
+  = \underbrace{|\hat{\rho}(t)|^2}_{= 1} + |d\hat{\rho}|^2 + 2\,d\hat{\rho}\cdot\hat{\rho}(t)
+\]
+\[
+  2\,d\hat{\rho}\,\hat{\rho}(t) = 0
+  \qquad
+  d\hat{\rho} \perp \hat{\rho}(t) \Rightarrow d\hat{\rho} \parallel \hat{\varphi}
+\]
+\begin{formula}
+d\hat{\rho} = d\varphi\,\hat{\varphi}
+\qquad
+\frac{d\hat{\rho}}{dt} = \hat{\varphi}\,\frac{d\varphi}{dt} = \hat{\varphi}\,\dot{\varphi}
+\end{formula}
+\begin{significato}
+Quando il punto gira di un angolo $d\varphi$, il versore $\hat{\rho}$ ruota con lui: cambia solo
+direzione (non lunghezza), e la variazione è perpendicolare a lui, cioè lungo $\hat{\varphi}$.
+Più velocemente gira ($\dot{\varphi}$), più rapidamente cambia $\hat{\rho}$.
+\end{significato}
+
+\section{Velocità in coordinate polari}
+\begin{formula}
+\vec{V} = \dot{\rho}\,\hat{\rho} + \rho\,\dot{\varphi}\,\hat{\varphi}
+\end{formula}
+\begin{itemize}[nosep]
+  \item $\dot{\rho}\,\hat{\rho}$: variazione del modulo della traiettoria
+  \item $\rho\dot{\varphi}\,\hat{\varphi}$: rotazione della traiettoria
+\end{itemize}
+\begin{significato}
+La velocità ha due parti: quanto ci si allontana o avvicina al centro ($\dot{\rho}$, in direzione radiale)
+e quanto si gira attorno al centro ($\rho\dot{\varphi}$, in direzione perpendicolare).
+\end{significato}
+
+Interpretazione: \evid{sovrapposizione di un moto rettilineo (direzione $\hat{\rho}$) e una rotazione
+rispetto ad esso (direzione $\hat{\varphi}$)}.
+
+\section{Accelerazione in coordinate polari}
+\evid{Accelerazione}
+\[
+  \vec{a} = \frac{d\vec{V}}{dt} = \frac{d}{dt}\left(\dot{\rho}\,\hat{\rho} + \rho\dot{\varphi}\,\hat{\varphi}\right)
+  = \ddot{\rho}\,\hat{\rho} + \dot{\rho}\,\underbrace{\frac{d\hat{\rho}}{dt}}_{\dot{\varphi}\hat{\varphi}}
+  + \dot{\rho}\dot{\varphi}\,\hat{\varphi} + \rho\ddot{\varphi}\,\hat{\varphi} + \rho\dot{\varphi}\,\frac{d\hat{\varphi}}{dt}
+\]
+% disegno: p35-dphi (appunti p. 35)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  % assi (senza etichette, come nell'originale)
+  \draw[asse] (-1.6,0) -- (1.6,0);
+  \draw[asse] (0,-0.8) -- (0,3.0);
+  % versori rho(t) e rho(t+dt)
+  \draw[vett,thick] (0,0) -- (44:2.1) coordinate (R1);
+  \draw[vett,thick] (0,0) -- (58:2.1) coordinate (R2);
+  % versori phi(t) e phi(t+dt)
+  \draw[vett,thick] (0,0) -- (135:2.1) coordinate (F1);
+  \draw[vett,thick] (0,0) -- (148:2.1) coordinate (F2);
+  % angolo phi
+  \draw (0.55,0) arc (0:44:0.55);
+  \node at (22:0.8) {$\varphi$};
+  % d rho cappello (blu)
+  \draw[->,thick,materia] (R1) -- ($(R1)!0.92!(R2)$);
+  \node[materia,anchor=south west] at ($(R1)+(0.0,0.05)$) {$d\hat{\rho}$};
+  % d phi a destra (giallo)
+  \draw[thick,nota] (40:1.25) arc (40:62:1.25);
+  \draw[->,thick,nota] (51:1.25) -- ++(1.75,-0.05) node[right] {$d\varphi$};
+  % d phi a sinistra (giallo)
+  \draw[thick,nota] (131:1.3) arc (131:152:1.3);
+  \node[nota] at (-0.95,1.95) {$d\varphi$};
+  % etichette grigie con frecce
+  \node[black!55] (Lr) at (1.05,2.8) {$\hat{\rho}(t+dt)$};
+  \draw[->,black!55,thick] ($(R2)+(-0.3,-0.25)$) to[bend left=10] ($(R2)+(-0.35,0.75)$);
+  \node[black!55] (Lf) at (-1.55,2.35) {$\hat{\varphi}(t+dt)$};
+  \draw[->,black!55,thick] ($(F2)+(0.05,0.1)$) to[bend left=15] ($(F2)+(-0.05,0.95)$);
+  % d phi cappello (blu)
+  \draw[->,thick,materia] (F1) -- ($(F1)!0.88!(F2)$);
+  \draw[->,thick,materia] ($(F1)+(-0.05,0.05)$) to[out=170,in=90,looseness=0.9] (-2.6,-0.15);
+  \node[materia,below] at (-2.5,-0.2) {$d\hat{\varphi}$};
+\end{tikzpicture}
+\end{disegno}
+\[
+  \hat{\varphi}(t + dt) - \hat{\varphi}(t) = d\hat{\varphi}
+  \ \longmapsto\
+  |d\hat{\varphi}| = d\varphi\,\underbrace{|\hat{\varphi}(t)|}_{= 1} = d\varphi
+\]
+\[
+  \frac{d\hat{\varphi}}{dt} = \frac{d\varphi}{dt}\,(-\hat{\rho}) = -\hat{\rho}\,\dot{\varphi}
+\]
+\[
+  \vec{a} = \ddot{\rho}\,\hat{\rho} + \underbrace{\dot{\rho}\dot{\varphi}\,\hat{\varphi} + \dot{\rho}\dot{\varphi}\,\hat{\varphi}}_{2\dot{\rho}\dot{\varphi}\hat{\varphi}}
+  + \rho\ddot{\varphi}\,\hat{\varphi} + \rho\dot{\varphi}\,\frac{d\hat{\varphi}}{dt}
+  \qquad
+  \rho\dot{\varphi}\left(-\hat{\rho}\dot{\varphi}\right) = -\rho\dot{\varphi}^2\,\hat{\rho}
+\]
+Dunque\dots
+\begin{formula}
+\vec{a} = \hat{\rho}\left(\ddot{\rho} - \rho\dot{\varphi}^2\right) + \hat{\varphi}\left(\rho\ddot{\varphi} + 2\dot{\rho}\dot{\varphi}\right)
+\end{formula}
+\begin{itemize}[nosep]
+  \item $\hat{\rho}(\dots)$: radiale; \ $\ddot{\rho}$ in direzione di $\hat{\rho}$; \ $-\rho\dot{\varphi}^2$: centripeta ($-\hat{\rho}$)
+  \item $\hat{\varphi}(\dots)$: tangenziale; \ $\rho\ddot{\varphi}$: accelerazione tangenziale;
+        \ $2\dot{\rho}\dot{\varphi}$: termine misto, moto vario
+\end{itemize}
+\begin{significato}
+Lungo il raggio: $\ddot{\rho}$ è l'accelerazione con cui ci si allontana dal centro, mentre
+$-\rho\dot{\varphi}^2$ è la parte centripeta dovuta al girare. In direzione perpendicolare:
+$\rho\ddot{\varphi}$ dice se si gira sempre più in fretta, e $2\dot{\rho}\dot{\varphi}$ compare
+quando ci si allontana dal centro mentre si gira (si ``sente'' quando si cammina verso il bordo di una giostra).
+\end{significato}
+
+\section{Derivate dei versori polari usando la rappres.\ cartesiana}
+\evid{Derivate dei versori polari usando la rappres.~cartesiana}
+% disegno: p35-cartesiana (appunti p. 35)
+\begin{disegno}
+\begin{tikzpicture}[disegno,scale=1.1]
+  \def\a{25}
+  % assi
+  \draw[asse] (-1.4,0) -- (3.2,0) node[below right=-1pt] {$x$};
+  \draw[asse] (0,-0.6) -- (0,2.1) node[right=1pt] {$y$};
+  % versori
+  \coordinate (R) at (\a:2.0);
+  \coordinate (F) at (90+\a:2.0);
+  \draw[vett,thick] (0,0) -- (R);
+  \draw[vett,thick] (0,0) -- (F);
+  % proiezioni
+  \draw[tratt] (R) -- (R|-0,0);
+  \draw[tratt] (R) -- (R-|0,0);
+  \draw[tratt] (F) -- (F|-0,0);
+  \draw[tratt] (F) -- (F-|0,0);
+  \draw[->,thick] ($(R|-0,0)+(-0.3,0)$) -- (R|-0,0);
+  % angoli
+  \draw (0.75,0) arc (0:\a:0.75);
+  \node at (\a/2:1.0) {$\varphi$};
+  \draw (0,0.55) arc (90:90+\a:0.55);
+  \node at (90+\a/2:0.95) {$\varphi$};
+  % etichette
+  \draw ($(R)+(0.05,0.05)$) -- ($(R)+(0.3,0.45)$);
+  \node at ($(R)+(0.45,0.7)$) {$\hat{\rho}$};
+  \node at ($(F)+(-0.2,0.4)$) {$\hat{\varphi}$};
+\end{tikzpicture}
+\end{disegno}
+\[
+  \hat{\rho} = (\cos\varphi, \sin\varphi)
+  \qquad
+  \hat{\varphi} = (-\sin\varphi, \cos\varphi)
+  \qquad
+  \hat{\rho}\cdot\hat{\varphi} = \cos\varphi(-\sin\varphi) + \sin\varphi\cdot\cos\varphi = 0
+\]
+\[
+  \begin{cases}
+    \dfrac{d\hat{\rho}}{dt} = \dfrac{d}{dt}(\cos\varphi, \sin\varphi)
+      = \Big(\underbrace{\tfrac{d}{d\varphi}(\cos\varphi)}_{-\sin\varphi}\underbrace{\tfrac{d\varphi}{dt}}_{\dot{\varphi}},\
+             \underbrace{\tfrac{d}{d\varphi}(\sin\varphi)}_{\cos\varphi}\underbrace{\tfrac{d\varphi}{dt}}_{\dot{\varphi}}\Big)
+      = \dot{\varphi}(-\sin\varphi, \cos\varphi) = \dot{\varphi}\,\hat{\varphi} \\[4ex]
+    \dfrac{d\hat{\varphi}}{dt} = \dfrac{d}{dt}(-\sin\varphi, \cos\varphi)
+      = \Big(\underbrace{\tfrac{d}{d\varphi}(-\sin\varphi)}_{-\cos\varphi}\underbrace{\tfrac{d\varphi}{dt}}_{\dot{\varphi}},\
+             \underbrace{\tfrac{d(\cos\varphi)}{d\varphi}}_{-\sin\varphi}\underbrace{\tfrac{d\varphi}{dt}}_{\dot{\varphi}}\Big)
+      = -\dot{\varphi}(\cos\varphi, \sin\varphi) = -\dot{\varphi}\,\hat{\rho}
+  \end{cases}
+\]
+
+% ===== da p13.tex =====
+% ---------------------------------------------------------------------
+%  (segue CAPITOLO 11)  Velocità e accelerazione angolare (appunti p. 36)
+% ---------------------------------------------------------------------
+\section{Velocità angolare \texorpdfstring{$\vec{\omega}$}{omega}}
+\[
+  |\vec{\omega}| = |\dot{\varphi}| \qquad \omega = \dot{\varphi} \ \text{(con il suo segno)}
+\]
+\begin{formula}
+\underbrace{\vec{\omega} = \omega\,\hat{z}}_{\text{ortogonale al piano del moto}} \qquad \text{(moto nel piano } (x, y))
+\end{formula}
+\begin{significato}
+La velocità angolare dice quanto velocemente cambia l'angolo: è un vettore perpendicolare
+al piano in cui si gira, e il suo verso indica il senso di rotazione (orario o antiorario).
+\end{significato}
+
+\section{Versori degli assi polari}
+\evid{Versori degli assi polari} (prodotto vettoriale):
+% disegno: p36-assi (appunti p. 36)
+\begin{disegno}
+\begin{tikzpicture}[disegno,scale=1.3]
+  % assi
+  \draw[asse] (0,0) -- (0,1.9) node[above right=-1pt] {$z$};
+  \draw[asse] (0,0) -- (2.2,0) node[right] {$x$};
+  \draw[asse] (0,0) -- (-1.2,-1.0) node[below right=-1pt] {$y$};
+  % piano xz (blu): tratti verticali
+  \foreach \u in {0.6,1.15,1.6,2.0}
+    \draw[thick,materia] (\u,0.05) -- (\u,1.45-0.05*\u);
+  % piano yz (rosso): tratti paralleli a y
+  \foreach \v in {0.25,0.65,1.05,1.45}
+    \draw[thick,accento] (-0.25,\v) -- ++(-0.85,-0.65);
+  % piano xy (verde): tratti orizzontali
+  \foreach \s/\l in {0.3/1.0,0.55/1.4,0.8/1.8,1.05/1.75}
+    \draw[thick,esempio] (-0.85*\s+0.55,-0.75*\s-0.05) -- ++(\l,-0.25);
+\end{tikzpicture}
+\end{disegno}
+\begin{formula}
+\begin{cases}
+  \hat{\rho}\wedge\hat{\varphi} = \hat{z} \\
+  \hat{z}\wedge\hat{\rho} = \hat{\varphi} \\
+  \hat{\varphi}\wedge\hat{z} = \hat{\rho}
+\end{cases}
+\end{formula}
+
+\evid{Velocità}
+\[
+  \vec{V} = \dot{\rho}\,\hat{\rho} + \rho\dot{\varphi}\,\hat{\varphi}
+  \ \longmapsto\
+  \rho\dot{\varphi}\,\hat{\varphi} = \rho\omega\,(\hat{z}\wedge\hat{\rho})
+  = \underbrace{(\omega\hat{z})}_{= \vec{\omega}}\wedge\underbrace{(\rho\hat{\rho})}_{= \vec{\rho}}
+\]
+\begin{formula}
+\vec{V} = \dot{\rho}\,\hat{\rho} + \vec{\omega}\wedge\vec{\rho}
+\end{formula}
+\begin{significato}
+La parte di velocità dovuta alla rotazione si scrive come $\vec{\omega}\wedge\vec{\rho}$:
+è perpendicolare al raggio e vale $\omega\rho$, cioè più si è lontani dal centro più si va veloci
+a parità di velocità angolare.
+\end{significato}
+
+\section{Accelerazione angolare}
+\evid{Accelerazione angolare}
+\begin{formula}
+\vec{\alpha} = \frac{d\vec{\omega}}{dt} = \dot{\omega}\,\hat{z} = \ddot{\varphi}\,\hat{z}
+\end{formula}
+\begin{significato}
+Dice quanto rapidamente cambia la velocità angolare: se è nulla si gira a ritmo costante.
+\end{significato}
+$\vec{\alpha} \parallel \vec{\omega}$: non sono necessariamente equiversi.
+
+\[
+  \vec{a} = \hat{\rho}\left(\ddot{\rho} - \rho\dot{\varphi}^2\right) + \hat{\varphi}\left(2\dot{\rho}\dot{\varphi} + \rho\ddot{\varphi}\right)
+  \qquad \text{Utilizziamo } \vec{\omega} \text{ e } \vec{\alpha}
+\]
+\begin{itemize}[nosep]
+  \item $\hat{\rho}\ddot{\rho}$: invariato
+  \item $-\hat{\rho}\rho\underbrace{\dot{\varphi}^2}_{\omega^2} = -\omega^2\underbrace{(\rho\hat{\rho})}_{\vec{\rho}} = -\omega^2\vec{\rho}$
+  \item $\hat{\varphi}\rho\ddot{\varphi} = (\hat{z}\wedge\hat{\rho})\rho\ddot{\varphi}
+         = \underbrace{(\hat{z}\ddot{\varphi})}_{\vec{\alpha}}\wedge\underbrace{(\hat{\rho}\rho)}_{\vec{\rho}} = \vec{\alpha}\wedge\vec{\rho}$
+  \item $2\dot{\rho}\dot{\varphi}\hat{\varphi} = 2\dot{\rho}\underbrace{\omega(\hat{z}}_{\vec{\omega}}\wedge\hat{\rho}) = 2\dot{\rho}(\vec{\omega}\wedge\hat{\rho})$
+\end{itemize}
+\begin{formula}
+\vec{a} = \hat{\rho}\,\ddot{\rho} - \omega^2\vec{\rho} + \vec{\alpha}\wedge\vec{\rho} + 2\dot{\rho}\,(\vec{\omega}\wedge\vec{\rho})
+\end{formula}
+\begin{significato}
+È la stessa accelerazione in coordinate polari, scritta con $\vec{\omega}$ e $\vec{\alpha}$:
+$-\omega^2\vec{\rho}$ è la parte centripeta, $\vec{\alpha}\wedge\vec{\rho}$ la parte tangenziale dovuta
+al cambiare della rotazione, l'ultimo termine compare solo se la distanza dal centro cambia mentre si gira.
+\end{significato}
+
+% =====================================================================
+%  CAPITOLO 12 -- MOTO CIRCOLARE   (appunti pp. 37-...)
+% =====================================================================
+\chapter{Moto circolare}
+
+\evid{La traiettoria è una circ.~di raggio $R$}.\\
+C'è \evid{una sola legge oraria} \implica $\varphi(t)$.
+% disegno: p37-circ (appunti p. 37)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  \draw[asse] (-1.6,0) -- (1.9,0);
+  \draw[asse] (0,-1.0) -- (0,1.7);
+  \draw[thick] (0,0) ellipse (1.1 and 0.85);
+  \coordinate (P) at (40:1.0);
+  \draw[thick] (0,0) -- (P);
+  \fill (P) circle (1.5pt);
+  \node[above right=-1pt] at (P) {$P$};
+  \node at (0.25,0.5) {$R$};
+  \draw (0.5,0) arc (0:36:0.5);
+  \draw (22:0.55) -- (1.45,0.45) node[right] {$\varphi(t)$};
+\end{tikzpicture}
+\end{disegno}
+
+\begin{delucidazione}
+È un moto \evid{unidimensionale} con \evid{una sola legge oraria} $\varphi(t)$.
+\end{delucidazione}
+
+\section{Velocità e accelerazione}
+\evid{Velocità e accelerazione}
+
+\evid{Formule generali}, \ $\dot{\rho} = \ddot{\rho} = 0$ \implica
+\begin{formula}
+\begin{cases}
+  \vec{V} = \rho\dot{\varphi}\,\hat{\varphi} = \vec{\omega}\wedge\vec{\rho} \\
+  \vec{a} = \underbrace{-\omega^2\vec{\rho}}_{\text{centripeta}} + \underbrace{\vec{\alpha}\wedge\vec{\rho}}_{\text{tangente}}
+          = -\rho\dot{\varphi}^2\,\hat{\rho} + \rho\ddot{\varphi}\,\hat{\varphi}
+\end{cases}
+\end{formula}
+\begin{significato}
+Nel moto circolare la velocità è sempre tangente alla circonferenza. L'accelerazione ha sempre
+una parte verso il centro ($\omega^2\rho$), necessaria per curvare, e una parte tangente solo se
+la rotazione accelera o rallenta.
+\end{significato}
+(La parte tangente nell'uniforme non c'è.)
+
+$\vec{\omega}\wedge\vec{\rho} \perp \vec{\rho}$ \implica velocità $\perp$ raggio \implica $\vec{V} \parallel$ tangente.
+
+% disegno: p37-acc (appunti p. 37)
+\begin{disegno}
+\begin{tikzpicture}[disegno]
+  % commento a sinistra
+  \node[align=left,anchor=east] (S) at (-2.35,0.3) {Si suppone\\ che il\\ moto sia\\ \colorbox{evid}{antiorario}};
+  \draw[thick] (-2.1,1.0) .. controls (-2.25,1.0) and (-2.15,0.4) .. (-2.3,0.4)
+               .. controls (-2.15,0.4) and (-2.25,-0.2) .. (-2.1,-0.2);
+  % circonferenza
+  \draw[thick] (0,0) circle (1.25);
+  \fill (0,0) circle (1.6pt);
+  \coordinate (P) at (52:1.25);
+  % raggio R
+  \draw[thick] (0,0) -- (52:0.75);
+  \node at ($(52:0.62)+(-0.12,0.22)$) {$R$};
+  % accelerazione centripeta (rosso, verso il centro)
+  \draw[->,thick,accento] (P) -- (52:0.72);
+  \fill (P) circle (1.8pt);
+  % velocita (blu, tangente)
+  \draw[->,very thick,materia] (P) -- ($(P)+(142:0.85)$);
+  \node[materia] at ($(P)+(0.05,0.85)$) {$\vec{v}$};
+  % a tangenziale (rosso, doppia freccia tangente)
+  \draw[<->,thick,accento] ($(P)+(0.3,0.75)$) -- ($(P)+(0.42,-0.2)$);
+  \node[accento,anchor=west] at ($(P)+(0.45,0.75)$) {$\vec{a}_{\mathrm{tang}}$};
+  % omega (verso antiorario)
+  \node at (-1.0,1.55) {$\omega$};
+  \draw[->,thick] (-0.55,1.45) to[bend right=25] (-1.35,0.95);
+  % freccia grigia verso a centrifuga
+  \draw[->,thick,black!55] ($(52:0.72)+(0.25,-0.1)$) to[out=-20,in=95] (1.45,-1.5);
+  \node[accento,anchor=north west] at (1.25,-1.55) {$\vec{a}_{\text{centrifuga}}$};
+  % commento a destra
+  \node[align=center,anchor=west] at (2.0,0.45) {Accelerazione\\[1pt] $-\omega^{2}\vec{\rho}$\\[1pt] centrifuga};
+\end{tikzpicture}
+\end{disegno}
+Si suppone che il moto sia antiorario.
+\begin{itemize}[nosep]
+  \item Accelerazione $-\omega^2\vec{\rho}$: centripeta
+  \item $\vec{\alpha}\wedge\vec{\rho}$ ($\parallel \hat{\varphi}$): tangenziale \implica $a_{tangenziale} = 0$ se $\ddot{\varphi} = 0$
+  \item $-\omega^2\vec{\rho}$ sempre $\neq 0$
+\end{itemize}
+\implica \evid{Nel moto circolare esiste sempre un'accelerazione centripeta.}
+
+\subsection{\texorpdfstring{$\vec{a}$}{a} nel moto circolare con il calcolo diretto}
+\[
+  \vec{a} = \frac{d}{dt}\,\vec{V} = \frac{d}{dt}(\vec{\omega}\wedge\vec{\rho})
+  = \underbrace{\frac{d\vec{\omega}}{dt}}_{\vec{\alpha}}\wedge\vec{\rho} + \vec{\omega}\wedge\frac{d\vec{\rho}}{dt}
+  = \vec{\alpha}\wedge\vec{\rho} + \vec{\omega}\wedge\vec{V}
+  = \vec{\alpha}\wedge\vec{\rho} + \vec{\omega}\wedge(\vec{\omega}\wedge\vec{\rho})
+\]
+Triplo prodotto vettoriale:
+\[
+  \evid{\vec{A}\wedge(\vec{B}\wedge\vec{C}) = (\vec{A}\cdot\vec{C})\vec{B} - (\vec{A}\cdot\vec{B})\vec{C}}
+\]
+\[
+  \vec{\omega}\wedge(\vec{\omega}\wedge\vec{\rho}) = \underbrace{(\vec{\omega}\cdot\vec{\rho})}_{= 0}\vec{\omega} - (\omega^2)\vec{\rho} = -\omega^2\vec{\rho}
+\]
+\begin{formula}
+\vec{a} = \vec{\alpha}\wedge\vec{\rho} - \omega^2\vec{\rho}
+\end{formula}
+
+\section{Moto circolare uniforme}
+\evid{Moto circolare uniforme}: \ $\ddot{\varphi} = \dot{\omega} = 0$, \ \evid{$\vec{\omega}$ costante}.
+
+Formule \implica
+\begin{formula}
+\vec{V} = \vec{\omega}\wedge\vec{\rho} \qquad \text{e} \qquad \vec{a} = -\omega^2\vec{\rho}
+\end{formula}
+\begin{significato}
+Anche se il modulo della velocità non cambia, la sua direzione cambia continuamente: per questo
+c'è sempre un'accelerazione, diretta verso il centro e di modulo $\omega^2\rho$.
+\end{significato}
+
+Moto circolare uniforme \evid{è sempre accelerato}.
+\[
+  \begin{cases}
+    \textbf{Periodo}: \ T = \dfrac{2\pi}{\omega} \quad [T] & \text{(tempo per percorrere una circ.)} \\[2ex]
+    \textbf{Frequenza}: \ \nu = \dfrac{1}{T} = \dfrac{\omega}{2\pi} \quad \left[\tfrac{1}{T}\right] & \text{(numero di giri per unità di tempo)}
+  \end{cases}
+\]
+
+% ===== da p14.tex =====
+% ---------------------------------------------------------------------
+%  (segue CAPITOLO 12)  Moto circolare: coordinate cartesiane e intrinseche (appunti pp. 38-39)
+% ---------------------------------------------------------------------
+\section{In coordinate cartesiane}
+\evid{In coordinate cartesiane}
+\[
+  \underbrace{\begin{cases}
+    x = R\cos[\varphi(t)] \\
+    y = R\sin[\varphi(t)]
+  \end{cases}}_{\text{posizione (composte)}}
+  \Rightarrow
+  \underbrace{\begin{cases}
+    \dot{x} = -R\sin(\varphi)\,\dot{\varphi}(t) \\
+    \dot{y} = R\cos(\varphi)\,\dot{\varphi}(t)
+  \end{cases}}_{\text{velocità}}
+\]
+Accelerazione:
+\[
+  \Rightarrow
+  \begin{cases}
+    \ddot{x} = -R\left(\cos(\varphi)\dot{\varphi}^2 + \sin(\varphi)\ddot{\varphi}\right) \\
+    \ddot{y} = R\left(-\sin(\varphi)\dot{\varphi}^2 + \cos(\varphi)\ddot{\varphi}\right)
+  \end{cases}
+  =
+  \begin{cases}
+    \ddot{x} = -R\sin(\varphi)\ddot{\varphi} \\
+    \ddot{y} = R\cos(\varphi)\ddot{\varphi}
+  \end{cases}
+\]
+\begin{delucidazione}
+!!! \ Da rivedere (riferito al passaggio qui sopra).
+\end{delucidazione}
+
+\section{Nel moto circolare uniforme}
+\evid{Nel moto circolare uniforme}
+\[
+  \ddot{\varphi} = \dot{\omega} = 0 \ \Rightarrow\ \omega = \text{costante} \qquad \varphi = \omega t + \varphi_0
+\]
+\[
+  \underbrace{\begin{cases}
+    x = R\cos(\omega t + \varphi_0) \\
+    y = R\sin(\omega t + \varphi_0)
+  \end{cases}}_{\text{pos.}}
+  \Rightarrow
+  \underbrace{\begin{cases}
+    \dot{x} = -\omega R\sin(\omega t + \varphi_0) \\
+    \dot{y} = \omega\cos(\omega t + \varphi_0)
+  \end{cases}}_{\text{vel.}}
+  \Rightarrow
+  \underbrace{\begin{cases}
+    \ddot{x} = -\omega^2 x \\
+    \ddot{y} = -\omega^2 y
+  \end{cases}}_{\text{acc.}}
+  \quad \evid{Moti armonici}
+\]
+\begin{significato}
+Guardando solo l'ombra del moto circolare uniforme su un asse ($x$ o $y$) si vede un moto
+armonico: avanti e indietro con accelerazione proporzionale allo spostamento e opposta.
+\end{significato}
+
+\begin{delucidazione}
+Vedere didascalia su slides.
+\end{delucidazione}
+
+\begin{nota}
+Attenzione! Pulsazione armonica e velocità angolare sono concettualmente distinti:
+\begin{itemize}[nosep]
+  \item la velocità angolare è una funzione del tempo \implica $\dfrac{d\varphi}{dt}$
+  \item la pulsazione non è una funzione del tempo \implica $\dfrac{2\pi}{T}$
+\end{itemize}
+Nel caso del moto circ.\ uniform.\ si equivalgono.
+\end{nota}
+
+\section{Coordinate intrinseche}
+\evid{Coordinate intrinseche}
+% disegno: p38-intr (appunti p. 38)
+\begin{disegno}
+\begin{tikzpicture}[disegno,scale=1.2]
+  \draw[thick] (0,0) circle (1);
+  \coordinate (P) at (0,1);
+  \draw[vett] (P) -- (1.6,1) node[right] {$\hat{\tau}$};
+  \draw[->,thick] (P) -- (0,0.45);
+  \node at (0.28,0.55) {$\vec{n}$};
+  \fill (P) circle (1.8pt);
+\end{tikzpicture}
+\end{disegno}
+\[
+  \begin{cases}
+    \hat{\tau} = \hat{\varphi} \\
+    \hat{n} = -\hat{\rho}
+  \end{cases}
+  \qquad
+  \text{velocità:}\quad \vec{V} = \vec{\omega}\wedge\vec{\rho} = \omega|\vec{\rho}|\,\hat{\varphi} = \omega R\,\hat{\tau}
+\]
+($\vec{\omega}$ e $\vec{\rho}$ ortogonali)
+
+Accelerazione:
+\[
+  \vec{a} = -\omega^2\vec{\rho} + \vec{\alpha}\wedge\vec{\rho}
+  = -R\dot{\varphi}^2\,\hat{\rho} + R\ddot{\varphi}\,\hat{\varphi}
+  = \underbrace{-R\left(\frac{v^2}{R^2}\right)\hat{\rho}}_{\hat{n}} + \underbrace{R\dot{\omega}}_{\frac{dv}{dt}}\,\underbrace{\hat{\varphi}}_{\hat{\tau}}
+\]
+\[
+  \ddot{\varphi} = \dot{\omega}
+  \qquad
+  v = \omega R = R\dot{\varphi} \Rightarrow \dot{\varphi} = \frac{v}{R}
+  \qquad
+  \frac{dv}{dt} = \frac{d}{dt}(\omega R) = R\,\frac{d\omega}{dt} = R\dot{\omega}
+\]
+\begin{formula}
+\vec{a} = \frac{v^2}{R}\,\hat{n} + \left(\frac{dv}{dt}\right)\hat{\tau}
+\end{formula}
+\begin{significato}
+Nel moto circolare il raggio di curvatura è proprio il raggio $R$: la parte verso il centro vale
+$v^2/R$ e c'è sempre; quella tangente vale $dv/dt$ e c'è solo se il modulo della velocità cambia.
+\end{significato}
+
+\begin{delucidazione}
+!!! \ Vedere slides.
+\end{delucidazione}
+
+\section{Esempio: calcolo raggio di curvatura e uso coordinate intrinseche}
+\begin{esempio}{grave lanciato orizzontalmente}
+% disegno: p39-grave (appunti p. 39)
+\begin{disegno}
+\begin{tikzpicture}[disegno,materia,scale=0.75]
+  \draw[asse,materia] (-0.15,0) -- (3.6,0) node[right] {$x$};
+  \draw[asse,materia] (0,-0.25) -- (0,2.9) node[right=1pt] {$y$};
+  \draw[curva] (0,2.1) .. controls (1.0,2.1) and (1.9,1.4) .. (2.05,0);
+  \fill[materia] (2.05,0) circle (1.8pt);
+  \node[below=2pt] at (2.05,0) {$\bar{x}$};
+\end{tikzpicture}
+\end{disegno}
+Raggio di curvatura?
+\begin{enumerate}[nosep]
+  \item Determiniamo $\vec{V}(t) \to \hat{\tau} = \dfrac{\vec{V}(t)}{|\vec{V}(t)|}$
+  \item $\hat{n}\cdot\hat{\tau} = 0$
+  \item $\vec{a}(t)$ \ $(-g\hat{y}) \to a_n = \vec{a}\cdot\hat{n}$
+  \item $\rho = \dfrac{v^2}{a_n}$
+\end{enumerate}
+
+\textbf{(1)}
+\[
+  \vec{V}(t) = (v_0, -gt) \qquad \hat{\tau} = \frac{(v_0, -gt)}{\sqrt{v_0^2 + g^2t^2}}
+\]
+\textbf{(2)}
+% disegno: p39-versori (appunti p. 39)
+\begin{disegno}
+\begin{tikzpicture}[disegno,materia,scale=0.8]
+  \draw[asse,materia] (-0.3,0) -- (2.9,0) node[below right] {$\hat{x}$};
+  \draw[asse,materia] (0,-0.3) -- (0,1.75) node[above right] {$\hat{y}$};
+  % traiettoria
+  \draw[curva] (0,1.15) .. controls (0.7,1.1) and (1.35,0.6) .. (1.5,-0.15);
+  \coordinate (P) at (0.85,0.93);
+  \fill (P) circle (1.8pt);
+  % versori
+  \draw[->,thick] (P) -- ++(-28:1.0) node[right] {$\hat{\tau}$};
+  \draw[->,thick] (P) -- ++(-122:0.5);
+  % etichetta n con freccia verso il commento
+  \node (n) at (0.85,0.18) {$\hat{n}$};
+  \draw[thick] (0.68,0.12) .. controls (0.68,0.02) and (1.02,0.02) .. (1.02,0.12);
+  \draw[->,thick] (0.85,0.03) -- (0.85,-0.55);
+  \node[anchor=north west,align=left] at (0.55,-0.6) {$\hat{n}$ ha entrambe\\ \hspace*{1.2em}comp.\ neg};
+\end{tikzpicture}
+\end{disegno}
+$\hat{n}$ ha entrambe comp.\ neg.:
+\[
+  \hat{n} = \frac{(-gt, -v_0)}{\sqrt{g^2t^2 + v_0^2}} \ \to\ \hat{n}\cdot\hat{\tau} = 0
+\]
+(scambio le comp.\ di $\hat{\tau}$ ma metto tutte e due negative)
+
+\textbf{(3)}
+\[
+  \vec{a} = (0, -g)
+  \qquad
+  \vec{a}\cdot\hat{n} = a_n = -g\hat{y}\cdot\frac{(\overbrace{-gt\,\hat{x}}^{= 0}, -v_0\,\hat{y})}{\sqrt{g^2t^2 + v_0^2}}
+  = \frac{v_0 g}{\sqrt{v_0^2 + g^2t^2}}
+\]
+\textbf{(4)}
+\[
+  \rho = \frac{v^2}{a_n} = \frac{(v_0^2 + g^2t^2)}{g v_0}\sqrt{v_0^2 + g^2t^2} = \frac{(v_0^2 + g^2t^2)^{3/2}}{g v_0}
+\]
+\end{esempio}
+
+% ===== da r2.tex =====
+% =====================================================================
+%  RIEPILOGO 2 -- MOTI NEL PIANO E NELLO SPAZIO   (pagina aggiunta, non negli appunti)
+% =====================================================================
+\riepilogo{Moti nel piano e nello spazio}
+
+In più dimensioni posizione, velocità e accelerazione diventano vettori. La velocità è sempre
+tangente alla traiettoria; l'accelerazione si divide in una parte tangente (cambia il modulo)
+e una normale (cambia la direzione). Le coordinate si scelgono in base al moto.
+
+\begin{mappa}
+  \node[nodoevid] (r) {$\vec{R}(t)$};
+  \node[nodo, right=1.2cm of r] (v) {$\vec{V} = \dot{\vec{R}}$\\ \small tangente};
+  \node[nodo, right=1.2cm of v] (a) {$\vec{a} = \dot{\vec{V}}$};
+  \node[nodo, above right=0.1cm and 1.1cm of a] (at) {$a_t = \frac{dv}{dt}$\\ \small modulo};
+  \node[nodo, below right=0.1cm and 1.1cm of a] (an) {$a_n = \frac{v^2}{\rho}$\\ \small direzione};
+  \draw[freccia] (r) -- (v);
+  \draw[freccia] (v) -- (a);
+  \draw[freccia] (a.east) -- (at.west);
+  \draw[freccia] (a.east) -- (an.west);
+  \node[nodoevid, below=1.1cm of v] (coord) {Coordinate};
+  \node[nodo, below left=0.5cm and 0.4cm of coord] (cart) {Cartesiane\\ \small proiettili};
+  \node[nodo, below=0.5cm of coord] (intr) {Intrinseche\\ \small $\hat{\tau}, \hat{n}$};
+  \node[nodo, below right=0.5cm and 0.4cm of coord] (pol) {Polari\\ \small $\hat{\rho}, \hat{\varphi}$\\ \small moto circolare};
+  \foreach \n in {cart, intr, pol} \draw[freccia] (coord) -- (\n);
+\end{mappa}
+
+\begin{formulario}
+\vec{V} = \frac{d\vec{R}}{dt} & Velocità vettoriale, sempre tangente alla traiettoria. \\
+\vec{a} = \frac{d\vec{V}}{dt} & Accelerazione vettoriale: cambia se cambia il modulo o la direzione della velocità. \\
+\begin{array}{l} x = v_0\cos\theta\, t \\ y = v_0\sin\theta\, t - \frac12 g t^2 \end{array}
+  & Proiettile: uniforme in orizzontale, uniformemente accelerato in verticale. \\
+h = \frac{v_0^2\sin^2\theta}{2g} & Quota massima: dipende solo dalla velocità verticale iniziale. \\
+G = \frac{v_0^2\sin(2\theta)}{g} & Gittata: massima a $45^\circ$, uguale per angoli complementari. \\
+y = \frac{v_0^2}{2g} - \frac{gx^2}{2v_0^2} & Parabola di sicurezza: sopra non si viene mai colpiti. \\
+\vec{a} = \frac{dv}{dt}\hat{\tau} + \frac{v^2}{\rho}\hat{n} & Coordinate intrinseche: parte tangente (modulo) $+$ parte normale verso il centro di curvatura. \\
+\vec{V} = \dot{\rho}\hat{\rho} + \rho\dot{\varphi}\hat{\varphi} & Polari: allontanarsi dal centro $+$ girare attorno al centro. \\
+\vec{a} = \hat{\rho}(\ddot{\rho} - \rho\dot{\varphi}^2) + \hat{\varphi}(\rho\ddot{\varphi} + 2\dot{\rho}\dot{\varphi}) & Polari: radiale (con la parte centripeta) $+$ trasversale. \\
+\vec{V} = \vec{\omega}\wedge\vec{\rho} & Moto circolare: velocità perpendicolare al raggio, modulo $\omega R$. \\
+\vec{a} = \vec{\alpha}\wedge\vec{\rho} - \omega^2\vec{\rho} & Moto circolare: tangenziale (se $\omega$ cambia) $+$ centripeta (sempre). \\
+T = \frac{2\pi}{\omega},\ \ \nu = \frac{\omega}{2\pi} & Moto circolare uniforme: tempo di un giro e giri al secondo. \\
+\end{formulario}
+
+
+\end{document}

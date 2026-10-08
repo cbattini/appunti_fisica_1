@@ -1,0 +1,117 @@
+% =====================================================================
+%  template.tex  --  scheletro per un nuovo argomento
+%
+%  Come usarlo:
+%    1. crea una cartella per l'argomento (es. DINAMICA/)
+%    2. copia lì questo file e rinominalo (es. dinamica.tex)
+%    3. sostituisci i testi segnaposto e compila da quella cartella
+%
+%  Stile e palette stanno nella cartella superiore (la root della repo):
+%    ../appunti-base.sty   ../palette-fisica.tex
+%  Compilazione: pdfLaTeX  (latexmk -pdf nomefile.tex)
+%  Guida completa ad ambienti e comandi: STILE.md
+% =====================================================================
+\documentclass[11pt]{report}
+
+\usepackage{../appunti-base}
+\input{../palette-fisica}        % sempre DOPO appunti-base
+
+% ---------- Salto pagina prima dei titoli ----------
+% Di default una sezione va a pagina nuova se in fondo alla pagina restano
+% meno di ~12 righe. Togli il commento qui sotto per disattivarlo in tutto
+% il documento: le sezioni proseguono sulla stessa pagina.
+% \nonewpage
+% (nel testo: \nonewpage disattiva da lì in poi, \sinewpage riattiva)
+
+% ---------- Dati della copertina ----------
+\universita{Università di Pisa}
+\corso{Corso di Laurea in Fisica}
+\autore{Cristiano Battini}
+\professore{Prof. Fabrizio Cei}
+% \aggiornato{8 ottobre 2026}    % se omesso usa la data di compilazione
+
+\begin{document}
+
+\copertina{Titolo dell'argomento}
+\tableofcontents
+
+% =====================================================================
+\chapter{Titolo del capitolo}
+% =====================================================================
+
+\lezione{GG mese AAAA}
+
+\section{Titolo della sezione}
+
+Testo degli appunti. Un \chiave{concetto chiave}, una \evid{parte evidenziata},
+un passaggio logico \implica conseguenza.
+
+\begin{definizione}{Nome}
+  Testo della definizione.
+\end{definizione}
+
+\begin{teorema}{Nome della legge}
+  Enunciato.
+\end{teorema}
+
+\begin{formula}
+  x(t) = x_0 + v\,t
+\end{formula}
+
+\begin{dimostrazione}
+  Passaggi.
+\end{dimostrazione}
+
+\begin{osservazione}
+  Testo dell'osservazione.
+\end{osservazione}
+
+\subsection{Titolo della sottosezione}
+
+\begin{esempio}{Titolo}
+  Testo dell'esempio.
+\end{esempio}
+
+\begin{nota}
+  Testo dell'NB.
+\end{nota}
+
+\begin{delucidazione}
+  Nota a margine o scritta rossa degli appunti.
+\end{delucidazione}
+
+% ---------- Schema a frecce ----------
+\begin{schema}
+  \node[nodo]                 (a) {primo};
+  \node[nodoevid, right=of a] (b) {secondo};
+  \draw[freccia] (a) -- (b);
+\end{schema}
+
+% ---------- Disegno ----------
+\begin{disegno}
+  \begin{tikzpicture}[disegno]
+    \draw[asse] (0,0) -- (4,0) node[right] {$t$};
+    \draw[asse] (0,0) -- (0,2.5) node[above] {$x$};
+    \draw[curva] (0,0.4) -- (3.5,2.1);
+  \end{tikzpicture}
+\end{disegno}
+
+% ---------- Parti da ricontrollare ----------
+% \illeggibile            \illeggibile[ipotesi]            \incerto{testo dubbio}
+
+% =====================================================================
+%  Riepilogo di fine blocco (facoltativo, sempre a pagina nuova)
+% =====================================================================
+% \riepilogo{Titolo del blocco}
+%
+% \begin{mappa}
+%   \node[nodoevid]          (m) {Concetto};
+%   \node[nodo, below=of m]  (c) {Caso};
+%   \draw[freccia] (m) -- (c);
+% \end{mappa}
+%
+% \begin{formulario}
+%   x(t) = x_0 + v\,t & Cosa dice fisicamente \\
+% \end{formulario}
+
+\end{document}

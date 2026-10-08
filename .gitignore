@@ -1,0 +1,205 @@
+# ==============================================================
+# LaTeX — file ausiliari generati dalla compilazione
+# ==============================================================
+
+## Core
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+## latexmk
+*.fdb_latexmk
+latex.out/
+
+## SyncTeX
+*.synctex
+*.synctex.gz
+*.synctex(busy)
+*.synctex.gz(busy)
+*.pdfsync
+
+## Formati intermedi
+*.dvi
+*.xdv
+*-converted-to.*
+
+## Bibliografia (bibtex / biblatex / biber)
+*.bbl
+*.bbl-SAVE-ERROR
+*.bcf
+*.bcf-SAVE-ERROR
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+## Indici, glossari, nomenclatura
+*.idx
+*.ilg
+*.ind
+*.ist
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.lzo
+*.lzs
+*.slg
+*.slo
+*.sls
+*.nlg
+*.nlo
+*.nls
+*.brf
+*.mw
+
+## hyperref / bookmark / titletoc / minitoc
+*.xref
+*.ptc
+*.maf
+*.mlf
+*.mlt
+*.mtc[0-9]*
+*.slf[0-9]*
+*.slt[0-9]*
+*.stc[0-9]*
+
+## tcolorbox
+*.listing
+
+## TikZ / PGF / pgfplots (esternalizzazione e gnuplot)
+*.auxlock
+*.figlist
+*.makefile
+*.fdepend
+*.dpth
+*.md5
+*.gnuplot
+*.table
+pgfplots-cache/
+tikz-cache/
+
+## beamer
+*.nav
+*.pre
+*.snm
+*.vrb
+
+## Teoremi, algoritmi, note, todo
+*.thm
+*.loa
+*.lol
+*.alg
+*.ent
+*.end
+*.tdo
+*.soc
+*.loe
+*.hst
+*.ver
+*.lod
+*.upa
+*.upb
+*.xyc
+*.xcp
+
+## minted / pythontex / sagetex / knitr
+_minted*/
+*.pyg
+pythontex-files-*/
+*.pytxcode
+*.sagetex.sage
+*.sagetex.py
+*.sagetex.scmd
+*-concordance.tex
+*.tikz
+*-tikzDictionary
+
+## Cartelle di build
+build/
+out/
+_build/
+.aux/
+.texpadtmp/
+
+## PDF compilati
+# Lasciati tracciati di proposito: il PDF degli appunti resta visibile
+# su GitHub e le figure in PDF non vengono escluse.
+# Per ignorare il PDF principale, togli il commento alla riga sotto:
+# cinematica.pdf
+
+# ==============================================================
+# Editor e backup
+# ==============================================================
+
+## VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+*.code-workspace
+.history/
+
+## Altri editor LaTeX
+*.tps
+*.sta
+*.lpz
+*.xwm
+TSWLatexianTemp*
+*.sublime-project
+*.sublime-workspace
+.idea/
+
+## Backup e file temporanei
+*~
+*.bak
+*.backup
+*.sav
+*.swp
+*.swo
+*.tmp
+*.orig
+\#*\#
+.\#*
+
+# ==============================================================
+# Sistema operativo
+# ==============================================================
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+Icon?
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+## Linux
+.directory
+.Trash-*
+
+# ==============================================================
+# Segreti e file locali
+# ==============================================================
+.env
+.env.*
+*.local

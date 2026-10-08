@@ -1,0 +1,268 @@
+% =====================================================================
+%  appunti-base.sty  --  stile COMUNE a tutte le materie
+%  Look LaTeX classico (Computer Modern), con un tocco di colore.
+%  Stessi ambienti, stessa struttura, stessa impaginazione ovunque.
+%  Per ogni materia cambia SOLO il file palette-<materia>.tex
+%  Compilazione: pdfLaTeX
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{appunti-base}[2026/10/08 Stile comune appunti]
+
+% ---------- Codifica, lingua, font ----------
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[italian]{babel}
+\RequirePackage{lmodern}              % Computer Modern: il "font di LaTeX"
+\RequirePackage{microtype}
+
+% ---------- Pagina ----------
+\RequirePackage[a4paper,top=2.5cm,bottom=2.7cm,left=2.7cm,right=2.7cm,
+                headheight=14pt]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+% ---------- Matematica e unità ----------
+\RequirePackage{amsmath,amssymb,mathtools}
+\RequirePackage{physics}              % \dv, \vb, \abs, \norm ...
+\RequirePackage{siunitx}
+\sisetup{output-decimal-marker={,}, per-mode=symbol}
+\RequirePackage{cancel}
+
+% ---------- Grafica, liste, tabelle ----------
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing}
+\RequirePackage{enumitem}
+\setlist{itemsep=0.15em, topsep=0.3em}
+\RequirePackage{booktabs,array,tabularx}
+\RequirePackage{graphicx}
+\RequirePackage[hidelinks]{hyperref}
+
+% ---------- Impaginazione: niente vedove/orfane, niente titoli isolati ----------
+\RequirePackage{needspace}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom                         % meglio spazio in fondo che righe sparse
+
+% ---------- Salto pagina prima dei titoli: attivo di default ----------
+% Di default sezioni, sottosezioni e \lezione vanno a pagina nuova se in
+% fondo alla pagina non resta abbastanza spazio (vedi \needspace sotto).
+%   \nonewpage  disattiva il salto: i titoli proseguono sulla stessa pagina
+%               e schemi/disegni non riservano più spazio extra (vanno a
+%               pagina nuova solo se davvero non entrano)
+%   \sinewpage  lo riattiva
+% Si possono usare nel preambolo (tutto il documento) o nel testo (da lì in poi).
+% I capitoli iniziano comunque sempre a pagina nuova.
+\newif\ifappunti@salto
+\appunti@saltotrue
+\newcommand{\nonewpage}{\appunti@saltofalse}
+\newcommand{\sinewpage}{\appunti@saltotrue}
+% \needspace solo se il salto è attivo
+\newcommand{\appunti@spazio}[1]{\ifappunti@salto\needspace{#1}\fi}
+
+% ---------- Titoli (classici, solo colorati) ----------
+% I colori 'materia', 'materiachiaro', 'materiascuro', 'accento'
+% vengono definiti nel file palette-<materia>.tex
+\RequirePackage{titlesec}
+% Capitolo: SEMPRE a nuova pagina (lo fa già \chapter)
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{materiascuro}}
+  {\Large\scshape\color{materia}Capitolo \thechapter}
+  {0.4em}{\Huge\raggedright}[\vspace{0.2em}{\color{materia}\titlerule[0.8pt]}]
+\titlespacing*{\chapter}{0pt}{0pt}{1.8em}
+% Sezione: almeno ~12 righe libere, altrimenti va a pagina nuova
+% (salvo \nonewpage)
+\titleformat{\section}
+  {\appunti@spazio{12\baselineskip}\normalfont\Large\bfseries\color{materia}}
+  {\thesection}{0.8em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.6em}
+\titleformat{\subsection}
+  {\appunti@spazio{6\baselineskip}\normalfont\large\bfseries\color{materiascuro}}
+  {\thesubsection}{0.7em}{}
+\titlespacing*{\subsection}{0pt}{1.2em}{0.4em}
+\titleformat{\subsubsection}
+  {\appunti@spazio{4\baselineskip}\normalfont\normalsize\bfseries\itshape\color{materiascuro}}
+  {}{0pt}{}
+\setcounter{secnumdepth}{2}
+
+% ---------- Intestazione (sobria) ----------
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape\nouppercase{\leftmark}}
+\fancyhead[R]{\small\itshape\MateriaNome}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}%
+  \renewcommand{\headrulewidth}{0pt}}
+
+% ---------- Box (tcolorbox, stile leggero) ----------
+% Etichetta in grassetto colorato all'inizio, come i teoremi di LaTeX,
+% solo un filetto sottile colorato a sinistra, fondo bianco. Nessuna barra del titolo.
+\RequirePackage[most]{tcolorbox}
+\tcbset{
+  appunti/.style={
+    enhanced, breakable=false,        % i box NON si spezzano tra pagine
+    before skip=0.8em, after skip=0.8em,
+    left=7pt, right=7pt, top=4pt, bottom=4pt,
+    sharp corners, boxrule=0pt, leftrule=1.2pt, colback=white},
+  lungo/.style={breakable, pad at break*=4pt}  % solo per box molto lunghi
+}
+% #1 colore, #2 etichetta: crea lo stile "etichetta in testa al box"
+\newcommand{\etichetta}[2]{{\bfseries\color{#1}#2.}\enspace}
+
+% Contatore unico per definizioni/leggi/esempi (numerati per capitolo)
+\newcounter{box}[chapter]
+\renewcommand{\thebox}{\thechapter.\arabic{box}}
+
+% DEFINIZIONE   uso: \begin{definizione}{Nome} ... \end{definizione}
+\newtcolorbox{definizione}[2][]{appunti,
+  colframe=materia,
+  before upper={\refstepcounter{box}\etichetta{materia}{Definizione \thebox%
+    \ifx&#2&\else\ \normalfont(#2)\fi}}, #1}
+% TEOREMA / LEGGE / PRINCIPIO   uso: \begin{teorema}{Legge oraria} ...
+\newtcolorbox{teorema}[2][]{appunti,
+  colframe=accento,
+  before upper={\refstepcounter{box}\etichetta{accento}{#2}\itshape}, #1}
+% FORMULA chiave (riquadrata come negli appunti): contenuto già in modo matematico
+%   uso: \begin{formula} x(t) = x_0 + v t \end{formula}
+\newtcolorbox{formula}[1][]{appunti,
+  colframe=materia!70, boxrule=0.5pt, leftrule=0.5pt, arc=1.5pt,
+  rounded corners, ams equation*, top=0pt, bottom=0pt, #1}
+% DIMOSTRAZIONE / PASSAGGI (classica, senza box)
+\newenvironment{dimostrazione}
+  {\par\needspace{4\baselineskip}\textit{\color{materiascuro}Dimostrazione.}\enspace}
+  {\hfill$\square$\par}
+% OSSERVAZIONE (solo testo con etichetta, come in LaTeX)
+\newenvironment{osservazione}
+  {\par\needspace{3\baselineskip}\medskip\etichetta{materiascuro}{Osservazione}}
+  {\par\medskip}
+% ESEMPIO   uso: \begin{esempio}{titolo} ...
+\newtcolorbox{esempio}[2][]{appunti,
+  colframe=esempio,
+  before upper={\etichetta{esempio}{Esempio\ifx&#2&\else\ \normalfont(#2)\fi}}, #1}
+% NOTA / NB  (gli "NB!" degli appunti)
+\newtcolorbox{nota}[1][]{appunti,
+  colframe=nota,
+  before upper={\etichetta{nota!80!black}{NB}}, #1}
+% DELUCIDAZIONE: note a margine e scritte rosse degli appunti
+\newtcolorbox{delucidazione}[1][]{appunti,
+  colframe=red!60!black,
+  before upper={\etichetta{red!60!black}{Delucidazione}}, #1}
+
+% ---------- Comandi in linea ----------
+% Evidenziatore (le parti evidenziate negli appunti): va a capo come testo normale
+\RequirePackage{soul}
+\newcommand{\evid}[1]{\ifmmode\colorbox{evid}{$#1$}\else{\sethlcolor{evid}\hl{#1}}\fi}
+% Concetto chiave (sottolineato negli appunti)
+\newcommand{\chiave}[1]{\textbf{\color{materiascuro}#1}}
+% Freccia logica degli appunti
+\newcommand{\implica}{\ \textcolor{materia}{$\longrightarrow$}\ }
+\AtBeginDocument{\soulregister{\implica}{0}\soulregister{\chiave}{1}\soulregister{\incerto}{1}\soulregister{\aggiunto}{0}}
+% Data della lezione
+% (con \nonewpage resta solo lo spazio minimo per non staccarla dal titolo che segue)
+\newcommand{\lezione}[1]{%
+  \ifappunti@salto\needspace{15\baselineskip}\else\needspace{4\baselineskip}\fi
+  \hfill{\small\itshape\color{accento}Lezione del #1}\par}
+% Parte ILLEGGIBILE o INCERTA: sempre visibile e ricercabile
+\newcommand{\illeggibile}[1][]{\textcolor{red}{\bfseries[illeggibile%
+  \ifx&#1&\else: #1\fi]}}
+\newcommand{\incerto}[1]{\textcolor{red}{#1}\textsuperscript{\textcolor{red}{?}}}
+
+% ---------- Schemi a frecce (mappe degli appunti) ----------
+\tikzset{
+  schema/.style={every node/.style={font=\small, align=center},
+    >={Stealth[length=2.2mm]}, node distance=0.6cm and 1.1cm},
+  nodo/.style={rounded corners=2pt, inner sep=3pt},
+  nodoevid/.style={nodo, fill=evid},
+  freccia/.style={->, thick, color=materia}
+}
+\newenvironment{schema}{\par\appunti@spazio{8\baselineskip}\begin{center}\begin{tikzpicture}[schema]}
+  {\end{tikzpicture}\end{center}}
+
+% DISEGNO: schizzi degli appunti ridisegnati in TikZ (approvati dall'autore)
+%   uso: \begin{disegno} \begin{tikzpicture}[disegno] ... \end{tikzpicture} \end{disegno}
+%   se il disegno e' piu' largo della pagina viene ridotto alla larghezza del testo
+\RequirePackage{tikz-3dplot}
+\usetikzlibrary{patterns,decorations.markings,angles,quotes,3d,intersections,backgrounds,babel,patterns.meta}
+\AtBeginDocument{%
+  \colorlet{inkblu}{materia}\colorlet{inkrosso}{accento}%
+  \colorlet{inkverde}{esempio}\colorlet{inkgiallo}{nota}}
+\tikzset{
+  disegno/.style={line cap=round,line join=round,>={Stealth[length=2.2mm]},font=\small},
+  asse/.style={->,thick,black!80},
+  curva/.style={thick,materia},
+  vett/.style={->,very thick},
+  tratt/.style={dashed,black!55},
+  punto/.style={circle,fill,inner sep=1.2pt},
+}
+\newsavebox{\disegnobox}
+\newenvironment{disegno}{\par\appunti@spazio{6\baselineskip}\begin{center}\begin{lrbox}{\disegnobox}}
+  {\end{lrbox}\ifdim\wd\disegnobox>\linewidth
+     \resizebox{\linewidth}{!}{\usebox{\disegnobox}}\else\usebox{\disegnobox}\fi\end{center}}
+
+% ---------- Aggiunte richieste (NON presenti negli appunti) ----------
+% Tutto ciò che non viene dagli appunti è marcato con \aggiunto (simbolo ⊕),
+% così si distingue sempre dal testo originale.
+\newcommand{\aggiunto}{\textsuperscript{\color{materia}$\oplus$}}
+% SIGNIFICATO FISICO di una formula (subito dopo il box formula)
+\newtcolorbox{significato}[1][]{appunti,
+  colframe=materiachiaro, before skip=0.2em,
+  before upper={\etichetta{materiascuro}{Significato fisico\aggiunto}}, #1}
+
+% PAGINA RIASSUNTIVA: sempre a pagina nuova, dopo un blocco di argomenti
+%   uso: \riepilogo{Moti rettilinei}
+\newcommand{\riepilogo}[1]{%
+  \clearpage
+  \phantomsection\addcontentsline{toc}{section}{Riepilogo: #1}%
+  {\Large\bfseries\color{materia}Riepilogo: #1\aggiunto\par}
+  \vspace{0.2em}{\color{materia}\hrule height 0.8pt}\vspace{0.8em}}
+% Mappa concettuale del riepilogo (grande, centrata)
+\newenvironment{mappa}{\par\begin{center}%
+  \begin{tikzpicture}[schema, node distance=0.8cm and 1.4cm,
+    every node/.append style={font=\normalsize}]}
+  {\end{tikzpicture}\end{center}}
+% Formulario del riepilogo: formula | cosa dice fisicamente (tabella non spezzata)
+\newenvironment{formulario}{\par\needspace{8\baselineskip}%
+  \renewcommand{\arraystretch}{1.6}%
+  \tabularx{\linewidth}{@{}>{\centering\arraybackslash$\displaystyle}p{0.36\linewidth}<{$}@{\hspace{1em}}X@{}}
+  \toprule \multicolumn{1}{c}{\bfseries Formula} & \bfseries Significato fisico \\ \midrule}
+  {\bottomrule\endtabularx\par}
+
+% ---------- Pagina del titolo (stile LaTeX classico) ----------
+% Dati della copertina: si impostano nel documento, prima di \copertina
+%   \universita{...} \corso{...} \autore{...} \professore{...} \aggiornato{...}
+\newcommand{\@universita}{}\newcommand{\universita}[1]{\renewcommand{\@universita}{#1}}
+\newcommand{\@corso}{}\newcommand{\corso}[1]{\renewcommand{\@corso}{#1}}
+\newcommand{\@autore}{}\newcommand{\autore}[1]{\renewcommand{\@autore}{#1}}
+\newcommand{\@professore}{}\newcommand{\professore}[1]{\renewcommand{\@professore}{#1}}
+\newcommand{\@aggiornato}{\today}\newcommand{\aggiornato}[1]{\renewcommand{\@aggiornato}{#1}}
+
+\newcommand{\copertina}[1]{%  #1 = argomento
+  \hypersetup{pageanchor=false}\begin{titlepage}
+  \centering
+  \vspace*{1cm}
+  {\scshape\LARGE\color{materiascuro}\@universita\par}
+  \vspace{0.3cm}
+  {\large\@corso\par}
+  \vspace{2.5cm}
+  {\scshape\Large Appunti di \MateriaNome\par}
+  \vspace{0.8cm}
+  {\color{materia}\rule{\linewidth}{1.2pt}}\par\vspace{0.5cm}
+  {\Huge\bfseries #1\par}
+  \vspace{0.35cm}{\color{materia}\rule{\linewidth}{0.4pt}}\par
+  \vfill
+  \begin{minipage}[t]{0.47\linewidth}\raggedright
+    {\itshape\color{materia}Autore}\\[0.2em]{\large\@autore}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.47\linewidth}\raggedleft
+    {\itshape\color{materia}Professore}\\[0.2em]{\large\@professore}
+  \end{minipage}
+  \vspace{2cm}
+
+  {\small\itshape Ultimo aggiornamento: \@aggiornato\par}
+  \vspace*{0.5cm}
+  \end{titlepage}\hypersetup{pageanchor=true}}
+
+\endinput
