@@ -3,8 +3,7 @@
 Appunti del corso di **Fisica 1** (Corso A) dell'Università di Pisa, a.a. 2026/2027, scritti in LaTeX.
 
 - **Docente:** Fabrizio Cei
-- **Esercitazioni:** Bischetti
-
+  
 Gli appunti sono presi a lezione e poi integrati e riordinati dopo ogni lezione. Sono in continuo aggiornamento durante il semestre.
 
 > **Nota:** questi sono appunti personali, non materiale ufficiale del corso, e non sono stati revisionati dai docenti. Possono contenere errori o imprecisioni: se ne trovi, apri una issue.
